@@ -3,6 +3,7 @@
 	import Container from '$lib/components/container.svelte';
 	import AvailableRooms from './available_rooms.svelte';
 	import GameDescription from './game_description.svelte';
+	import Footer from '$lib/components/footer.svelte';
 
 	export let data: PageServerData;
 </script>
@@ -18,6 +19,7 @@
 	{/if}
 	<GameDescription />
 </Container>
+<Footer />
 
 <style>
 	.snakeish-logo {

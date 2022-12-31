@@ -1,0 +1,23 @@
+<script>
+	import Icon from '@iconify/svelte';
+</script>
+
+<footer>
+	<b>Snakeish</b> by
+	<a href="https://github.com/Oskar-Przyborski"><br>
+		Oskar Przyborski <Icon icon="mdi:github" inline={true} />
+	</a>
+</footer>
+
+<style lang="scss">
+	footer {
+		text-align: center;
+		a {
+			color: inherit;
+			text-decoration: inherit;
+            &:hover{
+                text-decoration: underline;
+            }
+		}
+	}
+</style>
