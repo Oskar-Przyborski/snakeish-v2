@@ -1,20 +1,15 @@
 <script lang="ts">
-	import { PUBLIC_API_URL } from '$env/static/public';
 	import Button from '$lib/components/button.svelte';
+	import backendRequest from '$lib/backend_request';
 	import RefreshButton from './refresh_button.svelte';
 	import RoomsList from './rooms_list.svelte';
 
 	export let rooms: App.RoomPreview[];
 
 	async function refresh() {
-		try {
-			const controller = new AbortController();
-			setTimeout(() => controller.abort(), 5000);
-			const resp = await fetch(PUBLIC_API_URL + '/get-rooms', { signal: controller.signal });
-			rooms = await resp.json();
-		} catch {
-			rooms = []
-		}
+		const { data } = await backendRequest<App.RoomPreview[]>(fetch, '/get-rooms');
+		if (data) rooms = data;
+		else rooms = [];
 	}
 </script>
 

@@ -6,6 +6,7 @@
 	import Footer from '$lib/components/footer.svelte';
 
 	export let data: PageServerData;
+	const rooms = data.data ? data.data : [];
 </script>
 
 <Container>
@@ -13,7 +14,7 @@
 		<img alt="Snakeish Logo" src="/logo-long-white.png" width="310" height="60" />
 	</div>
 	{#if data.isOnline}
-		<AvailableRooms rooms={data.rooms} />
+		<AvailableRooms {rooms} />
 	{:else}
 		Server is offline.
 	{/if}
