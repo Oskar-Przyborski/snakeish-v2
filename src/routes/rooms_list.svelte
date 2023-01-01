@@ -16,7 +16,7 @@
 						<div><Icon icon="fa6-solid:gamepad" inline={true} /> {room.gameModeName}</div>
 					</div>
 				</div>
-				<Button>Join</Button>
+				<Button href={`/room/${room.id}`}>Join</Button>
 			</div>
 		{/each}
 	{:else}

@@ -1,11 +1,19 @@
+<script lang="ts">
+	export let href: string | undefined | null = null;
+</script>
+
 <button>
-	<slot />
+	{#if href != null}
+		<a {href}><slot /></a>
+	{:else}
+		<slot />
+	{/if}
 </button>
 
 <style lang="scss">
-    button {
-        margin: 0.6em;
-        padding: 0.5em 1.1em;
+	button {
+		margin: 0.6em;
+		padding: 0.5em 1.1em;
 
 		background-color: transparent;
 		border-radius: 0.4em;
@@ -16,14 +24,19 @@
 		color: white;
 		text-align: center;
 		text-decoration: none;
-        
-        display: inline-block;
+
+		display: inline-block;
 		cursor: pointer;
 		transition: background-color 0.2s, color 0.2s;
 		&:active,
 		&:hover {
 			background-color: #8be8cb;
 			color: black;
+		}
+
+		a {
+			text-decoration: none;
+			color: inherit;
 		}
 	}
 </style>
