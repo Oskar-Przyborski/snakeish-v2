@@ -1,6 +1,6 @@
-import serverRequest from '$lib/backend_request';
+import backendRequest from '$lib/backend_request';
 import type { PageServerLoad } from './$types';
 
 export const load = (async (context) => {
-	return await serverRequest<App.RoomPreview[]>(context.fetch, '/get-rooms')
+	return await backendRequest<App.RoomPreview[]>(context.fetch, '/get-rooms')
 }) satisfies PageServerLoad;
