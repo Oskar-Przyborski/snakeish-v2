@@ -2,13 +2,17 @@
 	export let href: string | undefined | null = null;
 </script>
 
-<button>
-	{#if href != null}
-		<a {href}><slot /></a>
-	{:else}
+{#if href != null}
+	<a {href}>
+		<button>
+			<slot />
+		</button>
+	</a>
+{:else}
+	<button>
 		<slot />
-	{/if}
-</button>
+	</button>
+{/if}
 
 <style lang="scss">
 	button {
@@ -32,11 +36,6 @@
 		&:hover {
 			background-color: #8be8cb;
 			color: black;
-		}
-
-		a {
-			text-decoration: none;
-			color: inherit;
 		}
 	}
 </style>
