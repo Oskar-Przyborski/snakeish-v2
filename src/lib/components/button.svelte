@@ -1,5 +1,9 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
 	export let href: string | undefined | null = null;
+
 </script>
 
 {#if href != null}
@@ -9,7 +13,7 @@
 		</button>
 	</a>
 {:else}
-	<button>
+	<button on:click={() => dispatch('click')}>
 		<slot />
 	</button>
 {/if}
