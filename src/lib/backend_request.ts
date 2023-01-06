@@ -33,3 +33,19 @@ export default async function backendRequest<T>(
 		};
 	}
 }
+
+export async function responseToMap<V>(
+	response: Promise<{ isOnline: boolean; data: object | undefined }>
+) {
+	const { data, isOnline } = await response;
+	if (data != null) {
+		return {
+			isOnline,
+			data: new Map<string, V>(Object.entries(data))
+		};
+	}
+	return {
+		isOnline,
+		data: undefined
+	};
+}

@@ -1,15 +1,30 @@
 <script lang="ts">
 	import Button from '$lib/components/button.svelte';
-	import backendRequest from '$lib/backend_request';
+	import backendRequest, { responseToMap } from '$lib/backend_request';
 	import RefreshButton from './refresh_button.svelte';
 	import RoomsList from './rooms_list.svelte';
 
 	export let rooms: App.RoomPreview[];
 
 	async function refresh() {
-		const { data } = await backendRequest<App.RoomPreview[]>(fetch, '/get-rooms');
-		if (data) rooms = data;
-		else rooms = [];
+		const { data } = await responseToMap<App.RoomPreview>(
+			backendRequest<Map<string, App.RoomPreview>>(fetch, '/get-rooms')
+		);
+		rooms = [];
+		if (data != null) {
+			data.forEach((v) => rooms.push(v));
+		}
+	}
+
+	async function createRoom() {
+		await backendRequest(fetch, '/create-classic-room', {
+			roomName: 'room2',
+			speed: 4,
+			gridSize: 4,
+			collideEnemies: true
+		});
+
+		await refresh();
 	}
 </script>
 
@@ -23,7 +38,7 @@
 	</div>
 	<div class="create-room">
 		<h2>Wanna have own room?</h2>
-		<Button><b>Create room</b></Button>
+		<Button on:click={createRoom}><b>Create room</b></Button>
 	</div>
 </div>
 
