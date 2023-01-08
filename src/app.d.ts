@@ -11,5 +11,22 @@ declare namespace App {
 		playersCount: number;
 		gameModeName: string;
 		id: string;
-	};
+	}
+	interface AppState {
+		websocket: import('$lib/websocket').WebSocketClient | null;
+		roomId: string | null;
+		isPlaying: boolean;
+		gameState: GameState | null;
+	}
+	interface GameState {
+		players: {
+			name: string;
+			color: string;
+		}[];
+		apples: {
+			x: number;
+			y: number;
+		}[];
+		gridSize: number;
+	}
 }

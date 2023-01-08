@@ -1,7 +1,4 @@
 import { PUBLIC_WS_URL } from '$env/static/public';
-import { writable } from 'svelte/store';
-
-export const websocketClient = writable<WebSocketClient | null>(null);
 
 export class WebSocketClient {
 	constructor(path: string) {
