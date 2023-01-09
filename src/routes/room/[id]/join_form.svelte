@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/button.svelte';
+	import TextInput from '$lib/components/text_input.svelte';
 
 	const dispatcher = createEventDispatcher();
 
@@ -13,7 +14,15 @@
 </script>
 
 <div class="join-form">
-	<input type="text" placeholder="Name" bind:value={name} />
-	<input type="text" placeholder="Color" bind:value={color} />
+	<h1>Join Game</h1>
+	<TextInput bind:value={name}>Name</TextInput>
+	<TextInput bind:value={color}>Color</TextInput>
 	<Button on:click={submit}>Join</Button>
 </div>
+
+<style lang="scss">
+	.join-form {
+		display: flex;
+		flex-direction: column;
+	}
+</style>

@@ -11,6 +11,7 @@
 
 <style lang="scss">
 	footer {
+		margin-top: 1.5em;
 		text-align: center;
 		a {
 			color: inherit;
