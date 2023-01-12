@@ -19,14 +19,18 @@ declare namespace App {
 		gameState: GameState | null;
 	}
 	interface GameState {
-		players: {
-			name: string;
-			color: string;
-		}[];
-		apples: {
-			x: number;
-			y: number;
-		}[];
+		players: Player[];
+		apples: Vector2[];
 		gridSize: number;
+	}
+	interface Player{		
+		name: string;
+		color: string;
+		snakeTail: Vector2[];
+	}
+	
+	interface Vector2 {
+		x: number;
+		y: number;
 	}
 }
