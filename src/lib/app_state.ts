@@ -46,3 +46,12 @@ export const joinPlayer = (name: string, color: string) => {
 		return state;
 	});
 };
+
+export const leaveGame = () => {
+	appStateStore.update((state) => {
+		state.websocket?.sendMessage('leave-game', {});
+		state.isPlaying = false;
+	
+		return state;
+	});
+}
