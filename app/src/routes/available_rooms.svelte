@@ -16,16 +16,6 @@
 		}
 	}
 
-	async function createRoom() {
-		await backendRequest(fetch, '/create-classic-room', {
-			roomName: 'room2',
-			speed: 4,
-			gridSize: 4,
-			collideEnemies: true
-		});
-
-		await refresh();
-	}
 </script>
 
 <div class="available-rooms">
@@ -38,7 +28,7 @@
 	</div>
 	<div class="create-room">
 		<h2>Wanna have own room?</h2>
-		<Button on:click={createRoom}><b>Create room</b></Button>
+		<Button href="/create-room"><b>Create room</b></Button>
 	</div>
 </div>
 
