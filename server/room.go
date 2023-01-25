@@ -147,6 +147,8 @@ func (room *Room) BroadcastGameUpdate() {
 }
 
 func (room *Room) Update() {
+	usersToKill := []*User{}
+
 	for _, user := range room.getUsersPlayers() {
 		if !user.player.IsAlive {
 			continue
@@ -158,13 +160,15 @@ func (room *Room) Update() {
 		if !user.player.IsAlive {
 			continue
 		}
-		if room.KillIfOutOfBounds(&user.player) {
-			continue
-		}
 
-		if user.player.KillIfCollidesWithSelf() {
+		if user.player.IsOutOfBounds(room.GridSize) || user.player.IsCollidingSelf() || room.IsPlayerCollidingWithAnyOther(*user) {
+			usersToKill = append(usersToKill, user)
 			continue
 		}
+	}
+
+	for _, user := range usersToKill {
+		user.player.Kill()
 	}
 
 	for _, user := range room.getUsersPlayers() {
@@ -278,28 +282,12 @@ func (room *Room) RespawnPlayer(player *Player) {
 	player.IsAlive = true
 }
 
-func (room *Room) KillIfOutOfBounds(player *Player) bool {
-	head := player.SnakeTail[0]
-
-	if head.X < 0 || head.Y < 0 || head.X >= room.GridSize || head.Y >= room.GridSize {
-		player.Kill()
-		return true
-	}
-	return false
-}
-
-func (player *Player) KillIfCollidesWithSelf() bool {
-	if len(player.SnakeTail) <= 1 {
-		return false
-	}
-
-	head := player.SnakeTail[0]
-	for idx, tailElement := range player.SnakeTail {
-		if idx == 0 {
-			continue //do not check head
+func (room *Room) IsPlayerCollidingWithAnyOther(user User) bool {
+	for _, searchUser := range room.getUsersPlayers() {
+		if searchUser.Websocket.Id == user.Websocket.Id {
+			continue
 		}
-		if head.IsEqual(tailElement) {
-			player.Kill()
+		if user.player.IsCollidingWith(searchUser.player) {
 			return true
 		}
 	}
