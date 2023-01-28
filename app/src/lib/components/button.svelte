@@ -8,18 +8,18 @@
 
 {#if href != null}
 	<a {href}>
-		<button class:disabled>
+		<div class="btn" class:disabled>
 			<slot />
-		</button>
+		</div>
 	</a>
 {:else}
-	<button class:disabled on:click={() => dispatch('click')}>
+	<button class:disabled class="btn" on:click={() => dispatch('click')}>
 		<slot />
 	</button>
 {/if}
 
 <style lang="scss">
-	button {
+	.btn {
 		white-space: nowrap;
 		padding: 0.5em 1.1em;
 
@@ -38,7 +38,7 @@
 		transition: background-color 0.2s, box-shadow 0.2s;
 		&:not(.disabled):active,
 		&:not(.disabled):hover {
-			box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.384);
+			box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.217);
 			border: 3px solid #d62246;
 			background-color: #d62246;
 		}
