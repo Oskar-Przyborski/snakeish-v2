@@ -9,8 +9,10 @@ import (
 type RoomPreviewStruct struct {
 	Id           string `json:"id"`
 	Name         string `json:"name"`
-	PlayersCount int    `json:"playersCount"`
+	Players      int    `json:"players"`
+	MaxPlayers   int    `json:"maxPlayers"`
 	GameModeName string `json:"gameModeName"`
+	GameModeTag  string `json:"gameModeTag"`
 }
 
 func GetRoomEndpoint(w http.ResponseWriter, r *http.Request) {
@@ -32,12 +34,8 @@ func GetRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Convert room to json string
-	json, err := json.Marshal(RoomPreviewStruct{
-		Id:           room.Id,
-		Name:         room.RoomName,
-		PlayersCount: room.getPlayersCount(),
-		GameModeName: "classic", //TODO change gamemodename if you add gamemodes
-	})
+	json, err := json.Marshal(room.GetPreview())
+
 	if err != nil {
 		w.WriteHeader(500)
 		return

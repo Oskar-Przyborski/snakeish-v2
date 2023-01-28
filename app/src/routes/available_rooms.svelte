@@ -1,91 +1,61 @@
 <script lang="ts">
 	import Button from '$lib/components/button.svelte';
-	import backendRequest, { responseToMap } from '$lib/backend_request';
 	import RefreshButton from './refresh_button.svelte';
-	import RoomsList from './rooms_list.svelte';
+	import Icon from '@iconify/svelte';
+	import RoomPreview from './RoomPreview.svelte';
 
 	export let rooms: App.RoomPreview[];
-
-	async function refresh() {
-		const { data } = await responseToMap<App.RoomPreview>(
-			backendRequest<Map<string, App.RoomPreview>>(fetch, '/get-rooms')
-		);
-		rooms = [];
-		if (data != null) {
-			data.forEach((v) => rooms.push(v));
-		}
-	}
-
+	export let onRefresh: () => void;
 </script>
 
 <div class="available-rooms">
-	<div class="rooms">
-		<div class="top">
-			<h2>Available rooms</h2>
-			<RefreshButton callback={refresh} />
-		</div>
-		<RoomsList {rooms} />
+	<div class="header">
+		<h1>Available Rooms</h1>
+		<RefreshButton callback={onRefresh} />
 	</div>
-	<div class="create-room">
-		<h2>Wanna have own room?</h2>
-		<Button href="/create-room"><b>Create room</b></Button>
+	<div class="rooms-grid">
+		{#each rooms as room}
+			<div class="preview-wrapper">
+				<RoomPreview {room} />
+			</div>
+		{/each}
+	</div>
+	<div class="below-grid">
+		<Button><Icon icon="ic:sharp-plus" inline /> Create New Room</Button>
+		<div>
+			<span>... and 34 more</span>
+			<Button><Icon icon="ic:baseline-search" inline /> Browse All</Button>
+		</div>
 	</div>
 </div>
 
 <style lang="scss">
 	.available-rooms {
+		margin-bottom: 2rem;
+	}
+
+	.header {
+		display: flex;
+		justify-content: space-between;
+	}
+	.rooms-grid {
 		display: grid;
-		grid-template-columns: 3fr 1fr;
-		overflow: hidden;
-		border-radius: 1em;
-		margin: 0.5em 0;
-
-		.rooms {
-			background-color: #4a525a;
-			padding: 1.1em 1.2em;
-			padding-left: 0;
-			font-size: 1.2em;
-
-			.top {
-				display: flex;
-				flex-direction: row;
-				justify-content: space-between;
-				align-items: center;
-
-				padding-left: 1.1em;
-
-				h2 {
-					margin: 0;
-				}
-			}
-		}
-
-		.create-room {
-			text-align: center;
-			background-color: #d62246;
-			padding: 1em;
-			font-size: 1.2em;
-			h2 {
-				margin: 0.3em;
-			}
+		grid-template-columns: 50% 50%;
+		margin: -1rem;
+		.preview-wrapper {
+			padding: 1rem;
 		}
 	}
-	@media (max-width: 992px) {
-		.available-rooms {
-			font-size: 0.9em;
-		}
-	}
-	@media (max-width: 768px) {
-		.available-rooms {
-			display: flex;
-			flex-direction: column;
-		}
-	}
-	@media (max-width: 575px) {
-		.available-rooms {
-			display: flex;
-			flex-direction: column;
-			font-size: 0.9em;
+
+	.below-grid {
+		margin-top: 1rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 1.2rem;
+
+		span {
+			margin-right: 10px;
 		}
 	}
 </style>

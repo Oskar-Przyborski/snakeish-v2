@@ -8,8 +8,10 @@ declare namespace App {
 	// interface Platform {}
 	interface RoomPreview {
 		name: string;
-		playersCount: number;
+		players: number;
+		maxPlayers: number
 		gameModeName: string;
+		gameModeTag: string;
 		id: string;
 	}
 	interface AppState {

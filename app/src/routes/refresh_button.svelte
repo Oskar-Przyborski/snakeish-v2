@@ -27,13 +27,14 @@
 </script>
 
 <div class="refresh-button" bind:this={icon} on:click={rotate} on:keypress={rotate}>
-	<Icon icon="material-symbols:refresh-rounded" width="1.5em" />
+	<Icon icon="material-symbols:refresh-rounded" />
 </div>
 
 <style lang="scss">
 	.refresh-button {
 		display: grid;
 		place-items: center;
+		font-size: 2rem;
 		&:hover {
 			cursor: pointer;
 		}

@@ -26,6 +26,17 @@ func (room *Room) StartRoom() {
 	}
 }
 
+func (room Room) GetPreview() RoomPreviewStruct {
+	return RoomPreviewStruct{
+		Id:           room.Id,
+		Name:         room.RoomName,
+		Players:      room.getPlayersCount(),
+		MaxPlayers:   room.getPlayersCount() + 2, //TODO change max players
+		GameModeTag:  "classic",                  //TODO change gamemodetag when you add gamemodes
+		GameModeName: "Casual",                   //TODO change gamemodename when you add gamemodes
+	}
+}
+
 // Removes user from room
 func (room *Room) RemoveUserById(id string) {
 	for idx, user := range room.Users {

@@ -13,12 +13,7 @@ func GetRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	response := map[string]RoomPreviewStruct{}
 	for key, room := range Manager.Rooms {
-		response[key] = RoomPreviewStruct{
-			Id:           room.Id,
-			Name:         room.RoomName,
-			PlayersCount: len(room.Users),
-			GameModeName: "classic", //TODO change gamemodename if you add gamemodes
-		}
+		response[key] = room.GetPreview()
 	}
 
 	json, err := json.Marshal(response)
