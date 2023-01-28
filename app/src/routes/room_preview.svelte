@@ -1,14 +1,15 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Icon from '@iconify/svelte';
-	import Button from '$lib/components/button.svelte';
 
 	export let room: App.RoomPreview;
 </script>
 
-<div class="room-preview-container">
+<a class="room-preview-container" href={`/room/${room.id}`}>
 	<div class="top">
 		<div class="name">{room.name}</div>
-		<Button href={`/room/${room.id}`}><Icon icon="ion:enter" inline /> Join</Button>
+		<span class="enter-icon"><Icon icon="ion:enter" inline /></span>
+		<!-- <Button href={`/room/${room.id}`}>Join</Button> -->
 	</div>
 	<div class="bottom">
 		<div class="game-mode">
@@ -20,18 +21,30 @@
 			{room.players}/{room.maxPlayers}
 		</div>
 	</div>
-</div>
+</a>
 
 <style lang="scss">
 	.room-preview-container {
-		border: 2.5px solid var(--red);
+		color: white;
+		text-decoration: none;
 		border-radius: 12px;
-		filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
 		padding: 1.2rem 1.5rem;
+		border: 2.5px solid var(--red);
+		// background-color: #ffffff1a;
+
 		display: flex;
 		flex-direction: column;
 		gap: 1.3rem;
+
+		cursor: pointer;
+		transition: box-shadow 0.1s;
+		&:hover,
+		&:focus {
+			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+			.top .name {
+				text-decoration: underline;
+			}
+		}
 
 		.top {
 			display: flex;
@@ -46,6 +59,10 @@
 				white-space: nowrap;
 				text-overflow: ellipsis;
 			}
+			.enter-icon {
+				color: white;
+				font-size: 2rem;
+			}
 		}
 		.bottom {
 			display: flex;
@@ -54,8 +71,8 @@
 
 			.game-mode {
 				display: flex;
-				flex-direction: column;
-				gap: 0.2rem;
+				flex-direction: row;
+				gap: 0.5rem;
 				// align-items: center;
 				.tag {
 					width: max-content;
@@ -63,12 +80,12 @@
 					background: rgba(0, 0, 0, 0.3);
 				}
 				.name {
-					font-size: 1.65rem;
+					font-size: 1.3rem;
 				}
 			}
 
 			.players {
-				font-size: 1.6rem;
+				font-size: 1.3rem;
 			}
 		}
 	}
