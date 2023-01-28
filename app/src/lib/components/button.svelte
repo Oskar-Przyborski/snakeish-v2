@@ -1,22 +1,20 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
 	export let href: string | undefined | null = null;
 	export let disabled: boolean = false;
+
+	const click = () => {
+		if (href != null) goto(href);
+		else dispatch('click');
+	};
 </script>
 
-{#if href != null}
-	<a {href}>
-		<div class="btn" class:disabled>
-			<slot />
-		</div>
-	</a>
-{:else}
-	<button class:disabled class="btn" on:click={() => dispatch('click')}>
-		<slot />
-	</button>
-{/if}
+<button class="btn" class:disabled on:click={click} tabindex={disabled ? -1 : 0}>
+	<slot />
+</button>
 
 <style lang="scss">
 	.btn {

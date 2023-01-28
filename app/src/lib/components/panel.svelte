@@ -10,7 +10,7 @@
 	.panel {
 		background-color: #ffffff1a;
 		border-radius: 10px;
-		padding: 1rem;
+		padding: 1.3rem;
 
 		&.full {
 			width: 100%;
