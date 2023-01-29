@@ -10,6 +10,7 @@ var Manager = CreateAppManager()
 func main() {
 	http.HandleFunc("/api/create-classic-room", CreateClassicRoomEndpoint)
 	http.HandleFunc("/api/get-room", GetRoomEndpoint)
+	http.HandleFunc("/api/get-suggested-rooms", GetSuggestedRoomsEndpoint)
 	http.HandleFunc("/api/get-rooms", GetRoomsEndpoint)
 	http.HandleFunc("/api/ws-connect-room", WsConnectRoomEndpoint)
 

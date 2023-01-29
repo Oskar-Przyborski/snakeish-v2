@@ -1,9 +1,13 @@
 <script lang="ts">
+	import Button from '$lib/components/button.svelte';
 	import Panel from '$lib/components/panel.svelte';
+	import Icon from '@iconify/svelte';
 	import RefreshButton from './refresh_button.svelte';
 	import RoomPreview from './room_preview.svelte';
 
 	export let rooms: App.RoomPreview[];
+	export let remainingRooms: number = 0;
+
 	export let onRefresh: () => void;
 </script>
 
@@ -20,6 +24,9 @@
 				</div>
 			{/each}
 		</div>
+		{#if remainingRooms != 0}
+			...and {remainingRooms} more <Button><Icon icon="ic:sharp-search" inline /> Browse All</Button>
+		{/if}
 	{:else}
 		<div class="no-rooms-error">
 			<h2>There is no any room here!</h2>

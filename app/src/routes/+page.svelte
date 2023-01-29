@@ -8,20 +8,26 @@
 	import GameDescription from './game_description.svelte';
 
 	export let data: PageServerData;
-	let rooms = data.data ? data.data : [];
 
 	const refresh = async () => {
-		const { data } = await responseToMap<App.RoomPreview>(backendRequest(fetch, '/get-rooms'));
-		rooms = [];
-		if (data != null) {
-			data.forEach((v) => rooms.push(v));
-		}
+		const { data: newData, isOnline } = await backendRequest<{
+			rooms: App.RoomPreview[];
+			remainingRooms: number;
+		}>(fetch, '/get-suggested-rooms');
+
+		data.rooms = newData?.rooms ?? [];
+		data.remainingRooms = newData?.remainingRooms ?? 0;
+		data.isOnline = isOnline
 	};
 </script>
 
 {#if data.isOnline}
 	<div class="top">
-		<SuggestedRooms {rooms} onRefresh={refresh} />
+		<SuggestedRooms
+			rooms={data.rooms}
+			remainingRooms={data.remainingRooms}
+			onRefresh={refresh}
+		/>
 		<div class="right">
 			<Panel>
 				<div class="centered-panel">
@@ -36,7 +42,7 @@
 			<Panel>
 				<div class="centered-panel">
 					<h2>Do you like this game?</h2>
-					<Button><Icon icon="ic:baseline-coffee" inline/> Buy me a coffee!</Button>
+					<Button><Icon icon="ic:baseline-coffee" inline /> Buy me a coffee!</Button>
 				</div>
 			</Panel>
 		</div>
