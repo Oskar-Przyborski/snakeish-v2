@@ -25,7 +25,11 @@
 			{/each}
 		</div>
 		{#if remainingRooms != 0}
-			...and {remainingRooms} more <Button><Icon icon="ic:sharp-search" inline /> Browse All</Button>
+			<div class="remaining-rooms">
+				...and {remainingRooms} more <Button
+					><Icon icon="ic:sharp-search" inline /> Browse All</Button
+				>
+			</div>
 		{/if}
 	{:else}
 		<div class="no-rooms-error">
@@ -54,5 +58,12 @@
 		.preview-wrapper {
 			padding: 0.5rem;
 		}
+	}
+	.remaining-rooms {
+		font-size: 1.1rem;
+		display: flex;
+		justify-content: flex-end;
+		gap: 1rem;
+		align-items: center;
 	}
 </style>
