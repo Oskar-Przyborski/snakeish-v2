@@ -1,42 +1,46 @@
 <script lang="ts">
-    export let value: string = "";
+	export let value: string = '';
+	export let placeholder: string = '';
+	export let width: any = null;
+	export let fontSize: any = null;
+
+	let focused: boolean = false;
 </script>
 
-<div class="text-input">
-	<input type="text" required bind:value={value} />
-	<div class="name"><slot /></div>
+<div class="text-input" style:width style:font-size={fontSize}>
+	<div class="name">
+		<slot />
+	</div>
+	<input
+		type="text"
+		{placeholder}
+		bind:value
+		on:focus={() => (focused = true)}
+		on:blur={() => (focused = false)}
+	/>
+	<div class="border" class:focused />
 </div>
 
 <style lang="scss">
 	.text-input {
-		margin: 0.9em 0;
-		position: relative;
-		height: 36px;
-
+		margin: 1.5rem 0;
+		.name {
+			color: #fffa;
+		}
 		input {
 			all: unset;
-			position: absolute;
-			width: 94%;
-			height: 100%;
-			color: black;
-
-			padding: 0 3%;
-			background-color: #f2f2f2;
-			border-radius: 0.3em;
+			width: 100%;
+			font-size: inherit;
+			padding: 0.5rem 0.1rem;
+			text-align: left;;
 		}
-
-		input:focus ~ .name,
-		input:valid ~ .name {
-			transform: translate(3px, -110%);
-			font-size: 0.95em;
-			color: white;
-		}
-
-		.name {
-			position: absolute;
-			color: #393939;
-			transform: translate(10px, 35%);
-			transition: transform 0.2s, font-size 0.2s, color 0.2s;
+		.border {
+			border-bottom: 3px solid white;
+			transition: border-bottom 0.1s, box-shadow 0.1s;
+			&.focused {
+				border-bottom: 3px solid #d62246;
+				box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.384);
+			}
 		}
 	}
 </style>
