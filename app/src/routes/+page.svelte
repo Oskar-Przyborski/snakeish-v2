@@ -17,18 +17,17 @@
 
 		data.rooms = newData?.rooms ?? [];
 		data.remainingRooms = newData?.remainingRooms ?? 0;
-		data.isOnline = isOnline
+		data.isOnline = isOnline;
 	};
 </script>
 
 {#if data.isOnline}
 	<div class="top">
-		<SuggestedRooms
-			rooms={data.rooms}
-			remainingRooms={data.remainingRooms}
-			onRefresh={refresh}
-		/>
-		<div class="right">
+		<div class="panels-col">
+			<SuggestedRooms rooms={data.rooms} remainingRooms={data.remainingRooms} onRefresh={refresh} />
+			<GameDescription />
+		</div>
+		<div class="panels-col">
 			<Panel>
 				<div class="centered-panel">
 					<h1>Wanna have own room?</h1>
@@ -47,7 +46,6 @@
 			</Panel>
 		</div>
 	</div>
-	<!-- <GameDescription />s -->
 {:else}
 	<h1>Server offline</h1>
 	<p>Server is currently offline.</p>
@@ -65,7 +63,7 @@
 		align-items: flex-start;
 	}
 
-	.right {
+	.panels-col {
 		display: flex;
 		flex-flow: column;
 		gap: 1rem;
