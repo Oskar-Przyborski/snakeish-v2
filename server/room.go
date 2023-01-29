@@ -11,9 +11,12 @@ import (
 type Room struct {
 	Id             string
 	RoomName       string
+	ModeName       string
+	ModeTag        string
 	FrameTime      int
 	GridSize       int
 	ApplesQuantity int
+	MaxPlayers     int
 	Users          []*User
 	Apples         []Vector2
 }
@@ -31,9 +34,9 @@ func (room Room) GetPreview() RoomPreviewStruct {
 		Id:           room.Id,
 		Name:         room.RoomName,
 		Players:      room.getPlayersCount(),
-		MaxPlayers:   room.getPlayersCount() + 2, //TODO change max players
-		GameModeTag:  "classic",                  //TODO change gamemodetag when you add gamemodes
-		GameModeName: "Casual",                   //TODO change gamemodename when you add gamemodes
+		MaxPlayers:   room.MaxPlayers,
+		GameModeTag:  room.ModeTag,
+		GameModeName: room.ModeName,
 	}
 }
 
@@ -63,6 +66,7 @@ func (room *Room) AddUser(ws *gosockets.GosocketClient) {
 		Name  string `json:"name"`
 	}
 
+	//TODO make this respect Room.MaxPlayers
 	ws.AddListener("join-player", func(s string) {
 		payload := JoinPlayerPayload{}
 		if err := json.Unmarshal([]byte(s), &payload); err != nil {

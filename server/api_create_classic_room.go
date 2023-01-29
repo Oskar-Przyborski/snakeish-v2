@@ -59,5 +59,8 @@ func (room *Room) SetConfig(configName string) {
 		room.ApplesQuantity = 3
 		room.FrameTime = 250
 		room.GridSize = 9
+		room.ModeTag = "classic"
+		room.ModeName = "Casual"
+		room.MaxPlayers = 5
 	}
 }
