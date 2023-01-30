@@ -63,16 +63,16 @@
 		bind:this={char2}
 		on:keydown={onKeypress}
 		value={pin[1]}
-		/>
-		<input
+	/>
+	<input
 		class="pass-char-input"
 		type="password"
 		maxlength="1"
 		bind:this={char3}
 		on:keydown={onKeypress}
 		value={pin[2]}
-		/>
-		<input
+	/>
+	<input
 		class="pass-char-input"
 		type="password"
 		maxlength="1"
@@ -92,9 +92,13 @@
 
 		.pass-char-input {
 			all: unset;
-			border-bottom: 3px solid var(--red);
+			padding-bottom: 0.5rem;
+			border-bottom: 3px solid white;
 			width: 1em;
 			font-size: 1.2rem;
+			&:focus{
+				border-bottom: 3px solid var(--red);
+			}
 		}
 	}
 </style>
