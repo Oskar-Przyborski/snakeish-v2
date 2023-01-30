@@ -5,6 +5,7 @@
 	import ChooseName from './choose_name.svelte';
 	import StepIndicator from '$lib/components/step_indicator.svelte';
 	import ChooseMode from './choose_mode.svelte';
+	import StepItem from './step_item.svelte';
 
 	const createRoom = () => data.createRoom({ roomName, configName });
 
@@ -22,22 +23,12 @@
 		<div class="navigation-panel">
 			<h1>Creating Room</h1>
 			{#each data.steps as step, idx}
-				<svelte:element
-					this={idx < currStep ? 'button' : 'div'}
-					class="step-item"
-					class:active={currStep == idx}
-					class:prev-active={idx < currStep}
+				<StepItem
 					on:click={() => goToStep(idx)}
-					on:keypress={() => goToStep(idx)}
-				>
-					<div class="icon">
-						<Icon icon="eva:checkmark-circle-2-outline" />
-					</div>
-					<div class="name">
-						<div class="title">{step.name}</div>
-						<div class="description">{step.description}</div>
-					</div>
-				</svelte:element>
+					{step}
+					active={currStep == idx}
+					prevActive={idx < currStep}
+				/>
 			{/each}
 		</div>
 		<div class="step-view">
@@ -71,55 +62,6 @@
 		h1 {
 			margin: 0;
 			margin-bottom: 2rem;
-		}
-		.step-item {
-			all: unset;
-			margin: 1.5rem 0;
-
-			display: flex;
-			gap: 1rem;
-			align-items: center;
-
-			color: #fffb;
-
-			.name {
-				.title {
-					font-weight: bold;
-					font-size: 1.5rem;
-				}
-			}
-			.icon {
-				font-size: 2.3rem;
-				display: grid;
-				place-items: center;
-			}
-
-			&.active {
-				color: #fff;
-				.icon {
-					color: var(--red);
-				}
-			}
-
-			&.prev-active {
-				cursor: pointer;
-				.icon {
-					color: #d62246b0;
-				}
-
-				&:hover {
-					color: #fff9;
-					.icon {
-						color: #d6224690;
-					}
-				}
-				&:focus-visible {
-					outline-color: rgb(255, 255, 255);
-					outline-width: 0.8px;
-					outline-style: auto;
-					outline-offset: 0px;
-				}
-			}
 		}
 	}
 
