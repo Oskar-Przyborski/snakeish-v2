@@ -14,16 +14,18 @@
 
 <div class="wrapper">
 	<h1>Which mode do you want to play on?</h1>
-	<div class="modes">
-		{#each gameModes as gm}
-			<GamemodeCard
-				title={gm.title}
-				tag={gm.tag}
-				description={gm.description}
-				selected={gm.name == selectedConfig}
-				on:select={() => (selectedConfig = gm.name)}
-			/>
-		{/each}
+	<div>
+		<div class="modes">
+			{#each gameModes as gm}
+				<GamemodeCard
+					title={gm.title}
+					tag={gm.tag}
+					description={gm.description}
+					selected={gm.name == selectedConfig}
+					on:select={() => (selectedConfig = gm.name)}
+				/>
+			{/each}
+		</div>
 	</div>
 	<div class="btn-wrapper">
 		<Button on:click={onContinue}>Continue</Button>
@@ -31,6 +33,15 @@
 </div>
 
 <style lang="scss">
+	.wrapper{
+		display:grid;
+		grid-template-rows: max-content 1fr max-content;
+	}
+	h1 {
+		text-align: center;
+		margin: 0;
+		margin-bottom: 2rem;
+	}
 	.modes {
 		display: grid;
 		grid-template-columns: 1fr;

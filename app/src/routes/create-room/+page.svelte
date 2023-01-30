@@ -119,5 +119,6 @@
 		display: grid;
 		grid-template-rows: 1fr max-content;
 		gap: 1rem;
+		padding: 0 1rem;
 	}
 </style>
