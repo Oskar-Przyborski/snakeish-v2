@@ -8,7 +8,7 @@ export const load = (({ fetch }) => {
 
 	return {
 		createRoom,
-		gameModes: [
+		modes: [
 			{
 				tag: 'classic',
 				title: 'Casual',
@@ -38,7 +38,7 @@ export const load = (({ fetch }) => {
 				description: 'Select game mode, you most like!'
 			},
 			{
-				name: 'Password',
+				name: 'PIN Code',
 				description: 'Protect your room against uninvited players'
 			},
 			{
