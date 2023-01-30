@@ -11,7 +11,7 @@
 	class="gamemode-card"
 	class:selected
 	on:click={() => dispatcher('select')}
-	on:keydown={() => dispatcher('select')}
+	on:keypress={() => dispatcher('select')}
 >
 	<div class="tag">{tag.toUpperCase()}</div>
 	<h2>{title}</h2>
@@ -42,6 +42,13 @@
 		&:hover {
 			box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.384);
 		}
+		&:focus-visible {
+			outline-color: rgb(255, 255, 255);
+			outline-width: 0.8px;
+			outline-style: auto;
+			outline-offset: 0px;
+		}
+
 		&.selected {
 			border: 3px solid #d62246;
 			box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.384);

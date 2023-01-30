@@ -22,7 +22,8 @@
 		<div class="navigation-panel">
 			<h1>Creating Room</h1>
 			{#each data.steps as step, idx}
-				<div
+				<svelte:element
+					this={idx < currStep ? 'button' : 'div'}
 					class="step-item"
 					class:active={currStep == idx}
 					class:prev-active={idx < currStep}
@@ -36,7 +37,7 @@
 						<div class="title">{step.name}</div>
 						<div class="description">{step.description}</div>
 					</div>
-				</div>
+				</svelte:element>
 			{/each}
 		</div>
 		<div class="step-view">
@@ -72,6 +73,7 @@
 			margin-bottom: 2rem;
 		}
 		.step-item {
+			all: unset;
 			margin: 1.5rem 0;
 
 			display: flex;
@@ -110,6 +112,12 @@
 					.icon {
 						color: #d6224690;
 					}
+				}
+				&:focus-visible {
+					outline-color: rgb(255, 255, 255);
+					outline-width: 0.8px;
+					outline-style: auto;
+					outline-offset: 0px;
 				}
 			}
 		}
