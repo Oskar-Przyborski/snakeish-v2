@@ -36,11 +36,7 @@
 			{#if currStep == 0}
 				<ChooseName bind:value={roomName} on:continue={nextStep} />
 			{:else if currStep == 1}
-				<ChooseMode
-					modes={data.modes}
-					bind:selectedConfig={configName}
-					on:continue={nextStep}
-				/>
+				<ChooseMode bind:selectedConfig={configName} on:continue={nextStep} />
 			{:else if currStep == 2}
 				<ChoosePin on:continue={nextStep} bind:pin />
 			{:else if currStep == 3}

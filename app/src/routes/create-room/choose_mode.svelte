@@ -2,9 +2,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/button.svelte';
 	import GamemodeCard from '$lib/components/gamemode_card.svelte';
+	import modes from '$lib/modes';
 	const dispatch = createEventDispatcher();
 
-	export let modes: { title: string; tag: string; description: string; name: string }[];
 	export let selectedConfig: string;
 
 	const onContinue = () => {
@@ -16,13 +16,11 @@
 	<h1>Which mode do you want to play on?</h1>
 	<div>
 		<div class="modes">
-			{#each modes as mode}
+			{#each Array.from(modes.keys()) as mode}
 				<GamemodeCard
-					title={mode.title}
-					tag={mode.tag}
-					description={mode.description}
-					selected={mode.name == selectedConfig}
-					on:select={() => (selectedConfig = mode.name)}
+					configName={mode}
+					selected={selectedConfig == mode}
+					on:select={() => (selectedConfig = mode)}
 				/>
 			{/each}
 		</div>
@@ -33,8 +31,8 @@
 </div>
 
 <style lang="scss">
-	.wrapper{
-		display:grid;
+	.wrapper {
+		display: grid;
 		grid-template-rows: max-content 1fr max-content;
 	}
 	h1 {

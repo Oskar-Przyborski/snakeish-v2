@@ -8,26 +8,6 @@ export const load = (({ fetch }) => {
 
 	return {
 		createRoom,
-		modes: [
-			{
-				tag: 'classic',
-				title: 'Casual',
-				name: 'classic-casual',
-				description: 'Just a normal, casual multiplayer snake'
-			},
-			{
-				tag: 'classic',
-				title: 'Huuge',
-				name: 'classic-huuge',
-				description: 'Quite big map with many players and apples'
-			},
-			{
-				tag: 'battle royale',
-				title: 'Eat & Win',
-				name: 'battle-royale',
-				description: 'Popular battle royale mode, with one life and shrinking zones'
-			}
-		],
 		steps: [
 			{
 				name: 'Name',

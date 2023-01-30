@@ -1,10 +1,12 @@
 <script lang="ts">
+	import modes from '$lib/modes';
 	import { createEventDispatcher } from 'svelte';
+	const dispatcher = createEventDispatcher();
 
-	export let title: string, description: string, tag: string;
+	export let configName: string;
 	export let selected: boolean = false;
 
-	const dispatcher = createEventDispatcher();
+	$: mode = modes.get(configName)!;
 </script>
 
 <button
@@ -13,9 +15,9 @@
 	on:click={() => dispatcher('select')}
 	on:keypress={() => dispatcher('select')}
 >
-	<div class="tag">{tag.toUpperCase()}</div>
-	<h2>{title}</h2>
-	<div class="description">{description}</div>
+	<div class="tag">{mode.tag.toUpperCase()}</div>
+	<h2>{mode.title}</h2>
+	<div class="description">{mode.description}</div>
 </button>
 
 <style lang="scss">
