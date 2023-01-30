@@ -12,7 +12,7 @@
 	export let data: PageData;
 	let roomName: string;
 	let configName = 'classic-casual';
-	let pin = '';
+	let pin = ['', '', '', ''];
 
 	let currStep = 0;
 	const nextStep = () => currStep++;

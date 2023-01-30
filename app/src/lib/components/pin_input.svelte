@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
-
-	const pin = ['', '', '', ''];
+	export let pin = ['', '', '', ''];
 	let char1: HTMLInputElement;
 	let char2: HTMLInputElement;
 	let char3: HTMLInputElement;
@@ -26,7 +23,6 @@
 		else if (el == char2) pin[1] = el.value;
 		else if (el == char3) pin[2] = el.value;
 		else if (el == char4) pin[3] = el.value;
-		dispatch('change', { pin });
 	};
 
 	const onKeypress = (e: any) => {
@@ -58,6 +54,7 @@
 		maxlength="1"
 		bind:this={char1}
 		on:keydown={onKeypress}
+		value={pin[0]}
 	/>
 	<input
 		class="pass-char-input"
@@ -65,20 +62,23 @@
 		maxlength="1"
 		bind:this={char2}
 		on:keydown={onKeypress}
-	/>
-	<input
+		value={pin[1]}
+		/>
+		<input
 		class="pass-char-input"
 		type="password"
 		maxlength="1"
 		bind:this={char3}
 		on:keydown={onKeypress}
-	/>
-	<input
+		value={pin[2]}
+		/>
+		<input
 		class="pass-char-input"
 		type="password"
 		maxlength="1"
 		bind:this={char4}
 		on:keydown={onKeypress}
+		value={pin[3]}
 	/>
 </div>
 

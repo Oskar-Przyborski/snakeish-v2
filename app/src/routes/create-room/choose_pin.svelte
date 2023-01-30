@@ -4,7 +4,7 @@
 	import PinInput from '$lib/components/pin_input.svelte';
 	const dispatch = createEventDispatcher();
 
-	export let pin: string;
+	export let pin: string[];
 
 	const onContinue = () => {
 		dispatch('continue');
@@ -16,9 +16,9 @@
 	<div class="choose-password">
 		<h1>Do you want to add PIN?</h1>
 		<div class="under-header">(Optional)</div>
-		<PinInput on:change={(e) => (pin = e.detail.pin.join(''))} />
+		<PinInput {pin} />
 		<Button on:click={onContinue}>
-			{#if pin == ''}
+			{#if pin.every((s) => (s = ''))}
 				Skip
 			{:else}
 				Continue
