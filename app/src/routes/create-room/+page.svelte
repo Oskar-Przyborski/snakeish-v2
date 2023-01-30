@@ -1,17 +1,18 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import Panel from '$lib/components/panel.svelte';
-	import Icon from '@iconify/svelte';
 	import ChooseName from './choose_name.svelte';
 	import StepIndicator from '$lib/components/step_indicator.svelte';
 	import ChooseMode from './choose_mode.svelte';
 	import StepItem from './step_item.svelte';
+	import ChoosePin from './choose_pin.svelte';
 
 	const createRoom = () => data.createRoom({ roomName, configName });
 
 	export let data: PageData;
 	let roomName: string;
 	let configName = 'classic-casual';
+	let pin = '';
 
 	let currStep = 0;
 	const nextStep = () => currStep++;
@@ -36,12 +37,12 @@
 				<ChooseName bind:value={roomName} on:continue={nextStep} />
 			{:else if currStep == 1}
 				<ChooseMode
-					gameModes={data.gameModes}
+					modes={data.modes}
 					bind:selectedConfig={configName}
 					on:continue={nextStep}
 				/>
 			{:else if currStep == 2}
-				<div>Password</div>
+				<ChoosePin on:continue={nextStep} bind:pin />
 			{:else if currStep == 3}
 				<div>Summary</div>
 			{/if}
