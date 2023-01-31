@@ -39,8 +39,6 @@
 				<ChooseMode bind:selectedConfig={configName} on:continue={nextStep} />
 			{:else if currStep == 2}
 				<ChoosePin on:continue={nextStep} bind:pin />
-			{:else if currStep == 3}
-				<div>Summary</div>
 			{/if}
 			<StepIndicator steps={data.steps.length} current={currStep} />
 		</div>

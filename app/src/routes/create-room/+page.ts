@@ -11,19 +11,21 @@ export const load = (({ fetch }) => {
 		steps: [
 			{
 				name: 'Name',
-				description: 'Enhance your room with your own name!'
+				description: 'Enhance your room with your own name!',
+				iconEmpty: 'mdi:pencil-outline',
+				iconFull: 'mdi:pencil'
 			},
 			{
 				name: 'Mode',
-				description: 'Select game mode, you most like!'
+				description: 'Select game mode, you most like!',
+				iconEmpty: 'mdi:gamepad-variant-outline',
+				iconFull: 'mdi:gamepad-variant'
 			},
 			{
 				name: 'PIN Code',
-				description: 'Protect your room against uninvited players'
-			},
-			{
-				name: 'Summary',
-				description: 'Make sure of everything and jump right into the game!'
+				description: 'Protect your room against uninvited players',
+				iconEmpty: 'mdi:lock-outline',
+				iconFull: 'mdi:lock'
 			}
 		]
 	};

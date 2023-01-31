@@ -5,7 +5,7 @@
 
 	const onClick = () => dispatch('click');
 
-	export let step: { name: string; description: string };
+	export let step: { name: string; description: string; iconEmpty: string; iconFull: string };
 	export let prevActive: boolean;
 	export let active: boolean;
 </script>
@@ -19,7 +19,7 @@
 	on:keypress={onClick}
 >
 	<div class="icon">
-		<Icon icon="eva:checkmark-circle-2-outline" />
+		<Icon icon={prevActive || active ? step.iconFull : step.iconEmpty} />
 	</div>
 	<div class="name">
 		<div class="title">{step.name}</div>
@@ -30,44 +30,51 @@
 <style lang="scss">
 	.step-item {
 		all: unset;
-		margin: 1.5rem 0;
+		margin: 2rem 0;
 
 		display: flex;
 		gap: 1rem;
 		align-items: center;
 
-		color: #fffb;
+		color: #fff7;
 
 		.name {
 			.title {
 				font-weight: bold;
-				font-size: 1.5rem;
+				font-size: 1.3rem;
+			}
+			.description {
+				font-size: 0.9rem;
 			}
 		}
 		.icon {
-			font-size: 2.3rem;
+			color: #fff7;
+			font-size: 1.8rem;
 			display: grid;
 			place-items: center;
+			background-color: #fff2;
+			border-radius: 50%;
+			padding: 0.6rem;
 		}
 
 		&.active {
 			color: #fff;
 			.icon {
-				color: var(--red);
+				color: #fff;
+				background-color: var(--red);
 			}
 		}
 
 		&.prev-active {
 			cursor: pointer;
+			color: #fff;
 			.icon {
-				color: #d62246b0;
+				color: #fff;
+				background-color: #fff7;
 			}
 
 			&:hover {
-				color: #fff9;
-				.icon {
-					color: #d6224690;
-				}
+				color: #fffc;
 			}
 			&:focus-visible {
 				outline-color: rgb(255, 255, 255);
