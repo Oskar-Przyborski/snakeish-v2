@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/components/button.svelte';
+	import Button from '$lib/components/buttons/button.svelte';
 	import Panel from '$lib/components/panel.svelte';
 	import Icon from '@iconify/svelte';
 	import RefreshButton from './refresh_button.svelte';

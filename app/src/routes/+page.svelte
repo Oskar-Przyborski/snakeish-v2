@@ -1,6 +1,6 @@
 <script lang="ts">
 	import backendRequest, { responseToMap } from '$lib/backend_request';
-	import Button from '$lib/components/button.svelte';
+	import Button from '$lib/components/buttons/button.svelte';
 	import Panel from '$lib/components/panel.svelte';
 	import Icon from '@iconify/svelte';
 	import type { PageServerData } from './$types';

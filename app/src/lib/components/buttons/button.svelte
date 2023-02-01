@@ -5,14 +5,16 @@
 
 	export let href: string | undefined | null = null;
 	export let disabled: boolean = false;
+	export let outline: boolean = false;
 
 	const click = () => {
+		if (disabled) return;
 		if (href != null) goto(href);
 		else dispatch('click');
 	};
 </script>
 
-<button class="btn" class:disabled on:click={click} tabindex={disabled ? -1 : 0}>
+<button class="btn" class:disabled class:outline on:click={click} tabindex={disabled ? -1 : 0}>
 	<slot />
 </button>
 
@@ -21,7 +23,7 @@
 		white-space: nowrap;
 		padding: 0.5em 1.1em;
 
-		background-color: transparent;
+		background-color: #d62246;
 		border-radius: 0.4em;
 		border: 3px solid #d62246;
 
@@ -33,18 +35,32 @@
 
 		display: inline-block;
 		cursor: pointer;
-		transition: background-color 0.2s, box-shadow 0.2s;
-		&:not(.disabled):active,
+		transition: background-color 0.1s, box-shadow 0.2s, border 0.1s;
+
 		&:not(.disabled):hover {
-			box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.217);
-			border: 3px solid #d62246;
-			background-color: #d62246;
+			box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
+			background-color: #b41e3c;
+			border: 3px solid #b41e3c;
 		}
 
 		&.disabled {
+			background-color: #808080;
 			border: 3px solid #808080;
-			color: #808080;
+			color: #cdcdcd;
 			cursor: default;
+		}
+
+		&.outline {
+			background-color: transparent;
+			&:not(.disabled):hover {
+				box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
+			}
+
+			&.disabled {
+				border: 3px solid #808080;
+				color: #808080;
+				cursor: default;
+			}
 		}
 	}
 </style>

@@ -15,8 +15,10 @@
 	on:click={() => dispatcher('select')}
 	on:keypress={() => dispatcher('select')}
 >
-	<div class="tag">{mode.tag.toUpperCase()}</div>
-	<h2>{mode.title}</h2>
+	<div class="name">
+		<h2>{mode.title}</h2>
+		<div class="tag">{mode.tag.toUpperCase()}</div>
+	</div>
 	<div class="description">{mode.description}</div>
 </button>
 
@@ -29,16 +31,21 @@
 		transition: border 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
 		cursor: pointer;
 
-		.tag {
-			font-size: 0.75rem;
-			font-weight: bold;
-			background-color: #0000002b;
-			width: max-content;
-			padding: 0.3rem;
-		}
-
-		h2 {
-			margin: 0.3rem 0;
+		.name {
+			display: flex;
+			flex-flow: row nowrap;
+			gap: .5rem;
+			align-items: center;
+			.tag {
+				font-size: 0.75rem;
+				font-weight: bold;
+				background-color: #0000002b;
+				width: max-content;
+				padding: 0.3rem;
+			}
+			h2 {
+				margin: 0.3rem 0;
+			}
 		}
 
 		&:hover {

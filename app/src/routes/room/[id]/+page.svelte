@@ -4,7 +4,7 @@
 	import { connectRoomWebsocket, leaveRoom, joinPlayer, appStateStore, leaveGame } from '$lib/app_state';
 	import JoinForm from './join_form.svelte';
 	import Leaderboard from './leaderboard.svelte';
-	import Button from '$lib/components/button.svelte';
+	import Button from '$lib/components/buttons/button.svelte';
 	import GameRenderer from './game_renderer.svelte';
 
 	export let data: PageData;

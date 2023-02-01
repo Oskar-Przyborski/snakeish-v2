@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import Button from '$lib/components/button.svelte';
+	import Button from '$lib/components/buttons/button.svelte';
 	import TextInput from '$lib/components/text_input.svelte';
 
 	const dispatcher = createEventDispatcher();
