@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PinInput from '$lib/components/pin_input.svelte';
+	import PinInput from '$lib/components/inputs/pin_input.svelte';
 
 	export let pin: string[];
 </script>

@@ -39,8 +39,8 @@
 
 		&:not(.disabled):hover {
 			box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
-			background-color: #b41e3c;
-			border: 3px solid #b41e3c;
+			background-color: var(--hover-red);
+			border: 3px solid var(--hover-red);
 		}
 
 		&.disabled {
