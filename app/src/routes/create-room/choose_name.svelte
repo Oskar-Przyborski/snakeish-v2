@@ -1,16 +1,17 @@
 <script lang="ts">
 	import TextInput from '$lib/components/inputs/text_input.svelte';
+	import Panel from '$lib/components/panel.svelte';
 	import { state } from '$lib/room_creation_state';
 </script>
 
-<div class="choose-name">
+<Panel>
 	<div class="input-wrapper">
 		<TextInput placeholder="Room name" bind:value={$state.roomName} />
 	</div>
-</div>
+</Panel>
 
 <style lang="scss">
 	.input-wrapper {
-		font-size: 1.4rem;
+		font-size: 1.2rem;
 	}
 </style>
