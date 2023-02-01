@@ -1,9 +1,13 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
+
 	export let pin = ['', '', '', ''];
 	let char1: HTMLInputElement;
 	let char2: HTMLInputElement;
 	let char3: HTMLInputElement;
 	let char4: HTMLInputElement;
+
+	let pinHidden: boolean = true;
 
 	const focusPrevElement = (currEl: any) => {
 		if (currEl == char1) char1.blur();
@@ -50,7 +54,7 @@
 <div class="input-wrapper">
 	<input
 		class="pass-char-input"
-		type="password"
+		type={pinHidden ? 'password' : 'text'}
 		maxlength="1"
 		bind:this={char1}
 		on:keydown={onKeypress}
@@ -58,7 +62,7 @@
 	/>
 	<input
 		class="pass-char-input"
-		type="password"
+		type={pinHidden ? 'password' : 'text'}
 		maxlength="1"
 		bind:this={char2}
 		on:keydown={onKeypress}
@@ -66,7 +70,7 @@
 	/>
 	<input
 		class="pass-char-input"
-		type="password"
+		type={pinHidden ? 'password' : 'text'}
 		maxlength="1"
 		bind:this={char3}
 		on:keydown={onKeypress}
@@ -74,12 +78,19 @@
 	/>
 	<input
 		class="pass-char-input"
-		type="password"
+		type={pinHidden ? 'password' : 'text'}
 		maxlength="1"
 		bind:this={char4}
 		on:keydown={onKeypress}
 		value={pin[3]}
 	/>
+
+	<button
+		class="show-hide-eye"
+		on:click={() => (pinHidden = !pinHidden)}
+	>
+		<Icon icon={pinHidden ? 'mdi:eye' : 'mdi-eye-off'} inline />
+	</button>
 </div>
 
 <style lang="scss">
@@ -96,9 +107,14 @@
 			border-bottom: 3px solid white;
 			width: 1em;
 			font-size: 1.2rem;
-			&:focus{
+			&:focus {
 				border-bottom: 3px solid var(--red);
 			}
+		}
+		.show-hide-eye {
+			all: unset;
+			font-size: 1.5rem;
+			margin-left: 1rem;
 		}
 	}
 </style>
