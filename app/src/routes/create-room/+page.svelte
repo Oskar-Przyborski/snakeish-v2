@@ -12,7 +12,7 @@
 	// const createRoom = () => data.createRoom({ roomName, configName });
 
 	export let data: PageData;
-	
+
 	let currStep = 0;
 	const prevStep = () => currStep--;
 	const nextStep = () => currStep++;
@@ -39,8 +39,11 @@
 					<h1>{data.steps[currStep].stepView.title}</h1>
 					<div>{data.steps[currStep].stepView.description}</div>
 				</div>
+				<div class="divider">
+					<Divider />
+				</div>
 				{#if currStep == 0}
-					<ChooseName on:continue={nextStep}/>
+					<ChooseName on:continue={nextStep} />
 				{:else if currStep == 1}
 					<ChooseMode on:continue={nextStep} />
 				{:else if currStep == 2}
@@ -85,11 +88,14 @@
 		padding: 2rem 1rem;
 		padding-bottom: 1rem;
 		.top-headers {
-			margin-bottom: 2rem;
+			margin-bottom: 1.5rem;
 			h1 {
 				font-size: 1.6rem;
 				margin: 0.4rem 0;
 			}
+		}
+		.divider {
+			margin: 1.5rem 0;
 		}
 		.continue-section {
 			margin-top: 1.5rem;
