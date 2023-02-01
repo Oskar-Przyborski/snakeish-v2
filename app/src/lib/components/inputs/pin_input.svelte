@@ -32,11 +32,16 @@
 
 	const onKeypress = (e: any) => {
 		e.preventDefault();
+		console.log(e);
+		const isTabForward = e.key == 'Tab' && !e.shiftKey;
+		const isTabBackward = e.key == 'Tab' && e.shiftKey;
 		const isBackspace = e.key == 'Backspace';
 		const isNumber = !isNaN(e.key);
 		const charEl = e.target;
 
-		if (!isBackspace && !isNumber) return;
+		if (isTabForward) focusNextElement(charEl);
+		else if (isTabBackward) focusPrevElement(charEl);
+		else if (!isBackspace && !isNumber) return;
 
 		if (isBackspace) {
 			if (charEl.value == '') {
@@ -124,6 +129,11 @@
 			all: unset;
 			font-size: 1.5rem;
 			margin-left: 1rem;
+			cursor: pointer;
+
+			&:focus-visible {
+				outline: auto;
+			}
 		}
 	}
 </style>

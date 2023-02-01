@@ -7,7 +7,7 @@
 
 <div class="choose-pin">
 	<div class="use-pin">
-		<h2>Use PIN</h2>
+		<h2>Use PIN code protection</h2>
 		<ToggleInput bind:value={$state.pinEnabled} />
 	</div>
 	<Panel>

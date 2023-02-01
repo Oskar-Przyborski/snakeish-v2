@@ -39,5 +39,8 @@
 				margin-left: 1em;
 			}
 		}
+		&:focus-visible{
+			outline: auto;
+		}
 	}
 </style>
