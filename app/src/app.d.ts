@@ -9,7 +9,7 @@ declare namespace App {
 	interface RoomPreview {
 		name: string;
 		players: number;
-		maxPlayers: number
+		maxPlayers: number;
 		gameModeName: string;
 		gameModeTag: string;
 		id: string;
@@ -25,14 +25,21 @@ declare namespace App {
 		apples: Vector2[];
 		gridSize: number;
 	}
-	interface Player{		
+	interface Player {
 		name: string;
 		color: string;
 		snakeTail: Vector2[];
 	}
-	
+
 	interface Vector2 {
 		x: number;
 		y: number;
+	}
+
+	interface RoomCreationState {
+		roomName: string;
+		configName: string;
+		pinEnabled: boolean;
+		pin: string[];
 	}
 }

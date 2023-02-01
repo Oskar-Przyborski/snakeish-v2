@@ -9,13 +9,10 @@
 	import StepItem from './step_item.svelte';
 	import ChoosePin from './choose_pin.svelte';
 
-	const createRoom = () => data.createRoom({ roomName, configName });
+	// const createRoom = () => data.createRoom({ roomName, configName });
 
 	export let data: PageData;
-	let roomName: string;
-	let configName = 'classic-casual';
-	let pin = ['', '', '', ''];
-
+	
 	let currStep = 0;
 	const prevStep = () => currStep--;
 	const nextStep = () => currStep++;
@@ -43,11 +40,11 @@
 					<div>{data.steps[currStep].stepView.description}</div>
 				</div>
 				{#if currStep == 0}
-					<ChooseName bind:value={roomName} on:continue={nextStep}/>
+					<ChooseName on:continue={nextStep}/>
 				{:else if currStep == 1}
-					<ChooseMode bind:selectedConfig={configName} on:continue={nextStep} />
+					<ChooseMode on:continue={nextStep} />
 				{:else if currStep == 2}
-					<ChoosePin on:continue={nextStep} bind:pin />
+					<ChoosePin on:continue={nextStep} />
 				{/if}
 				<div class="continue-section">
 					{#if currStep != 0}

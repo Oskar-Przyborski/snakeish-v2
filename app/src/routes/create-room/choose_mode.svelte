@@ -1,16 +1,15 @@
 <script lang="ts">
 	import GamemodeCard from './gamemode_card.svelte';
 	import modes from '$lib/modes';
-
-	export let selectedConfig: string;
+	import { state } from '$lib/room_creation_state';
 </script>
 
 <div class="modes">
 	{#each Array.from(modes.keys()) as mode}
 		<GamemodeCard
 			configName={mode}
-			selected={selectedConfig == mode}
-			on:select={() => (selectedConfig = mode)}
+			selected={$state.configName == mode}
+			on:select={() => ($state.configName = mode)}
 		/>
 	{/each}
 </div>
