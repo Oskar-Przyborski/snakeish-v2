@@ -1,31 +1,21 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import Panel from '$lib/components/panel.svelte';
-	import Button from '$lib/components/buttons/button.svelte';
-	import TextButton from '$lib/components/buttons/text_button.svelte';
 	import Divider from '$lib/components/divider.svelte';
 	import ChooseName from './choose_name.svelte';
 	import ChooseMode from './choose_mode.svelte';
 	import StepItem from './step_item.svelte';
 	import ChoosePin from './choose_pin.svelte';
 	import { store } from '$lib/room_creation_state';
-	import { onDestroy } from 'svelte';
-
-	// const createRoom = () => data.createRoom({ roomName, configName });
 
 	export let data: PageData;
+	const createRoom = () =>{
+		data.createRoom($store);
+	}
 
 	let currStep = 0;
 	const prevStep = () => currStep--;
 	const nextStep = () => currStep++;
-
-	let continueBtnState = 'disabled';
-	
-	const unsubscibe = store.subscribe(async () => {
-		continueBtnState = await data.steps[currStep].getCtaBtnState();
-	});
-
-	onDestroy(unsubscibe);
 </script>
 
 <Panel full>
@@ -53,26 +43,10 @@
 				{#if currStep == 0}
 					<ChooseName on:continue={nextStep} />
 				{:else if currStep == 1}
-					<ChooseMode on:continue={nextStep} />
+					<ChooseMode on:continue={nextStep} on:back={prevStep} />
 				{:else if currStep == 2}
-					<ChoosePin on:continue={nextStep} />
+					<ChoosePin on:create-room={createRoom} on:back={prevStep} />
 				{/if}
-				<div class="continue-section">
-					{#if currStep != 0}
-						<TextButton on:click={prevStep}>Back</TextButton>
-					{/if}
-					{#await continueBtnState}
-						<Button disabled>Loading</Button>
-					{:then btnState}
-						<Button on:click={nextStep} disabled={btnState == 'disabled'}>
-							{#if btnState == 'skip'}
-								Skip
-							{:else}
-								Continue
-							{/if}
-						</Button>
-					{/await}
-				</div>
 			</div>
 		</div>
 	</div>
@@ -108,13 +82,6 @@
 		}
 		.divider {
 			margin: 1.5rem 0;
-		}
-		.continue-section {
-			margin-top: 1.5rem;
-			display: flex;
-			justify-content: flex-end;
-			gap: 1rem;
-			align-items: center;
 		}
 	}
 </style>

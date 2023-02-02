@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 	import Icon from '@iconify/svelte';
 
 	export let disabled: boolean = false;
@@ -28,11 +30,11 @@
 		else if (el == char2) pin[1] = el.value;
 		else if (el == char3) pin[2] = el.value;
 		else if (el == char4) pin[3] = el.value;
+		dispatch('change', { pin });
 	};
 
 	const onKeypress = (e: any) => {
 		e.preventDefault();
-		console.log(e);
 		const isTabForward = e.key == 'Tab' && !e.shiftKey;
 		const isTabBackward = e.key == 'Tab' && e.shiftKey;
 		const isBackspace = e.key == 'Backspace';

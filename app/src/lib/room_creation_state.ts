@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 const defaultStateCreator = () => {
 	return {
 		roomName: '',
-		configName: 'classic-casual',
+		configName: null,
 		pinEnabled: false,
 		pin: ['', '', '', '']
 	};

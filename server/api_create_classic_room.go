@@ -50,7 +50,13 @@ func CreateClassicRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 	go room.StartRoom()
 
 	println("Created room. Id:", room.Id)
-	w.WriteHeader(200)
+	json, err := json.Marshal(room.GetPreview())
+	if err != nil {
+		w.WriteHeader(500)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(json)
 }
 
 func (room *Room) SetConfig(configName string) {

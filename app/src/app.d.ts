@@ -38,7 +38,7 @@ declare namespace App {
 
 	interface RoomCreationState {
 		roomName: string;
-		configName: string;
+		configName: string | null;
 		pinEnabled: boolean;
 		pin: string[];
 	}
