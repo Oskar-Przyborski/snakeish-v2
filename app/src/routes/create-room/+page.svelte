@@ -7,6 +7,8 @@
 	import StepItem from './step_item.svelte';
 	import ChoosePin from './choose_pin.svelte';
 	import { store } from '$lib/room_creation_state';
+	import BackButton from '$lib/components/buttons/back_button.svelte';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 	const createRoom = async () => {
@@ -22,7 +24,10 @@
 <Panel full>
 	<div class="container">
 		<div class="top-header">
-			<h1>Creating room</h1>
+			<div class="title">
+				<BackButton on:click={() => goto('/')} />
+				<h1>Creating room</h1>
+			</div>
 			<Divider />
 		</div>
 		<div class="bottom">
@@ -59,9 +64,16 @@
 		display: grid;
 		grid-template-rows: max-content 1fr;
 		.top-header {
-			h1 {
-				margin: 0;
+			.title {
+				display: flex;
+				flex-flow: row nowrap;
+				gap: 0.5rem;
+				align-items: center;
 				margin-bottom: 1rem;
+
+				h1 {
+					margin: 0;
+				}
 			}
 		}
 		.bottom {
