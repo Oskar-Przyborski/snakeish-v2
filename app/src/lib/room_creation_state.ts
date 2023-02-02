@@ -9,6 +9,6 @@ const defaultStateCreator = () => {
 	};
 };
 
-export const state = writable<App.RoomCreationState>(defaultStateCreator());
+export const store = writable<App.RoomCreationState>(defaultStateCreator());
 
-export const resetState = () => state.set(defaultStateCreator());
+export const resetState = () => store.set(defaultStateCreator());

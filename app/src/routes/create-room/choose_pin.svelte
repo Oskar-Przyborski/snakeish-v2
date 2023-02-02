@@ -1,19 +1,19 @@
 <script lang="ts">
 	import ToggleInput from '$lib/components/inputs/toggle_input.svelte';
 	import PinInput from '$lib/components/inputs/pin_input.svelte';
-	import { state } from '$lib/room_creation_state';
+	import { store } from '$lib/room_creation_state';
 	import Panel from '$lib/components/panel.svelte';
 </script>
 
 <div class="choose-pin">
 	<div class="use-pin">
 		<h2>Use PIN code protection</h2>
-		<ToggleInput bind:value={$state.pinEnabled} />
+		<ToggleInput bind:value={$store.pinEnabled} />
 	</div>
 	<Panel>
-		<div class="pin-wrapper" class:disabled={!$state.pinEnabled}>
+		<div class="pin-wrapper" class:disabled={!$store.pinEnabled}>
 			Enter the pin
-			<PinInput pin={$state.pin} disabled={!$state.pinEnabled} />
+			<PinInput pin={$store.pin} disabled={!$store.pinEnabled} />
 		</div>
 	</Panel>
 </div>

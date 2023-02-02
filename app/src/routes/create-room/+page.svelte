@@ -8,6 +8,8 @@
 	import ChooseMode from './choose_mode.svelte';
 	import StepItem from './step_item.svelte';
 	import ChoosePin from './choose_pin.svelte';
+	import { store } from '$lib/room_creation_state';
+	import { onDestroy } from 'svelte';
 
 	// const createRoom = () => data.createRoom({ roomName, configName });
 
@@ -17,7 +19,13 @@
 	const prevStep = () => currStep--;
 	const nextStep = () => currStep++;
 
-	let ctaBtnState: 'continue' | 'skip' | 'disabled' = 'continue';
+	let continueBtnState = 'disabled';
+	
+	const unsubscibe = store.subscribe(async () => {
+		continueBtnState = await data.steps[currStep].getCtaBtnState();
+	});
+
+	onDestroy(unsubscibe);
 </script>
 
 <Panel full>
@@ -53,13 +61,17 @@
 					{#if currStep != 0}
 						<TextButton on:click={prevStep}>Back</TextButton>
 					{/if}
-					<Button on:click={nextStep} disabled={ctaBtnState == 'disabled'}>
-						{#if ctaBtnState == 'skip'}
-							Skip
-						{:else}
-							Continue
-						{/if}
-					</Button>
+					{#await continueBtnState}
+						<Button disabled>Loading</Button>
+					{:then btnState}
+						<Button on:click={nextStep} disabled={btnState == 'disabled'}>
+							{#if btnState == 'skip'}
+								Skip
+							{:else}
+								Continue
+							{/if}
+						</Button>
+					{/await}
 				</div>
 			</div>
 		</div>

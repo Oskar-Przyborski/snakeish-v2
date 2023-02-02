@@ -12,6 +12,7 @@ func main() {
 	http.HandleFunc("/api/get-room", GetRoomEndpoint)
 	http.HandleFunc("/api/get-suggested-rooms", GetSuggestedRoomsEndpoint)
 	http.HandleFunc("/api/get-rooms", GetRoomsEndpoint)
+	http.HandleFunc("/api/room-name-available", RoomNameAvailableEndpoint)
 	http.HandleFunc("/api/ws-connect-room", WsConnectRoomEndpoint)
 
 	http.HandleFunc("/api/check", func(w http.ResponseWriter, r *http.Request) {
