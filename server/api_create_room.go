@@ -63,11 +63,18 @@ func CreateRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 func (room *Room) SetConfig(configName string) {
 	switch configName {
 	default:
-		room.ApplesQuantity = 3
-		room.FrameTime = 250
-		room.GridSize = 9
 		room.ModeTag = "classic"
 		room.ModeName = "Casual"
-		room.MaxPlayers = 5
+		room.FrameTime = 250
+		room.GridSize = 8
+		room.MaxPlayers = 4
+		room.ApplesQuantity = 3
+	case "classic-huuge":
+		room.ModeTag = "classic"
+		room.ModeName = "Huuge"
+		room.FrameTime = 250
+		room.GridSize = 16
+		room.MaxPlayers = 10
+		room.ApplesQuantity = 8
 	}
 }
