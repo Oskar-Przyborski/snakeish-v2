@@ -8,8 +8,7 @@
 <a class="room-preview-container" href={`/room/${room.id}`}>
 	<div class="top">
 		<div class="name">{room.name}</div>
-		<span class="enter-icon"><Icon icon="mdi:enter-location" inline /></span>
-		<!-- <Button href={`/room/${room.id}`}>Join</Button> -->
+		<span class="enter-icon"><Icon icon="mdi:location-enter" inline /></span>
 	</div>
 	<div class="bottom">
 		<div class="game-mode">
