@@ -1,8 +1,9 @@
 <script lang="ts">
 	export let full = false;
+	export let padding: string = "1.3rem"
 </script>
 
-<div class="panel" class:full>
+<div class="panel" class:full style:padding>
 	<slot />
 </div>
 
@@ -10,7 +11,6 @@
 	.panel {
 		background-color: #ffffff1a;
 		border-radius: 10px;
-		padding: 1.3rem;
 
 		&.full {
 			width: 100%;

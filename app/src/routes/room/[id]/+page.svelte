@@ -12,6 +12,7 @@
 	import Leaderboard from './leaderboard.svelte';
 	import Button from '$lib/components/buttons/button.svelte';
 	import GameRenderer from './game_renderer.svelte';
+	import Panel from '$lib/components/panel.svelte';
 
 	export let data: PageData;
 
@@ -55,20 +56,29 @@
 </script>
 
 {#if data.id != null && appState.gameState != null}
-	<div class="page">
-		<h1>{data.name}</h1>
-		<div class="game">
-			<div class="left-side">
+	<div class="wrapper">
+		<Panel>
+			<div class="game-renderer">
 				<GameRenderer />
 			</div>
-			<div class="right-side">
+		</Panel>
+		<div class="sidebar">
+			<Panel>
+				<div class="titles">
+					<h1>{data.name}</h1>
+					<div class="mode">
+						<span class="tag">{data.gameModeTag.toUpperCase()}</span>
+						<h2>{data.gameModeName}</h2>
+					</div>
+				</div>
+			</Panel>
+			<Panel>
 				{#if !appState.isPlaying}
 					<JoinForm on:join={onJoin} />
 				{:else}
-					<Leaderboard players={appState.gameState.players} />
-					<Button on:click={leaveGame}>Leave game</Button>
+					<Leaderboard players={appState.gameState.players} on:leave={leaveGame} />
 				{/if}
-			</div>
+			</Panel>
 		</div>
 	</div>
 {/if}
@@ -76,32 +86,39 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <style lang="scss">
-	.page {
+	.wrapper {
+		display: grid;
+		grid-template-columns: 3fr 2fr;
+		gap: 1rem;
+		h1 {
+			margin: 0rem 0;
+		}
+	}
+	.game-renderer {
 		display: grid;
 		place-items: center;
+	}
+	.sidebar {
+		display: grid;
+		grid-template-rows: max-content 1fr;
+		gap: 1rem;
 
-		.game {
-			width: 100%;
-			border-radius: 1em;
-			overflow: hidden;
-
-			display: grid;
-			grid-template-columns: 2fr 1fr;
-
-			.left-side {
-				display: grid;
-				place-items: center;
-
-				padding: 1em;
-				background-color: #4a525a;
-			}
-
-			.right-side {
-				background-color: #d62246;
-				padding: 1em;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
+		.titles {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			justify-content: space-between;
+			.mode{
+				.tag {
+					font-size: 0.75rem;
+					font-weight: bold;
+					background-color: #0000002b;
+					width: max-content;
+					padding: 0.3rem;
+				}
+				h2 {
+					margin: 0.3rem 0;
+				}
 			}
 		}
 	}

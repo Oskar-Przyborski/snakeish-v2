@@ -13,7 +13,6 @@
 	export let data: PageData;
 	const createRoom = async () => {
 		await data.createRoom($store);
-		currStep = 0;
 	};
 
 	let currStep = 0;
