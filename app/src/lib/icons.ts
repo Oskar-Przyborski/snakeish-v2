@@ -27,7 +27,8 @@ const mdiIcons = [
 	'coffee',
 	'refresh',
 	'location-enter',
-	'chevron-left'
+	'chevron-left',
+	'information'
 ];
 
 loadIcons('mdi', mdiIcons);
