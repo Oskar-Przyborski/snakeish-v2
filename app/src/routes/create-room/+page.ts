@@ -4,7 +4,7 @@ import { goto } from '$app/navigation';
 
 export const load = (({ fetch }) => {
 	async function createRoom(data: { roomName: string; configName: string | null; pin: string[] }) {
-		const resp = await fetch(PUBLIC_API_URL + '/create-classic-room', {
+		const resp = await fetch(PUBLIC_API_URL + '/create-room', {
 			body: JSON.stringify(data),
 			method: 'POST',
 			headers: {

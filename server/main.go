@@ -8,7 +8,7 @@ import (
 var Manager = CreateAppManager()
 
 func main() {
-	http.HandleFunc("/api/create-classic-room", CreateClassicRoomEndpoint)
+	http.HandleFunc("/api/create-room", CreateRoomEndpoint)
 	http.HandleFunc("/api/get-room", GetRoomEndpoint)
 	http.HandleFunc("/api/get-suggested-rooms", GetSuggestedRoomsEndpoint)
 	http.HandleFunc("/api/get-rooms", GetRoomsEndpoint)

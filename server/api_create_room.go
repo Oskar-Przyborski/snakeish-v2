@@ -9,12 +9,13 @@ import (
 	"github.com/google/uuid"
 )
 
-type CreateClassicRoomEndpointData struct {
+type CreateRoomEndpointData struct {
 	RoomName   string `json:"roomName"`
 	ConfigName string `json:"configName"`
 }
 
-func CreateClassicRoomEndpoint(w http.ResponseWriter, r *http.Request) {
+// TODO add PIN code support
+func CreateRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 	if ended := http_utils.CheckCors(&w, r); ended {
 		return
 	}
@@ -25,7 +26,7 @@ func CreateClassicRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var reqData CreateClassicRoomEndpointData
+	var reqData CreateRoomEndpointData
 	if err := json.NewDecoder(r.Body).Decode(&reqData); err != nil {
 		http_utils.WriteError(&w, 400, "body-incomplete", "error while parsing request body\nrequest body should contain fields:\nroomName <string>\nconfigName: <string>")
 		return
