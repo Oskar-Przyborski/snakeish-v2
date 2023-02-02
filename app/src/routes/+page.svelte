@@ -33,7 +33,7 @@
 					<h1>Wanna have own room?</h1>
 					<div class="btn-wrapper">
 						<Button href="/create-room">
-							<b><Icon icon="ic:sharp-plus" inline /> Create</b>
+							<b><Icon icon="mdi:plus" inline /> Create</b>
 						</Button>
 					</div>
 				</div>
@@ -41,7 +41,7 @@
 			<Panel>
 				<div class="centered-panel">
 					<h2>Do you like this game?</h2>
-					<Button><Icon icon="ic:baseline-coffee" inline /> Buy me a coffee!</Button>
+					<Button><Icon icon="mdi:coffee" inline /> Buy me a coffee!</Button>
 				</div>
 			</Panel>
 		</div>

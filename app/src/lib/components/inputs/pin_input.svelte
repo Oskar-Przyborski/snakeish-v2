@@ -98,7 +98,7 @@
 	/>
 
 	<button class="show-hide-eye" on:click={() => (pinHidden = !pinHidden)} {disabled}>
-		<Icon icon={pinHidden ? 'mdi:eye' : 'mdi-eye-off'} inline />
+		<Icon icon={pinHidden ? 'mdi:eye' : 'mdi:eye-off'} inline />
 	</button>
 </div>
 

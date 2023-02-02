@@ -27,7 +27,7 @@
 </script>
 
 <div class="refresh-button" bind:this={icon} on:click={rotate} on:keypress={rotate}>
-	<Icon icon="material-symbols:refresh-rounded" />
+	<Icon icon="mdi:refresh" />
 </div>
 
 <style lang="scss">

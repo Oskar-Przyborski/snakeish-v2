@@ -8,7 +8,7 @@
 <a class="room-preview-container" href={`/room/${room.id}`}>
 	<div class="top">
 		<div class="name">{room.name}</div>
-		<span class="enter-icon"><Icon icon="ion:enter" inline /></span>
+		<span class="enter-icon"><Icon icon="mdi:enter-location" inline /></span>
 		<!-- <Button href={`/room/${room.id}`}>Join</Button> -->
 	</div>
 	<div class="bottom">
@@ -17,7 +17,7 @@
 			<div class="name">{room.gameModeName}</div>
 		</div>
 		<div class="players">
-			<Icon icon="ic:sharp-people-alt" inline />
+			<Icon icon="mdi:account-supervisor" inline />
 			{room.players}/{room.maxPlayers}
 		</div>
 	</div>

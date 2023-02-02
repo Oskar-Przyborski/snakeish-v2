@@ -27,7 +27,7 @@
 		{#if remainingRooms != 0}
 			<div class="remaining-rooms">
 				...and {remainingRooms} more <Button
-					><Icon icon="ic:sharp-search" inline /> Browse All</Button
+					><Icon icon="mdi:magnify" inline /> Browse All</Button
 				>
 			</div>
 		{/if}
