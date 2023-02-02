@@ -1,6 +1,7 @@
 import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
+import { resetState } from '$lib/room_creation_state';
 
 export const load = (({ fetch }) => {
 	async function createRoom(data: { roomName: string; configName: string | null; pin: string[] }) {
@@ -8,15 +9,16 @@ export const load = (({ fetch }) => {
 			body: JSON.stringify(data),
 			method: 'POST',
 			headers: {
-				"content-type": "application/json"
+				'content-type': 'application/json'
 			}
 		});
 		if (resp.status != 200) {
 			//TODO handle error
 			throw Error('Error while creating room');
 		}
-		const json = await resp.json()
-		goto('/room/'+json.id);
+		const json = await resp.json();
+		goto('/room/' + json.id, { replaceState: true });
+		resetState()
 	}
 
 	return {
