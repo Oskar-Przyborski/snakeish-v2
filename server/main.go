@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 )
 
 var Manager = CreateAppManager()
@@ -30,8 +31,12 @@ func main() {
 		w.Write([]byte(msg))
 	})
 
-	println("Listening on localhost:8080")
-	if err := http.ListenAndServe("localhost:8080", nil); err != nil {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	println("Listening on port: " + port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		println(err.Error())
 	}
 }
