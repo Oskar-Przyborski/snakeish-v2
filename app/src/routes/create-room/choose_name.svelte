@@ -9,10 +9,12 @@
 
 	const onContinue = () => dispatch('continue');
 
+	let nameError = '';
 	let btnDisabled = false;
 
 	const updateBtnState = async (state: App.RoomCreationState) => {
 		if (state.roomName == '') {
+			nameError = '';
 			btnDisabled = true;
 			return;
 		}
@@ -22,11 +24,18 @@
 			`/room-name-available?name=${state.roomName}`
 		);
 
-		if (data?.available) {
+		if (data == null) {
+			btnDisabled = true
+			return
+		}
+		if (data.available) {
+			nameError = '';
 			btnDisabled = false;
 			return;
+		} else {
+			nameError = 'This name is already used.';
+			btnDisabled = true;
 		}
-		btnDisabled = true;
 	};
 
 	const unsubscibe = store.subscribe(updateBtnState);
@@ -35,7 +44,9 @@
 
 <Panel>
 	<div class="input-wrapper">
-		<TextInput placeholder="Room name" bind:value={$store.roomName} />
+		<TextInput bind:value={$store.roomName} error={nameError != ''} altText={nameError}>
+			Room Name
+		</TextInput>
 	</div>
 </Panel>
 
