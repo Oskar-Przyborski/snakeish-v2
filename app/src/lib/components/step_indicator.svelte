@@ -26,8 +26,8 @@
 </div>
 
 <style lang="scss">
-	.steps{
-		display:flex;
+	.steps {
+		display: flex;
 		justify-content: center;
 	}
 </style>

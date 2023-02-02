@@ -40,9 +40,7 @@
 </Panel>
 
 <div class="continue-section">
-	<Button on:click={onContinue} disabled={btnDisabled}>
-		Continue
-	</Button>
+	<Button on:click={onContinue} disabled={btnDisabled}>Continue</Button>
 </div>
 
 <style lang="scss">

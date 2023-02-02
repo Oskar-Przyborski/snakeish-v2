@@ -1,7 +1,13 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { onMount, onDestroy } from 'svelte';
-	import { connectRoomWebsocket, leaveRoom, joinPlayer, appStateStore, leaveGame } from '$lib/app_state';
+	import {
+		connectRoomWebsocket,
+		leaveRoom,
+		joinPlayer,
+		appStateStore,
+		leaveGame
+	} from '$lib/app_state';
 	import JoinForm from './join_form.svelte';
 	import Leaderboard from './leaderboard.svelte';
 	import Button from '$lib/components/buttons/button.svelte';

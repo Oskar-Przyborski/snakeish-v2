@@ -4,8 +4,8 @@
 	const dispatch = createEventDispatcher();
 
 	export let href: string | undefined | null = null;
-	export let disabled: boolean = false;
-	export let outline: boolean = false;
+	export let disabled = false;
+	export let outline = false;
 
 	const click = () => {
 		if (disabled) return;

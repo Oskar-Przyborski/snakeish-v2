@@ -18,7 +18,7 @@ export const load = (({ fetch }) => {
 		}
 		const json = await resp.json();
 		goto('/room/' + json.id, { replaceState: true });
-		resetState()
+		resetState();
 	}
 
 	return {

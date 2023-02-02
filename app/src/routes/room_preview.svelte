@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import Icon from '@iconify/svelte';
 
 	export let room: App.RoomPreview;

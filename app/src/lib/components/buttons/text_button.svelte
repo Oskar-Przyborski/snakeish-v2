@@ -4,16 +4,16 @@
 
 <style lang="scss">
 	button {
-        cursor: pointer;
+		cursor: pointer;
 		background: none;
 		border: none;
 
 		color: inherit;
 		font-family: inherit;
-        font-size: inherit;
+		font-size: inherit;
 
-        &:hover{
-            text-decoration: underline;
-        }
+		&:hover {
+			text-decoration: underline;
+		}
 	}
 </style>

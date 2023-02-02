@@ -6,7 +6,7 @@
 	import RoomPreview from './room_preview.svelte';
 
 	export let rooms: App.RoomPreview[];
-	export let remainingRooms: number = 0;
+	export let remainingRooms = 0;
 
 	export let onRefresh: () => void;
 </script>
@@ -26,9 +26,7 @@
 		</div>
 		{#if remainingRooms != 0}
 			<div class="remaining-rooms">
-				...and {remainingRooms} more <Button
-					><Icon icon="mdi:magnify" inline /> Browse All</Button
-				>
+				...and {remainingRooms} more <Button><Icon icon="mdi:magnify" inline /> Browse All</Button>
 			</div>
 		{/if}
 	{:else}

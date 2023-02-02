@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let vertical: boolean = false;
+	export let vertical = false;
 </script>
 
 <div class="divider" class:vertical />

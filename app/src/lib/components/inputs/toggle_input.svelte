@@ -39,7 +39,7 @@
 				margin-left: 1em;
 			}
 		}
-		&:focus-visible{
+		&:focus-visible {
 			outline: auto;
 		}
 	}

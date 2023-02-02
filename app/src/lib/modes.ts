@@ -1,7 +1,4 @@
-export default new Map<
-	string,
-	{ tag: string; title: string; name: string; description: string }
->([
+export default new Map<string, { tag: string; title: string; name: string; description: string }>([
 	[
 		'classic-casual',
 		{

@@ -9,10 +9,10 @@
 	import { store } from '$lib/room_creation_state';
 
 	export let data: PageData;
-	const createRoom = async () =>{
+	const createRoom = async () => {
 		await data.createRoom($store);
-		currStep = 0
-	}
+		currStep = 0;
+	};
 
 	let currStep = 0;
 	const prevStep = () => currStep--;

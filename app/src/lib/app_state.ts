@@ -8,7 +8,6 @@ export const appStateStore = writable<App.AppState>({
 	isPlaying: false
 });
 
-
 export const connectRoomWebsocket = (id: string) => {
 	const updateGameState = (newState: App.GameState) => {
 		appStateStore.update((state) => {
@@ -18,7 +17,7 @@ export const connectRoomWebsocket = (id: string) => {
 	};
 
 	appStateStore.update((state) => {
-		state.roomId = id
+		state.roomId = id;
 		const wsConnection = new WebSocketClient('/ws-connect-room?id=' + id);
 		wsConnection.addListener<App.GameState>('game-update', updateGameState);
 		state.websocket = wsConnection;
@@ -51,7 +50,7 @@ export const leaveGame = () => {
 	appStateStore.update((state) => {
 		state.websocket?.sendMessage('leave-game', {});
 		state.isPlaying = false;
-	
+
 		return state;
 	});
-}
+};

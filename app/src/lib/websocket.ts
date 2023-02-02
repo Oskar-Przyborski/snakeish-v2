@@ -34,7 +34,7 @@ function decodeEventData(data: string) {
 		const char = data[i];
 		if (char == ';') {
 			event = data.slice(0, i);
-			msgData = data.slice(i+1);
+			msgData = data.slice(i + 1);
 			break;
 		}
 	}

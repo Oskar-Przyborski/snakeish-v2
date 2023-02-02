@@ -5,7 +5,7 @@
 	const dispatcher = createEventDispatcher();
 
 	export let configName: string;
-	export let selected: boolean = false;
+	export let selected = false;
 
 	$: mode = modes.get(configName)!;
 </script>

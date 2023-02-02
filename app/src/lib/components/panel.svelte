@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let full: boolean = false;
+	export let full = false;
 </script>
 
 <div class="panel" class:full>

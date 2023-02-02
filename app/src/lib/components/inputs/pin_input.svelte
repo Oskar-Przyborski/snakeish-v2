@@ -3,29 +3,29 @@
 	const dispatch = createEventDispatcher();
 	import Icon from '@iconify/svelte';
 
-	export let disabled: boolean = false;
+	export let disabled = false;
 	export let pin = ['', '', '', ''];
 	let char1: HTMLInputElement;
 	let char2: HTMLInputElement;
 	let char3: HTMLInputElement;
 	let char4: HTMLInputElement;
 
-	let pinHidden: boolean = true;
+	let pinHidden = true;
 
-	const focusPrevElement = (currEl: any) => {
+	const focusPrevElement = (currEl: HTMLInputElement) => {
 		if (currEl == char1) char1.blur();
 		else if (currEl == char2) char1.select();
 		else if (currEl == char3) char2.select();
 		else if (currEl == char4) char3.select();
 	};
-	const focusNextElement = (currEl: any) => {
+	const focusNextElement = (currEl: HTMLInputElement) => {
 		if (currEl == char1) char2.select();
 		else if (currEl == char2) char3.select();
 		else if (currEl == char3) char4.select();
 		else if (currEl == char4) char4.blur();
 	};
 
-	const registerCharFromEl = (el: any) => {
+	const registerCharFromEl = (el: HTMLInputElement) => {
 		if (el == char1) pin[0] = el.value;
 		else if (el == char2) pin[1] = el.value;
 		else if (el == char3) pin[2] = el.value;

@@ -1,1 +1,1 @@
-import '$lib/icons'
+import '$lib/icons';

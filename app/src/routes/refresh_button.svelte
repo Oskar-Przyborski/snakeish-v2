@@ -21,7 +21,7 @@
 				offset: 1
 			}
 		];
-        
+
 		icon.animate(keyframes, { duration: 500, easing: 'ease-in-out' });
 	}
 </script>

@@ -1,10 +1,10 @@
 <script lang="ts">
-	export let value: string = '';
-	export let placeholder: string = '';
+	export let value = '';
+	export let placeholder = '';
 	export let width: any = null;
 	export let fontSize: any = null;
 
-	let focused: boolean = false;
+	let focused = false;
 </script>
 
 <div class="text-input" style:width style:font-size={fontSize}>
@@ -32,7 +32,7 @@
 			width: 100%;
 			font-size: inherit;
 			padding: 0.5rem 0.1rem;
-			text-align: left;;
+			text-align: left;
 		}
 		.border {
 			border-bottom: 3px solid white;

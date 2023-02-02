@@ -1,7 +1,7 @@
 <script>
-	import Panel from "$lib/components/panel.svelte";
-
+	import Panel from '$lib/components/panel.svelte';
 </script>
+
 <Panel>
 	<h1>Snakeish</h1>
 	<p>
@@ -22,8 +22,8 @@
 		At the beggining of the game you wait for the lobby to be full. Then the game starts.<br />
 		You need to eat apples to grow you snake, because every 15 seconds shortest snake in the game will
 		die.<br />
-		Also every 15 seconds the map will shrink and if you go inside that dead zone your snake will be shortening.<br
-		/>
+		Also every 15 seconds the map will shrink and if you go inside that dead zone your snake will be
+		shortening.<br />
 		If you go outside the map, hit yourself or other snakes, you will die.<br />
 		<br />
 	</p>
