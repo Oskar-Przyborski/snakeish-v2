@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"snakeish/golang/http_utils"
+	"snakeish/http_utils"
 
 	"github.com/google/uuid"
 )

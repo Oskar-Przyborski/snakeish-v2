@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"math/rand"
-	"snakeish/golang/gosockets"
+	"snakeish/gosockets"
 	"time"
 )
 

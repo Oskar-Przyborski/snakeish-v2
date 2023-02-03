@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"snakeish/golang/gosockets"
+	"snakeish/gosockets"
 )
 
 type User struct {

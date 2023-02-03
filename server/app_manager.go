@@ -1,7 +1,7 @@
 package main
 
 import (
-	"snakeish/golang/gosockets"
+	"snakeish/gosockets"
 )
 
 type AppManager struct {

@@ -1,4 +1,4 @@
-module snakeish/golang
+module snakeish
 
 go 1.19
 

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"math"
 	"net/http"
-	"snakeish/golang/http_utils"
+	"snakeish/http_utils"
 	"sort"
 )
 

@@ -2,8 +2,8 @@ package main
 
 import (
 	"net/http"
-	"snakeish/golang/gosockets"
-	"snakeish/golang/http_utils"
+	"snakeish/gosockets"
+	"snakeish/http_utils"
 )
 
 func WsConnectRoomEndpoint(w http.ResponseWriter, r *http.Request) {

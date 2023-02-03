@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
-	"snakeish/golang/http_utils"
+	"snakeish/http_utils"
 )
 
 func RoomNameAvailableEndpoint(w http.ResponseWriter, r *http.Request) {
