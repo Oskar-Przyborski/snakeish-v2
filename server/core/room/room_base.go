@@ -1,10 +1,8 @@
-package core
+package room
 
 type RoomBase struct {
-	Id       string
-	Name     string
-	ModeTag  string
-	ModeName string
+	Id   string
+	Name string
 }
 
 func (room RoomBase) GetName() string {
