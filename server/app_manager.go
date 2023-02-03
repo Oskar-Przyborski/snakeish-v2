@@ -1,18 +1,12 @@
 package main
 
-import (
-	"snakeish/gosockets"
-)
-
 type AppManager struct {
-	Rooms            map[string]*Room
-	WebsocketManager gosockets.GosocketManager
+	Rooms map[string]*Room
 }
 
 func CreateAppManager() AppManager {
 	return AppManager{
-		Rooms:            make(map[string]*Room),
-		WebsocketManager: gosockets.GosocketManager{},
+		Rooms: make(map[string]*Room),
 	}
 }
 
