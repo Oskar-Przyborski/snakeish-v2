@@ -67,8 +67,8 @@
 				<div class="titles">
 					<h1>{data.name}</h1>
 					<div class="mode">
-						<span class="tag">{data.gameModeTag.toUpperCase()}</span>
-						<h2>{data.gameModeName}</h2>
+						<span class="tag">{data.modeTag.toUpperCase()}</span>
+						<h2>{data.modeName}</h2>
 					</div>
 				</div>
 			</Panel>

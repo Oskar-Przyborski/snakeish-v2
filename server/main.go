@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"snakeish/core"
 )
 
 var Manager = CreateAppManager()
+var Core = core.CreateCore()
 
 func main() {
 	http.HandleFunc("/api/create-room", CreateRoomEndpoint)

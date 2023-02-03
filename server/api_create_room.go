@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"snakeish/http_utils"
-
-	"github.com/google/uuid"
 )
 
 type CreateRoomEndpointData struct {
@@ -32,43 +30,37 @@ func CreateRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, room := range Manager.Rooms {
-		if room.RoomName == reqData.RoomName {
+	for _, room := range Core.GetRooms() {
+		if room.GetName() == reqData.RoomName {
 			http_utils.WriteError(&w, 400, "name-exists", fmt.Sprintf("room with name '%s' already exists", reqData.RoomName))
 			return
 		}
 	}
 
-	room := Room{
-		RoomName: reqData.RoomName,
-		Id:       "rm-" + uuid.NewString(),
-		Users:    []*User{},
+	room, err := Core.CreateRoom(reqData.RoomName) //add reqData.ConfigName
+	if err != nil {
+		http_utils.WriteError(&w, 500, "room-create-error", "error while creating room")
 	}
 
-	room.SetConfig(reqData.ConfigName)
-
-	Manager.Rooms[room.Id] = &room
-	go room.StartRoom()
-
-	println("Created room. Id:", room.Id)
+	println("Created room. Id:", room.GetId())
 	http_utils.WriteJSON(w, room.GetPreview())
 }
 
-func (room *Room) SetConfig(configName string) {
-	switch configName {
-	default:
-		room.ModeTag = "classic"
-		room.ModeName = "Casual"
-		room.FrameTime = 250
-		room.GridSize = 8
-		room.MaxPlayers = 4
-		room.ApplesQuantity = 3
-	case "classic-huuge":
-		room.ModeTag = "classic"
-		room.ModeName = "Huuge"
-		room.FrameTime = 250
-		room.GridSize = 16
-		room.MaxPlayers = 10
-		room.ApplesQuantity = 8
-	}
-}
+// func (room *Room) SetConfig(configName string) {
+// 	switch configName {
+// 	default:
+// 		room.ModeTag = "classic"
+// 		room.ModeName = "Casual"
+// 		room.FrameTime = 250
+// 		room.GridSize = 8
+// 		room.MaxPlayers = 4
+// 		room.ApplesQuantity = 3
+// 	case "classic-huuge":
+// 		room.ModeTag = "classic"
+// 		room.ModeName = "Huuge"
+// 		room.FrameTime = 250
+// 		room.GridSize = 16
+// 		room.MaxPlayers = 10
+// 		room.ApplesQuantity = 8
+// 	}
+// }

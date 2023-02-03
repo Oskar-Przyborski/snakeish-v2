@@ -1,12 +1,12 @@
 package classic_room
 
 import (
-	"snakeish/core/room"
+	r "snakeish/core/room"
 	"snakeish/core/utils"
 )
 
 type ClassicRoom struct {
-	room.RoomBase
+	r.RoomBase
 	Apples     []utils.Vector2
 	Players    []ClassicPlayer
 	MaxPlayers int
@@ -17,4 +17,21 @@ func (room ClassicRoom) GetModeTag() string {
 }
 func (room ClassicRoom) GetModeName() string {
 	return "Casual"
+}
+func (room ClassicRoom) GetMaxPlayers() int {
+	return room.MaxPlayers
+}
+func (room ClassicRoom) GetPlayersCount() int {
+	return len(room.Players)
+}
+
+func (room ClassicRoom) GetPreview() r.RoomPreview {
+	return r.RoomPreview{
+		Id:         room.Id,
+		Name:       room.Name,
+		ModeTag:    room.GetModeTag(),
+		ModeName:   room.GetModeName(),
+		Players:    len(room.Players),
+		MaxPlayers: room.MaxPlayers,
+	}
 }

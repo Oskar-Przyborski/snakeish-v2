@@ -25,7 +25,7 @@ func GetRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	room := Manager.GetRoomById(id) // Get room
+	room, _ := Core.GetRoomById(id) // Get room
 	if room == nil {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(`{}`))

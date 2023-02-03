@@ -3,18 +3,19 @@ package main
 import (
 	"math"
 	"net/http"
+	"snakeish/core/room"
 	"snakeish/http_utils"
 	"sort"
 )
 
 type roomEvaluation struct {
 	value float64
-	room  *Room
+	room  room.IRoom
 }
 
 type resposnseStruct struct {
-	Rooms          []RoomPreviewStruct `json:"rooms"`
-	RemainingRooms int                 `json:"remainingRooms"`
+	Rooms          []room.RoomPreview `json:"rooms"`
+	RemainingRooms int                `json:"remainingRooms"`
 }
 
 func GetSuggestedRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +25,7 @@ func GetSuggestedRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	evaluations := []roomEvaluation{}
 
-	for _, room := range Manager.Rooms {
+	for _, room := range Core.GetRooms() {
 		evaluations = append(evaluations, evaluate(room))
 	}
 
@@ -47,9 +48,9 @@ func GetSuggestedRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
 }
 
 // TODO implement better algorithim for suggesting rooms
-func evaluate(room *Room) roomEvaluation {
-	players := float64(room.getPlayersCount())
-	max := float64(room.MaxPlayers)
+func evaluate(room room.IRoom) roomEvaluation {
+	players := float64(room.GetPlayersCount())
+	max := float64(room.GetMaxPlayers())
 	var score float64 = 0
 
 	halfMax := max / 2

@@ -11,8 +11,8 @@
 	</div>
 	<div class="bottom">
 		<div class="game-mode">
-			<div class="tag">{room.gameModeTag.toUpperCase()}</div>
-			<div class="name">{room.gameModeName}</div>
+			<div class="tag">{room.modeTag.toUpperCase()}</div>
+			<div class="name">{room.modeName}</div>
 		</div>
 		<div class="players">
 			<Icon icon="mdi:account-supervisor" inline />

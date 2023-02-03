@@ -5,4 +5,7 @@ type IRoom interface {
 	GetId() string
 	GetModeTag() string
 	GetModeName() string
+	GetPlayersCount() int
+	GetMaxPlayers() int
+	GetPreview() RoomPreview
 }

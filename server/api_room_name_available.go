@@ -17,8 +17,8 @@ func RoomNameAvailableEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	roomNameAvailable := true
-	for _, room := range Manager.Rooms {
-		if room.RoomName == name {
+	for _, room := range Core.GetRooms() {
+		if room.GetName() == name {
 			roomNameAvailable = false
 			break
 		}

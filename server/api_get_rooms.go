@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"snakeish/core/room"
 	"snakeish/http_utils"
 )
 
@@ -10,9 +11,9 @@ func GetRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := map[string]RoomPreviewStruct{}
-	for key, room := range Manager.Rooms {
-		response[key] = room.GetPreview()
+	response := []room.RoomPreview{}
+	for _, room := range Core.GetRooms() {
+		response = append(response, room.GetPreview())
 	}
 
 	http_utils.WriteJSON(w, response)

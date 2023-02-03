@@ -61,6 +61,32 @@ func TestFindRoomByName(t *testing.T) {
 		t.Fatalf("CoreInstance.GetRoomByName() should return false, but returned %t", found3)
 	}
 }
+func TestFindRoomById(t *testing.T) {
+	core := CreateCore()
+	room1, _ := core.CreateRoom("1")
+	room2, _ := core.CreateRoom("2")
+
+	roomFound1, found1 := core.GetRoomById(room1.GetId())
+	roomFound2, found2 := core.GetRoomById(room2.GetId())
+	_, found3 := core.GetRoomById("jfhaksjdhfklhas")
+
+	if found1 == false {
+		t.Fatalf("CoreInstance.GetRoomById() should return true, but returned %t", found1)
+	}
+	if room1.GetId() != roomFound1.GetId() {
+		t.Fatalf("CoreInstance.GetRoomById() should return room with id %s, but returned room with id %s", room1.GetId(), roomFound1.GetId())
+	}
+	if found2 == false {
+		t.Fatalf("CoreInstance.GetRoomById() should return true, but returned %t", found2)
+	}
+	if room2.GetId() != roomFound2.GetId() {
+		t.Fatalf("CoreInstance.GetRoomById() should return room with id %s, but returned room with id %s", room2.GetId(), roomFound2.GetId())
+	}
+
+	if found3 == true {
+		t.Fatalf("CoreInstance.GetRoomById() should return false, but returned %t", found3)
+	}
+}
 
 func TestRoomNamesDuplication(t *testing.T) {
 	core := CreateCore()

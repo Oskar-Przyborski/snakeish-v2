@@ -10,8 +10,8 @@ declare namespace App {
 		name: string;
 		players: number;
 		maxPlayers: number;
-		gameModeName: string;
-		gameModeTag: string;
+		modeName: string;
+		modeTag: string;
 		id: string;
 	}
 	interface AppState {

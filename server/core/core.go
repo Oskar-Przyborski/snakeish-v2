@@ -32,6 +32,14 @@ func (core CoreInstance) GetRoomByName(name string) (room.IRoom, bool) {
 	}
 	return nil, false
 }
+func (core CoreInstance) GetRoomById(id string) (room.IRoom, bool) {
+	for _, room := range core.GetRooms() {
+		if room.GetId() == id {
+			return room, true
+		}
+	}
+	return nil, false
+}
 
 func (core *CoreInstance) CreateRoom(name string) (room.IRoom, error) {
 	if _, foundDuplicate := core.GetRoomByName(name); foundDuplicate {
