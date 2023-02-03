@@ -1,23 +1,17 @@
 import type { PageLoad } from './$types';
-import { PUBLIC_API_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
 import { resetState } from '$lib/room_creation_state';
+import { fetchJson } from '$lib/fetchJson';
 
 export const load = (({ fetch }) => {
 	async function createRoom(data: { roomName: string; configName: string | null; pin: string[] }) {
-		const resp = await fetch(PUBLIC_API_URL + '/create-room', {
-			body: JSON.stringify(data),
+		const { id } = await fetchJson<App.RoomPreview>('/create-room', {
+			fetcher: fetch,
 			method: 'POST',
-			headers: {
-				'content-type': 'application/json'
-			}
+			body: data
 		});
-		if (resp.status != 200) {
-			//TODO handle error
-			throw Error('Error while creating room');
-		}
-		const json = await resp.json();
-		goto('/room/' + json.id, { replaceState: true });
+
+		goto('/room/' + id, { replaceState: true });
 		resetState();
 	}
 

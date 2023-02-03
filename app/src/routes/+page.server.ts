@@ -1,11 +1,14 @@
-import backendRequest from '$lib/backend_request';
+import { fetchJson } from '$lib/fetchJson';
 import type { PageServerLoad } from './$types';
 
-export const load = (async (context) => {
-	const { isOnline, data } = await backendRequest<{
+export const load = (async ({ fetch }) => {
+	const { rooms, remainingRooms } = await fetchJson<{
 		rooms: App.RoomPreview[];
 		remainingRooms: number;
-	}>(context.fetch, '/get-suggested-rooms');
+	}>('/get-suggested-rooms', {
+		fetcher: fetch,
+		default: { remainingRooms: 0, rooms: [] }
+	});
 
-	return { isOnline, rooms: data?.rooms ?? [], remainingRooms: data?.remainingRooms ?? 0 };
+	return { rooms: rooms ?? [], remainingRooms: remainingRooms };
 }) satisfies PageServerLoad;

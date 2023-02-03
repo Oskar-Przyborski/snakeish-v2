@@ -5,7 +5,7 @@
 	import TextInput from '$lib/components/inputs/text_input.svelte';
 	import Panel from '$lib/components/panel.svelte';
 	import Button from '$lib/components/buttons/button.svelte';
-	import backendRequest from '$lib/backend_request';
+	import { fetchJson } from '$lib/fetchJson';
 
 	const onContinue = () => dispatch('continue');
 
@@ -19,16 +19,11 @@
 			return;
 		}
 
-		const { data } = await backendRequest<{ available: boolean }>(
-			fetch,
+		const { available } = await fetchJson<{ available: boolean }>(
 			`/room-name-available?name=${state.roomName}`
 		);
 
-		if (data == null) {
-			btnDisabled = true
-			return
-		}
-		if (data.available) {
+		if (available) {
 			nameError = '';
 			btnDisabled = false;
 			return;
