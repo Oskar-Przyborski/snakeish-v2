@@ -81,6 +81,8 @@
 			</Panel>
 		</div>
 	</div>
+{:else}
+	<p style="text-align:center">Loading</p>
 {/if}
 
 <svelte:window on:keydown={onKeyDown} />
@@ -108,7 +110,7 @@
 			flex-flow: row nowrap;
 			align-items: center;
 			justify-content: space-between;
-			.mode{
+			.mode {
 				.tag {
 					font-size: 0.75rem;
 					font-weight: bold;
