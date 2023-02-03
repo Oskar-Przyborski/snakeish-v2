@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 	"snakeish/http_utils"
 )
@@ -31,13 +30,5 @@ func RoomNameAvailableEndpoint(w http.ResponseWriter, r *http.Request) {
 		Available: roomNameAvailable,
 	}
 
-	json, err := json.Marshal(response)
-
-	if err != nil {
-		w.WriteHeader(500)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(json)
+	http_utils.WriteJSON(w, response)
 }

@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func WriteJSON(payload interface{}, w http.ResponseWriter) bool {
+func WriteJSON(w http.ResponseWriter, payload interface{}) bool {
 	json, err := json.Marshal(payload)
 	if err != nil {
 		w.WriteHeader(500)

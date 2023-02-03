@@ -15,5 +15,5 @@ func GetRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
 		response[key] = room.GetPreview()
 	}
 
-	http_utils.WriteJSON(response, w)
+	http_utils.WriteJSON(w, response)
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 	"snakeish/http_utils"
 )
@@ -33,14 +32,5 @@ func GetRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Convert room to json string
-	json, err := json.Marshal(room.GetPreview())
-
-	if err != nil {
-		w.WriteHeader(500)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(json)
+	http_utils.WriteJSON(w, room.GetPreview())
 }

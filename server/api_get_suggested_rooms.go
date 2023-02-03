@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"math"
 	"net/http"
 	"snakeish/http_utils"
@@ -44,14 +43,7 @@ func GetSuggestedRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
 		response.RemainingRooms = rooms - 4
 	}
 
-	json, err := json.Marshal(response)
-	if err != nil {
-		w.WriteHeader(500)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(json)
-
+	http_utils.WriteJSON(w, response)
 }
 
 // TODO implement better algorithim for suggesting rooms
