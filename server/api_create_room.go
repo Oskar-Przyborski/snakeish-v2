@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"snakeish/core/room"
 	"snakeish/http_utils"
 )
 
@@ -37,11 +38,20 @@ func CreateRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	room, err := Core.CreateRoom(reqData.RoomName, reqData.ConfigName)
+	room, err := CreateRoomByConfigName(reqData.RoomName, reqData.ConfigName)
 	if err != nil {
 		http_utils.WriteError(&w, 500, "room-create-error", "error while creating room")
 	}
 
 	println("Created room. Id:", room.GetId())
 	http_utils.WriteJSON(w, room.GetPreview())
+}
+
+func CreateRoomByConfigName(name string, configName string) (room.IRoom, error) {
+	switch configName {
+	default:
+		return CreateClassicRoom(name, "Casual")
+	case "classic-huuge":
+		return CreateClassicRoom(name, "Huuge")
+	}
 }

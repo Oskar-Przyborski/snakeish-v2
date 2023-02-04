@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"snakeish/core"
 )
 
-var Manager = CreateAppManager()
+var ClientsManager = CreateConnectedClientsManager()
 var Core = core.CreateCore()
 
 func main() {
@@ -16,22 +15,7 @@ func main() {
 	http.HandleFunc("/api/get-suggested-rooms", GetSuggestedRoomsEndpoint)
 	http.HandleFunc("/api/get-rooms", GetRoomsEndpoint)
 	http.HandleFunc("/api/room-name-available", RoomNameAvailableEndpoint)
-	http.HandleFunc("/api/ws-connect-room", WsConnectRoomEndpoint)
-
-	http.HandleFunc("/api/check", func(w http.ResponseWriter, r *http.Request) {
-		msg := ""
-
-		msg += "Game Rooms\n"
-		for id, room := range Manager.Rooms {
-			msg += id + "\n"
-			msg += "	Players\n"
-			for idx, player := range room.Users {
-				msg += fmt.Sprintf("	%d. %s \n", idx, player.Websocket.Id)
-			}
-		}
-
-		w.Write([]byte(msg))
-	})
+	http.HandleFunc("/api/ws-connect-classic-room", ConnectClassicRoomEndpoint)
 
 	port := os.Getenv("PORT")
 	if port == "" {

@@ -40,29 +40,19 @@ func (core CoreInstance) GetRoomById(id string) (room.IRoom, bool) {
 	return nil, false
 }
 
-func (core *CoreInstance) CreateRoom(name string, configName string) (room.IRoom, error) {
-	if _, foundDuplicate := core.GetRoomByName(name); foundDuplicate {
-		return nil, errors.New("name already used by other room")
+func (core *CoreInstance) CreateClassicRoom(roomName string, modeName string) (*classic_room.ClassicRoom, error) {
+	if _, foundDuplicate := core.GetRoomByName(roomName); foundDuplicate {
+		return &classic_room.ClassicRoom{}, errors.New("name already used by other room")
 	}
+
 	base := room.RoomBase{
-		Name: name,
+		Name: roomName,
 		Id:   uuid.NewString(),
 	}
 
-	room := CreateRoomByConfigName(configName, base)
-
+	room := classic_room.CreateClassicRoom(base, modeName)
 	core.rooms = append(core.rooms, room)
-
 	go room.StartRoom()
 
 	return room, nil
-}
-
-func CreateRoomByConfigName(configName string, base room.RoomBase) room.IRoom {
-	switch configName {
-	default:
-		return classic_room.CreateClassicRoom(base, "Casual")
-	case "classic-huuge":
-		return classic_room.CreateClassicRoom(base, "Huuge")
-	}
 }
