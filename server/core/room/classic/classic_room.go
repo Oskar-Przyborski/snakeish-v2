@@ -4,6 +4,8 @@ import (
 	r "snakeish/core/room"
 	"snakeish/core/utils"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type ClassicRoom struct {
@@ -70,5 +72,29 @@ func CreateClassicRoom(base r.RoomBase, mode string) *ClassicRoom {
 			ModeName:       "Huuge",
 		}
 
+	}
+}
+
+// TODO add name validation
+func (room *ClassicRoom) AddPlayer(name string, color string) error {
+	player := ClassicPlayer{
+		Id:        uuid.NewString(),
+		Name:      name,
+		Color:     color,
+		SnakeTail: []utils.Vector2{},
+		IsAlive:   false,
+		Direction: utils.Vector2{X: 1, Y: 0},
+	}
+
+	room.Players = append(room.Players, &player)
+	return nil
+}
+
+func (room *ClassicRoom) RemovePlayer(id string) {
+	for idx, player := range room.Players {
+		if player.Id == id {
+			room.Players = append(room.Players[:idx], room.Players[idx+1:]...)
+			break
+		}
 	}
 }
