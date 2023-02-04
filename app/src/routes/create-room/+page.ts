@@ -2,13 +2,19 @@ import type { PageLoad } from './$types';
 import { goto } from '$app/navigation';
 import { resetState } from '$lib/room_creation_state';
 import { fetchJson } from '$lib/fetchJson';
+import modes from '$lib/modes';
 
 export const load = (({ fetch }) => {
 	async function createRoom(data: { roomName: string; configName: string | null; pin: string[] }) {
 		const { id, modeTag } = await fetchJson<App.RoomPreview>('/create-room', {
 			fetcher: fetch,
 			method: 'POST',
-			body: data
+			body: {
+				roomName: data.roomName,
+				modeName: data.configName ? modes.get(data.configName)?.title : null,
+				modeTag: data.configName ? modes.get(data.configName)?.tag : null,
+				pin: data.pin
+			}
 		});
 
 		goto(`/room/${modeTag}/${id}`, { replaceState: true });

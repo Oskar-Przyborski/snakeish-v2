@@ -76,7 +76,7 @@ func CreateClassicRoom(base r.RoomBase, mode string) *ClassicRoom {
 }
 
 // TODO add name validation
-func (room *ClassicRoom) AddPlayer(name string, color string) error {
+func (room *ClassicRoom) AddPlayer(name string, color string) *ClassicPlayer {
 	player := ClassicPlayer{
 		Id:        uuid.NewString(),
 		Name:      name,
@@ -87,7 +87,7 @@ func (room *ClassicRoom) AddPlayer(name string, color string) error {
 	}
 
 	room.Players = append(room.Players, &player)
-	return nil
+	return &player
 }
 
 func (room *ClassicRoom) RemovePlayer(id string) {

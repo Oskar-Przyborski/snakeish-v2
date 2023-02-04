@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
+	classic_room "snakeish/core/room/classic"
 	"snakeish/gosockets"
 	"snakeish/http_utils"
 )
@@ -23,6 +25,13 @@ func ConnectClassicRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if room.GetModeTag() != "classic" {
+		http_utils.WriteError(&w, 400, "room-wrong-mode-tag", "room should be classic")
+		return
+	}
+
+	classicRoom := room.(*classic_room.ClassicRoom)
+
 	websocket, err := gosockets.CreateClient(w, r)
 	if err != nil {
 		http_utils.WriteError(&w, 500, "server-error", "error while creating websocket client")
@@ -31,8 +40,33 @@ func ConnectClassicRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	connectedClient := ClientsManager.CreateConnectedClient(websocket, room)
 	connectedClient.WebSocket.OnDisconnect = append(connectedClient.WebSocket.OnDisconnect, func() {
+		classicRoom.RemovePlayer(connectedClient.PlayerId)
 		ClientsManager.RemoveConnectedClient(websocket.Id)
+
 		println("Disconnected client with id: " + websocket.Id)
+	})
+
+	type joinRequestType struct {
+		Color string `json:"color"`
+		Name  string `json:"name"`
+	}
+
+	connectedClient.WebSocket.AddListener("request-join", func(s string) {
+		data := joinRequestType{}
+		if err := json.Unmarshal([]byte(s), &data); err != nil {
+			return
+		}
+
+		player := classicRoom.AddPlayer(data.Name, data.Color)
+
+		connectedClient.IsPlayer = true
+		connectedClient.PlayerId = player.Id
+	})
+
+	connectedClient.WebSocket.AddListener("request-leave", func(s string) {
+		classicRoom.RemovePlayer(connectedClient.PlayerId)
+		connectedClient.IsPlayer = false
+		connectedClient.PlayerId = ""
 	})
 
 	go websocket.ListenForMessages()

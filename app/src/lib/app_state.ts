@@ -39,7 +39,7 @@ export const leaveRoom = () => {
 
 export const joinPlayer = (name: string, color: string) => {
 	appStateStore.update((state) => {
-		state.websocket?.sendMessage('join-player', { name, color });
+		state.websocket?.sendMessage('request-join', { name, color });
 		state.isPlaying = true;
 
 		return state;
@@ -48,7 +48,7 @@ export const joinPlayer = (name: string, color: string) => {
 
 export const leaveGame = () => {
 	appStateStore.update((state) => {
-		state.websocket?.sendMessage('leave-game', {});
+		state.websocket?.sendMessage('request-leave', {});
 		state.isPlaying = false;
 
 		return state;

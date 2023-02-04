@@ -23,7 +23,7 @@ func CreateClassicRoom(roomName string, modeName string) (*classic_room.ClassicR
 	return room, nil
 }
 
-type playerType struct {
+type ClassicRoomPlayerResponse struct {
 	Id        string          `json:"id"`
 	Name      string          `json:"name"`
 	Color     string          `json:"color"`
@@ -32,20 +32,20 @@ type playerType struct {
 }
 
 type ClassicRoomGameUpdateResponse struct {
-	GridSize int             `json:"gridSize"`
-	Apples   []utils.Vector2 `json:"apples"`
-	Players  []playerType    `json:"players"`
+	GridSize int                         `json:"gridSize"`
+	Apples   []utils.Vector2             `json:"apples"`
+	Players  []ClassicRoomPlayerResponse `json:"players"`
 }
 
 func generateGameUpdateResponse(room classic_room.ClassicRoom) ClassicRoomGameUpdateResponse {
 	response := ClassicRoomGameUpdateResponse{
 		GridSize: room.GridSize,
 		Apples:   room.Apples,
-		Players:  []playerType{},
+		Players:  []ClassicRoomPlayerResponse{},
 	}
 
 	for _, player := range room.Players {
-		response.Players = append(response.Players, playerType{
+		response.Players = append(response.Players, ClassicRoomPlayerResponse{
 			Id:        player.Id,
 			Name:      player.Name,
 			Color:     player.Color,
