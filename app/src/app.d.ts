@@ -26,9 +26,11 @@ declare namespace App {
 		gridSize: number;
 	}
 	interface Player {
+		id: string
 		name: string;
 		color: string;
 		snakeTail: Vector2[];
+		score: int
 	}
 
 	interface Vector2 {

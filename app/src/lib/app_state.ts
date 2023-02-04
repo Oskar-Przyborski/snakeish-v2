@@ -18,7 +18,7 @@ export const connectRoomWebsocket = (id: string) => {
 
 	appStateStore.update((state) => {
 		state.roomId = id;
-		const wsConnection = new WebSocketClient('/ws-connect-room?id=' + id);
+		const wsConnection = new WebSocketClient('/ws-connect-classic-room?id=' + id);
 		wsConnection.addListener<App.GameState>('game-update', updateGameState);
 		state.websocket = wsConnection;
 
