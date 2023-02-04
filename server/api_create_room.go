@@ -37,7 +37,7 @@ func CreateRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	room, err := Core.CreateRoom(reqData.RoomName) //add reqData.ConfigName
+	room, err := Core.CreateRoom(reqData.RoomName, reqData.ConfigName)
 	if err != nil {
 		http_utils.WriteError(&w, 500, "room-create-error", "error while creating room")
 	}
@@ -45,22 +45,3 @@ func CreateRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 	println("Created room. Id:", room.GetId())
 	http_utils.WriteJSON(w, room.GetPreview())
 }
-
-// func (room *Room) SetConfig(configName string) {
-// 	switch configName {
-// 	default:
-// 		room.ModeTag = "classic"
-// 		room.ModeName = "Casual"
-// 		room.FrameTime = 250
-// 		room.GridSize = 8
-// 		room.MaxPlayers = 4
-// 		room.ApplesQuantity = 3
-// 	case "classic-huuge":
-// 		room.ModeTag = "classic"
-// 		room.ModeName = "Huuge"
-// 		room.FrameTime = 250
-// 		room.GridSize = 16
-// 		room.MaxPlayers = 10
-// 		room.ApplesQuantity = 8
-// 	}
-// }

@@ -1,8 +1,9 @@
 package room
 
 type RoomBase struct {
-	Id   string
-	Name string
+	Id       string
+	Name     string
+	Listener func()
 }
 
 func (room RoomBase) GetName() string {
@@ -10,6 +11,9 @@ func (room RoomBase) GetName() string {
 }
 func (room RoomBase) GetId() string {
 	return room.Id
+}
+func (room *RoomBase) OnUpdate(listener func()) {
+	room.Listener = listener
 }
 
 type RoomPreview struct {

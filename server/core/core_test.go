@@ -15,8 +15,9 @@ func TestCoreInitialization(t *testing.T) {
 func TestRoomCreation(t *testing.T) {
 	core := CreateCore()
 	roomName := "Hello123"
+	configName := "classic-casual"
 
-	room, err := core.CreateRoom(roomName)
+	room, err := core.CreateRoom(roomName, configName)
 	if err != nil {
 		t.Fatalf("CoreInstance.CreateRoom() shouldn't return error")
 	}
@@ -37,8 +38,8 @@ func TestRoomCreation(t *testing.T) {
 
 func TestFindRoomByName(t *testing.T) {
 	core := CreateCore()
-	room1, _ := core.CreateRoom("1")
-	room2, _ := core.CreateRoom("2")
+	room1, _ := core.CreateRoom("1", "classic-casual")
+	room2, _ := core.CreateRoom("2", "classic-casual")
 
 	roomFound1, found1 := core.GetRoomByName("1")
 	roomFound2, found2 := core.GetRoomByName("2")
@@ -63,8 +64,8 @@ func TestFindRoomByName(t *testing.T) {
 }
 func TestFindRoomById(t *testing.T) {
 	core := CreateCore()
-	room1, _ := core.CreateRoom("1")
-	room2, _ := core.CreateRoom("2")
+	room1, _ := core.CreateRoom("1", "classic-casual")
+	room2, _ := core.CreateRoom("2", "classic-casual")
 
 	roomFound1, found1 := core.GetRoomById(room1.GetId())
 	roomFound2, found2 := core.GetRoomById(room2.GetId())
@@ -91,17 +92,17 @@ func TestFindRoomById(t *testing.T) {
 func TestRoomNamesDuplication(t *testing.T) {
 	core := CreateCore()
 
-	_, err1 := core.CreateRoom("room-name")
+	_, err1 := core.CreateRoom("room-name", "classic-casual")
 	if err1 != nil {
 		t.Fatal("CoreInstance.CreateRoom() shouldn't return error")
 	}
 
-	_, err2 := core.CreateRoom("room-name")
+	_, err2 := core.CreateRoom("room-name", "classic-casual")
 	if err2 == nil {
 		t.Fatal("CoreInstance.CreateRoom() should return error")
 	}
 
-	_, err3 := core.CreateRoom("room-name-other")
+	_, err3 := core.CreateRoom("room-name-other", "classic-casual")
 	if err3 != nil {
 		t.Fatal("CoreInstance.CreateRoom() shouldn't return error")
 	}

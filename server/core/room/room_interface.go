@@ -8,4 +8,6 @@ type IRoom interface {
 	GetPlayersCount() int
 	GetMaxPlayers() int
 	GetPreview() RoomPreview
+	OnUpdate(func())
+	StartRoom()
 }
