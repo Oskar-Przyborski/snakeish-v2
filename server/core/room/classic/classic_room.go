@@ -20,7 +20,7 @@ type ClassicRoom struct {
 }
 
 func (room ClassicRoom) GetModeTag() string {
-	return "CLASSIC"
+	return "classic"
 }
 func (room ClassicRoom) GetModeName() string {
 	return room.ModeName

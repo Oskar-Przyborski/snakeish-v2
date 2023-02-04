@@ -4,7 +4,7 @@
 	export let room: App.RoomPreview;
 </script>
 
-<a class="room-preview-container" href={`/room/${room.id}`}>
+<a class="room-preview-container" href={`/room/${room.modeTag}/${room.id}`}>
 	<div class="top">
 		<div class="name">{room.name}</div>
 		<span class="enter-icon"><Icon icon="mdi:location-enter" inline /></span>

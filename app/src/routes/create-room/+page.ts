@@ -5,13 +5,13 @@ import { fetchJson } from '$lib/fetchJson';
 
 export const load = (({ fetch }) => {
 	async function createRoom(data: { roomName: string; configName: string | null; pin: string[] }) {
-		const { id } = await fetchJson<App.RoomPreview>('/create-room', {
+		const { id, modeTag } = await fetchJson<App.RoomPreview>('/create-room', {
 			fetcher: fetch,
 			method: 'POST',
 			body: data
 		});
 
-		goto('/room/' + id, { replaceState: true });
+		goto(`/room/${modeTag}/${id}`, { replaceState: true });
 		resetState();
 	}
 

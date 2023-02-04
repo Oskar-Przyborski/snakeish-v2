@@ -9,8 +9,9 @@ import (
 )
 
 type CreateRoomEndpointData struct {
-	RoomName   string `json:"roomName"`
-	ConfigName string `json:"configName"`
+	RoomName string `json:"roomName"`
+	ModeTag  string `json:"modeTag"`
+	ModeName string `json:"modeName"`
 }
 
 // TODO add PIN code support
@@ -38,7 +39,7 @@ func CreateRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	room, err := CreateRoomByConfigName(reqData.RoomName, reqData.ConfigName)
+	room, err := CreateRoomByModeTag(reqData.RoomName, reqData.ModeTag, reqData.ModeName)
 	if err != nil {
 		http_utils.WriteError(&w, 500, "room-create-error", "error while creating room")
 	}
@@ -47,11 +48,9 @@ func CreateRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 	http_utils.WriteJSON(w, room.GetPreview())
 }
 
-func CreateRoomByConfigName(name string, configName string) (room.IRoom, error) {
-	switch configName {
-	default:
-		return CreateClassicRoom(name, "Casual")
-	case "classic-huuge":
-		return CreateClassicRoom(name, "Huuge")
+func CreateRoomByModeTag(name string, modeTag string, modeName string) (room.IRoom, error) {
+	switch modeTag {
+	default: //classic
+		return CreateClassicRoom(name, modeName)
 	}
 }
