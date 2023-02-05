@@ -78,12 +78,12 @@ func CreateClassicRoom(base r.RoomBase, mode string) *ClassicRoom {
 // TODO add name validation
 func (room *ClassicRoom) AddPlayer(name string, color string) *ClassicPlayer {
 	player := ClassicPlayer{
-		Id:        uuid.NewString(),
-		Name:      name,
-		Color:     color,
-		SnakeTail: []utils.Vector2{},
-		IsAlive:   false,
-		Direction: utils.Vector2{X: 1, Y: 0},
+		Id:              uuid.NewString(),
+		Name:            name,
+		Color:           color,
+		SnakeTail:       []utils.Vector2{},
+		IsAlive:         false,
+		TargetDirection: utils.Vector2{X: 1, Y: 0},
 	}
 
 	room.Players = append(room.Players, &player)
@@ -97,4 +97,13 @@ func (room *ClassicRoom) RemovePlayer(id string) {
 			break
 		}
 	}
+}
+
+func (room *ClassicRoom) GetPlayerById(id string) *ClassicPlayer {
+	for _, player := range room.Players {
+		if player.Id == id {
+			return player
+		}
+	}
+	return nil
 }

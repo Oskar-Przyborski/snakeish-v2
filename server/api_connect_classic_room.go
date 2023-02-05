@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	classic_room "snakeish/core/room/classic"
+	"snakeish/core/utils"
 	"snakeish/gosockets"
 	"snakeish/http_utils"
 )
@@ -67,6 +68,23 @@ func ConnectClassicRoomEndpoint(w http.ResponseWriter, r *http.Request) {
 		classicRoom.RemovePlayer(connectedClient.PlayerId)
 		connectedClient.IsPlayer = false
 		connectedClient.PlayerId = ""
+	})
+
+	connectedClient.WebSocket.AddListener("change-direction", func(s string) {
+		player := classicRoom.GetPlayerById(connectedClient.PlayerId)
+		type ChangeDirectionPayload struct {
+			Direction string `json:"direction"`
+		}
+		payload := ChangeDirectionPayload{}
+		if err := json.Unmarshal([]byte(s), &payload); err != nil {
+			println("Error while parsing json:", err.Error())
+			return
+		}
+		direction, err := utils.DirectionToVector(payload.Direction)
+		if err != nil {
+			return
+		}
+		player.ChangeDirection(direction)
 	})
 
 	go websocket.ListenForMessages()
