@@ -48,7 +48,7 @@
 	<div class="wrapper">
 		<Panel>
 			<div class="game-renderer">
-				<GameRenderer {store}/>
+				<GameRenderer {store} />
 			</div>
 		</Panel>
 		<div class="sidebar">

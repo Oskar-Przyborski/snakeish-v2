@@ -11,8 +11,8 @@
 		all: unset;
 		cursor: pointer;
 		font-size: 2rem;
-		
-		&:focus-visible{
+
+		&:focus-visible {
 			outline: auto;
 		}
 	}

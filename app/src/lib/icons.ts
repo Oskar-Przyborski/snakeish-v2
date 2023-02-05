@@ -1,7 +1,9 @@
 import { addCollection } from '@iconify/svelte';
 
 const loadIcons = async (prefix: string, icons: string[]) => {
-	const resp = await fetch(`https://api.iconify.design/${prefix.trim()}.json?icons=${icons.join(',')}`);
+	const resp = await fetch(
+		`https://api.iconify.design/${prefix.trim()}.json?icons=${icons.join(',')}`
+	);
 	if (resp.status == 200) {
 		addCollection(await resp.json());
 		console.log(`Downloaded ${icons.length} icons with prefix: ${prefix}`);

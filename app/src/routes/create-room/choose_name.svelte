@@ -19,9 +19,7 @@
 			return;
 		}
 
-		const { available } = await fetchJson<{ available: boolean }>(
-			`/rooms/name/${state.roomName}`
-		);
+		const { available } = await fetchJson<{ available: boolean }>(`/rooms/name/${state.roomName}`);
 
 		if (available) {
 			nameError = '';

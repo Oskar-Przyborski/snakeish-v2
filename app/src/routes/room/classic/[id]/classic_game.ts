@@ -1,13 +1,13 @@
-import { WebSocketClient } from "$lib/websocket";
-import { writable } from "svelte/store";
+import { WebSocketClient } from '$lib/websocket';
+import { get, writable } from 'svelte/store';
 
 export const store = writable<PageState>({
-    roomId: null,
-    isPlaying: false,
-    gameState: null,
-    playerId: null,
-    websocket: null
-})
+	roomId: null,
+	isPlaying: false,
+	gameState: null,
+	playerId: null,
+	websocket: null
+});
 
 export const connectRoomWebsocket = (roomId: string) => {
 	const updateGameState = (newState: ClassicGameState) => {
@@ -16,14 +16,28 @@ export const connectRoomWebsocket = (roomId: string) => {
 			return state;
 		});
 	};
-	
+
 	store.update((state) => {
-		state.roomId = roomId
+		state.roomId = roomId;
 
 		const wsConnection = new WebSocketClient(`/connect/classic/${state.roomId}`);
-		wsConnection.addListener<ClassicGameState>('game-update', updateGameState);
 		state.websocket = wsConnection;
 
+		wsConnection.addListener<ClassicGameState>('game-update', updateGameState);
+		wsConnection.addListener<JoinSuccessType>('join-success', joinSuccess);
+
+		return state;
+	});
+};
+
+export const requestJoin = (name: string, color: string) => {
+	get(store).websocket?.sendMessage('request-join', { name, color });
+};
+
+const joinSuccess = (data: JoinSuccessType) => {
+	store.update((state) => {
+		state.isPlaying = true;
+		state.playerId = data.playerId;
 		return state;
 	});
 };
@@ -40,15 +54,6 @@ export const leaveRoom = () => {
 	});
 };
 
-export const requestJoin = (name: string, color: string) => {
-	store.update((state) => {
-		state.websocket?.sendMessage('request-join', { name, color });
-		state.isPlaying = true; //TODO this will need to be changed
-
-		return state;
-	});
-};
-
 export const leaveGame = () => {
 	store.update((state) => {
 		state.websocket?.sendMessage('request-leave', {});
@@ -59,11 +64,11 @@ export const leaveGame = () => {
 };
 
 export interface PageState {
-    isPlaying: boolean;
-	websocket: import("$lib/websocket").WebSocketClient | null;
-    gameState: ClassicGameState | null;
-    playerId: string | null
-    roomId: string | null;
+	isPlaying: boolean;
+	websocket: import('$lib/websocket').WebSocketClient | null;
+	gameState: ClassicGameState | null;
+	playerId: string | null;
+	roomId: string | null;
 }
 export interface ClassicGameState {
 	players: Player[];
@@ -71,9 +76,15 @@ export interface ClassicGameState {
 	gridSize: number;
 }
 export interface Player {
-    id: string
-    name: string;
-    color: string;
-    snakeTail: App.Vector2[];
-    score: number
+	id: string;
+	name: string;
+	color: string;
+	snakeTail: App.Vector2[];
+	score: number;
+}
+
+interface JoinSuccessType {
+	playerId: string;
+	name: string;
+	color: string;
 }

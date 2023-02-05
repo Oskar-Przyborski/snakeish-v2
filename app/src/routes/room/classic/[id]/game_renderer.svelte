@@ -3,7 +3,7 @@
 	import type { Writable } from 'svelte/store';
 	import type { PageState, Player } from './classic_game';
 
-	export let store: Writable<PageState>
+	export let store: Writable<PageState>;
 
 	let unsubscribe = () => {};
 	onMount(() => {

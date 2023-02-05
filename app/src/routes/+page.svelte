@@ -8,22 +8,22 @@
 	import { fetchJson } from '$lib/fetchJson';
 
 	export let data: PageServerData;
-	let rooms = data.rooms
-	let remainingRooms = data.remainingRooms
+	let rooms = data.rooms;
+	let remainingRooms = data.remainingRooms;
 
 	const refresh = async () => {
 		const newData = await fetchJson<{
 			rooms: App.RoomPreview[];
 			remainingRooms: number;
 		}>('/rooms/suggested');
-		rooms = newData.rooms
-		remainingRooms = newData.remainingRooms
+		rooms = newData.rooms;
+		remainingRooms = newData.remainingRooms;
 	};
 </script>
 
 <div class="top">
 	<div class="panels-col">
-		<SuggestedRooms rooms={data.rooms} remainingRooms={data.remainingRooms} onRefresh={refresh} />
+		<SuggestedRooms {rooms} {remainingRooms} onRefresh={refresh} />
 		<GameDescription />
 	</div>
 	<div class="panels-col">

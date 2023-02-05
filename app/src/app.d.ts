@@ -19,7 +19,6 @@ declare namespace App {
 		y: number;
 	}
 
-
 	interface RoomCreationState {
 		roomName: string;
 		configName: string | null;

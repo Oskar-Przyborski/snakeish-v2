@@ -47,13 +47,12 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		println("Disconnected client with id: " + websocket.Id)
 	})
 
-	type joinRequestType struct {
-		Color string `json:"color"`
-		Name  string `json:"name"`
-	}
-
 	connectedClient.WebSocket.AddListener("request-join", func(c gosockets.MessageContext) {
-		data := joinRequestType{}
+		type requestType struct {
+			Color string `json:"color"`
+			Name  string `json:"name"`
+		}
+		data := requestType{}
 		if err := c.BindJSON(&data); err != nil {
 			return
 		}
@@ -62,6 +61,17 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 
 		connectedClient.IsPlayer = true
 		connectedClient.PlayerId = player.Id
+
+		type responseType struct {
+			PlayerId string `json:"playerId"`
+			Name     string `json:"name"`
+			Color    string `json:"color"`
+		}
+		connectedClient.WebSocket.Send("join-success", responseType{
+			PlayerId: player.Id,
+			Name:     player.Name,
+			Color:    player.Color,
+		})
 	})
 
 	connectedClient.WebSocket.AddListener("request-leave", func(c gosockets.MessageContext) {
@@ -77,7 +87,7 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 			Direction string `json:"direction"`
 		}
 		payload := ChangeDirectionPayload{}
-		if err := c.BindJSON(payload); err != nil {
+		if err := c.BindJSON(&payload); err != nil {
 			println("Error while parsing json:", err.Error())
 			return
 		}
