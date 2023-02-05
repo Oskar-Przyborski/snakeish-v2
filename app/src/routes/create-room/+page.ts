@@ -6,7 +6,7 @@ import modes from '$lib/modes';
 
 export const load = (({ fetch }) => {
 	async function createRoom(data: { roomName: string; configName: string | null; pin: string[] }) {
-		const { id, modeTag } = await fetchJson<App.RoomPreview>('/create-room', {
+		const { id, modeTag } = await fetchJson<App.RoomPreview>('/rooms/create', {
 			fetcher: fetch,
 			method: 'POST',
 			body: {

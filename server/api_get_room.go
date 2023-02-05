@@ -14,14 +14,7 @@ type RoomPreviewStruct struct {
 }
 
 func GetRoomEndpoint(c *gin.Context) {
-	id, found := c.GetQuery("id")
-	if !found {
-		c.JSON(400, gin.H{
-			"code":    "MISSING_PARAMETER",
-			"message": "query should contain 'id' parameter",
-		})
-		return
-	}
+	id := c.Params.ByName("id")
 
 	room, _ := Core.GetRoomById(id)
 	if room == nil {

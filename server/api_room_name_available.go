@@ -5,14 +5,7 @@ import (
 )
 
 func RoomNameAvailableEndpoint(c *gin.Context) {
-	name, found := c.GetQuery("name")
-	if !found {
-		c.JSON(400, gin.H{
-			"code":    "MISSING_PARAMETER",
-			"message": "query should contain 'name' parameter",
-		})
-		return
-	}
+	name := c.Params.ByName("name")
 
 	roomNameAvailable := true
 	for _, room := range Core.GetRooms() {

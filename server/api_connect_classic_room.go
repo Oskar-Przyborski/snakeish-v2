@@ -10,14 +10,7 @@ import (
 )
 
 func ConnectClassicRoomEndpoint(c *gin.Context) {
-	roomId, found := c.GetQuery("id")
-	if !found {
-		c.JSON(400, gin.H{
-			"code":    "MISSING_PARAMETER",
-			"message": "url should contain 'id' parameter",
-		})
-		return
-	}
+	roomId := c.Params.ByName("id")
 
 	room, found := Core.GetRoomById(roomId)
 	if !found {

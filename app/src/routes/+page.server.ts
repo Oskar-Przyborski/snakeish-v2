@@ -5,7 +5,7 @@ export const load = (async ({ fetch }) => {
 	const { rooms, remainingRooms } = await fetchJson<{
 		rooms: App.RoomPreview[];
 		remainingRooms: number;
-	}>('/get-suggested-rooms', {
+	}>('/rooms/suggested', {
 		fetcher: fetch,
 		default: { remainingRooms: 0, rooms: [] }
 	});

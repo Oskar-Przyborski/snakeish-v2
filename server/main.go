@@ -19,12 +19,14 @@ func main() {
 
 	api := router.Group("api")
 
-	api.GET("get-rooms", GetRoomsEndpoint)
-	api.GET("get-suggested-rooms", GetSuggestedRoomsEndpoint)
-	api.GET("get-room", GetRoomEndpoint)
-	api.GET("room-name-available", RoomNameAvailableEndpoint)
-	api.POST("create-room", CreateRoomEndpoint)
-	api.GET("ws-connect-classic-room", ConnectClassicRoomEndpoint)
+	api.GET("rooms", GetRoomsEndpoint)
+	api.GET("rooms/suggested", GetSuggestedRoomsEndpoint)
+	api.GET("rooms/name/:name", RoomNameAvailableEndpoint)
+	api.POST("rooms/create", CreateRoomEndpoint)
+
+	api.GET("room/:id", GetRoomEndpoint)
+
+	api.GET("connect/classic/:id", ConnectClassicRoomEndpoint)
 
 	port := os.Getenv("PORT")
 	if port == "" {
