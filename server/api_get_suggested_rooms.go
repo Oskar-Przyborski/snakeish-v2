@@ -2,10 +2,10 @@ package main
 
 import (
 	"math"
-	"net/http"
 	"snakeish/core/room"
-	"snakeish/http_utils"
 	"sort"
+
+	"github.com/gin-gonic/gin"
 )
 
 type roomEvaluation struct {
@@ -18,10 +18,7 @@ type resposnseStruct struct {
 	RemainingRooms int                `json:"remainingRooms"`
 }
 
-func GetSuggestedRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
-	if ended := http_utils.CheckCors(&w, r); ended {
-		return
-	}
+func GetSuggestedRoomsEndpoint(c *gin.Context) {
 
 	evaluations := []roomEvaluation{}
 
@@ -44,7 +41,7 @@ func GetSuggestedRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
 		response.RemainingRooms = rooms - 4
 	}
 
-	http_utils.WriteJSON(w, response)
+	c.JSON(200, response)
 }
 
 // TODO implement better algorithim for suggesting rooms

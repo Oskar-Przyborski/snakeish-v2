@@ -1,18 +1,16 @@
 package main
 
 import (
-	"net/http"
-	"snakeish/http_utils"
+	"github.com/gin-gonic/gin"
 )
 
-func RoomNameAvailableEndpoint(w http.ResponseWriter, r *http.Request) {
-	if ended := http_utils.CheckCors(&w, r); ended {
-		return
-	}
-
-	name := r.URL.Query().Get("name")
-	if name == "" {
-		http_utils.WriteError(&w, 400, "missing-parameter", "url should contain 'name' parameter")
+func RoomNameAvailableEndpoint(c *gin.Context) {
+	name, found := c.GetQuery("name")
+	if !found {
+		c.JSON(400, gin.H{
+			"code":    "MISSING_PARAMETER",
+			"message": "query should contain 'name' parameter",
+		})
 		return
 	}
 
@@ -24,11 +22,5 @@ func RoomNameAvailableEndpoint(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	response := struct {
-		Available bool `json:"available"`
-	}{
-		Available: roomNameAvailable,
-	}
-
-	http_utils.WriteJSON(w, response)
+	c.JSON(200, gin.H{"available": roomNameAvailable})
 }

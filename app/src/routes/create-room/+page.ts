@@ -17,7 +17,7 @@ export const load = (({ fetch }) => {
 			}
 		});
 
-		goto(`/room/${modeTag}/${id}`, { replaceState: true });
+		await goto(`/room/${modeTag}/${id}`, { replaceState: true });
 		resetState();
 	}
 

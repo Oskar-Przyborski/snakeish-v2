@@ -1,8 +1,7 @@
 package main
 
 import (
-	"net/http"
-	"snakeish/http_utils"
+	"github.com/gin-gonic/gin"
 )
 
 type RoomPreviewStruct struct {
@@ -14,23 +13,24 @@ type RoomPreviewStruct struct {
 	GameModeTag  string `json:"gameModeTag"`
 }
 
-func GetRoomEndpoint(w http.ResponseWriter, r *http.Request) {
-	if ended := http_utils.CheckCors(&w, r); ended {
+func GetRoomEndpoint(c *gin.Context) {
+	id, found := c.GetQuery("id")
+	if !found {
+		c.JSON(400, gin.H{
+			"code":    "MISSING_PARAMETER",
+			"message": "query should contain 'id' parameter",
+		})
 		return
 	}
 
-	id := r.URL.Query().Get("id")
-	if id == "" {
-		http_utils.WriteError(&w, 400, "missing-parameter", "url should contain 'id' parameter")
-		return
-	}
-
-	room, _ := Core.GetRoomById(id) // Get room
+	room, _ := Core.GetRoomById(id)
 	if room == nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{}`))
+		c.JSON(404, gin.H{
+			"code":    "ROOM_NOT_FOUND",
+			"message": "Couldn't find room with given id",
+		})
 		return
 	}
 
-	http_utils.WriteJSON(w, room.GetPreview())
+	c.JSON(200, room.GetPreview())
 }

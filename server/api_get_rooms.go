@@ -1,20 +1,16 @@
 package main
 
 import (
-	"net/http"
 	"snakeish/core/room"
-	"snakeish/http_utils"
+
+	"github.com/gin-gonic/gin"
 )
 
-func GetRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
-	if ended := http_utils.CheckCors(&w, r); ended {
-		return
-	}
-
+func GetRoomsEndpoint(c *gin.Context) {
 	response := []room.RoomPreview{}
 	for _, room := range Core.GetRooms() {
 		response = append(response, room.GetPreview())
 	}
 
-	http_utils.WriteJSON(w, response)
+	c.JSON(200, response)
 }

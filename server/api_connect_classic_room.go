@@ -2,40 +2,48 @@ package main
 
 import (
 	"encoding/json"
-	"net/http"
 	classic_room "snakeish/core/room/classic"
 	"snakeish/core/utils"
 	"snakeish/gosockets"
-	"snakeish/http_utils"
+
+	"github.com/gin-gonic/gin"
 )
 
-func ConnectClassicRoomEndpoint(w http.ResponseWriter, r *http.Request) {
-	if ended := http_utils.CheckCors(&w, r); ended {
-		return
-	}
-
-	roomId := r.URL.Query().Get("id")
-	if roomId == "" {
-		http_utils.WriteError(&w, 400, "missing-parameter", "url should contain 'id' parameter")
+func ConnectClassicRoomEndpoint(c *gin.Context) {
+	roomId, found := c.GetQuery("id")
+	if !found {
+		c.JSON(400, gin.H{
+			"code":    "MISSING_PARAMETER",
+			"message": "url should contain 'id' parameter",
+		})
 		return
 	}
 
 	room, found := Core.GetRoomById(roomId)
 	if !found {
-		http_utils.WriteError(&w, 400, "room-not-found", "room with given id doesn't exist")
+		c.JSON(404, gin.H{
+			"code":    "ROOM_NOT_FOUND",
+			"message": "couldn't find room with given id",
+		})
 		return
 	}
 
 	if room.GetModeTag() != "classic" {
-		http_utils.WriteError(&w, 400, "room-wrong-mode-tag", "room should be classic")
+		c.JSON(403, gin.H{
+			"code":    "ROOM_WRONG_MODE_TAG",
+			"message": "found room, but it's mode tag is wrong",
+		})
 		return
 	}
 
 	classicRoom := room.(*classic_room.ClassicRoom)
 
-	websocket, err := gosockets.CreateClient(w, r)
+	websocket, err := gosockets.CreateClient(c.Writer, c.Request)
 	if err != nil {
-		http_utils.WriteError(&w, 500, "server-error", "error while creating websocket client")
+		c.JSON(500, gin.H{
+			"code":    "WEBSOCKET_ERROR",
+			"message": "errro while creating websocket client",
+		})
 		return
 	}
 
