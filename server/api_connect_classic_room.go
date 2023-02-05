@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	classic_room "snakeish/core/room/classic"
 	"snakeish/core/utils"
 	"snakeish/gosockets"
@@ -53,9 +52,9 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		Name  string `json:"name"`
 	}
 
-	connectedClient.WebSocket.AddListener("request-join", func(s string) {
+	connectedClient.WebSocket.AddListener("request-join", func(c gosockets.MessageContext) {
 		data := joinRequestType{}
-		if err := json.Unmarshal([]byte(s), &data); err != nil {
+		if err := c.BindJSON(&data); err != nil {
 			return
 		}
 
@@ -65,26 +64,29 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		connectedClient.PlayerId = player.Id
 	})
 
-	connectedClient.WebSocket.AddListener("request-leave", func(s string) {
+	connectedClient.WebSocket.AddListener("request-leave", func(c gosockets.MessageContext) {
 		classicRoom.RemovePlayer(connectedClient.PlayerId)
 		connectedClient.IsPlayer = false
 		connectedClient.PlayerId = ""
 	})
 
-	connectedClient.WebSocket.AddListener("change-direction", func(s string) {
+	connectedClient.WebSocket.AddListener("change-direction", func(c gosockets.MessageContext) {
 		player := classicRoom.GetPlayerById(connectedClient.PlayerId)
+
 		type ChangeDirectionPayload struct {
 			Direction string `json:"direction"`
 		}
 		payload := ChangeDirectionPayload{}
-		if err := json.Unmarshal([]byte(s), &payload); err != nil {
+		if err := c.BindJSON(payload); err != nil {
 			println("Error while parsing json:", err.Error())
 			return
 		}
+
 		direction, err := utils.DirectionToVector(payload.Direction)
 		if err != nil {
 			return
 		}
+
 		player.ChangeDirection(direction)
 	})
 
