@@ -1,10 +1,13 @@
 <script lang="ts">
-	import { appStateStore } from '$lib/app_state';
 	import { onDestroy, onMount } from 'svelte';
+	import type { Writable } from 'svelte/store';
+	import type { PageState, Player } from './classic_game';
+
+	export let store: Writable<PageState>
 
 	let unsubscribe = () => {};
 	onMount(() => {
-		unsubscribe = appStateStore.subscribe(updateState);
+		unsubscribe = store.subscribe(updateState);
 	});
 	onDestroy(unsubscribe);
 
@@ -17,9 +20,10 @@
 		cellSize: number;
 	}
 
-	function updateState(state: App.AppState) {
+	function updateState(state: PageState) {
 		if (canvas == null) return;
 		if (state.gameState == null) return;
+
 		const ctx = canvas.getContext('2d');
 		if (ctx == null) return;
 		const cellSize = canvas.width / state.gameState.gridSize;
@@ -88,7 +92,7 @@
 		config.ctx.fillRect(position.x, position.y, size.x, size.y);
 	}
 
-	function drawSnakes(config: CanvasConfig, players: App.Player[]) {
+	function drawSnakes(config: CanvasConfig, players: Player[]) {
 		if (players.length == 0) return;
 
 		for (let i = 0; i < players.length; i++) {
@@ -97,7 +101,7 @@
 		}
 	}
 
-	function DrawPlayerSnake(config: CanvasConfig, player: App.Player) {
+	function DrawPlayerSnake(config: CanvasConfig, player: Player) {
 		const snake = player.snakeTail;
 		if (snake.length == 0) return;
 
