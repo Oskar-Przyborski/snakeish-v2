@@ -2,6 +2,7 @@ package main
 
 import (
 	"snakeish/core/room"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,6 +37,7 @@ func CreateRoomEndpoint(c *gin.Context) {
 			"message": "error while creating room",
 		})
 	}
+	Core.StartAfkForRoom(room.GetId(), 30*time.Second)
 
 	c.JSON(200, room.GetPreview())
 	println("Created room. Id:", room.GetId())

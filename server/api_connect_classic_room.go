@@ -4,6 +4,7 @@ import (
 	classic_room "snakeish/core/room/classic"
 	"snakeish/core/utils"
 	"snakeish/gosockets"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -39,11 +40,15 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		return
 	}
 
+	Core.StopAfkForRoom(roomId)
 	connectedClient := ClientsManager.CreateConnectedClient(websocket, room)
 	connectedClient.WebSocket.OnDisconnect = append(connectedClient.WebSocket.OnDisconnect, func() {
 		classicRoom.RemovePlayer(connectedClient.PlayerId)
 		ClientsManager.RemoveConnectedClient(websocket.Id)
 
+		if classicRoom.GetPlayersCount() == 0 {
+			Core.StartAfkForRoom(roomId, 30*time.Second)
+		}
 		println("Disconnected client with id: " + websocket.Id)
 	})
 

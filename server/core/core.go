@@ -2,6 +2,7 @@ package core
 
 import (
 	"errors"
+	"time"
 
 	"snakeish/core/room"
 	classic_room "snakeish/core/room/classic"
@@ -10,12 +11,14 @@ import (
 )
 
 type CoreInstance struct {
-	rooms []room.IRoom
+	rooms          []room.IRoom
+	roomsAfkTimers map[string]*time.Timer
 }
 
 func CreateCore() CoreInstance {
 	return CoreInstance{
-		rooms: []room.IRoom{},
+		rooms:          []room.IRoom{},
+		roomsAfkTimers: make(map[string]*time.Timer),
 	}
 }
 
@@ -55,4 +58,30 @@ func (core *CoreInstance) CreateClassicRoom(roomName string, modeName string) (*
 	go room.StartRoom()
 
 	return room, nil
+}
+
+func (core *CoreInstance) RemoveRoom(id string) {
+	for idx, room := range core.GetRooms() {
+		if room.GetId() == id {
+			core.rooms = append(core.rooms[:idx], core.rooms[idx+1:]...)
+			return
+		}
+	}
+}
+
+func (core *CoreInstance) StartAfkForRoom(roomId string, duration time.Duration) {
+	if timer := core.roomsAfkTimers[roomId]; timer != nil {
+		timer.Reset(duration)
+	} else {
+		core.roomsAfkTimers[roomId] =
+			time.AfterFunc(duration, func() {
+				core.RemoveRoom(roomId)
+			})
+	}
+}
+func (core *CoreInstance) StopAfkForRoom(roomId string) {
+	if timer := core.roomsAfkTimers[roomId]; timer != nil {
+		timer.Stop()
+		delete(core.roomsAfkTimers, roomId)
+	}
 }
