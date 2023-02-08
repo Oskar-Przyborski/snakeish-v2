@@ -4,15 +4,15 @@
 	export let room: App.RoomPreview;
 </script>
 
-<a class="room-preview-container" href={`/room/${room.id}`}>
+<a class="room-preview-container" href={`/room/${room.modeTag}/${room.id}`}>
 	<div class="top">
 		<div class="name">{room.name}</div>
 		<span class="enter-icon"><Icon icon="mdi:location-enter" inline /></span>
 	</div>
 	<div class="bottom">
 		<div class="game-mode">
-			<div class="tag">{room.gameModeTag.toUpperCase()}</div>
-			<div class="name">{room.gameModeName}</div>
+			<div class="tag">{room.modeTag.toUpperCase()}</div>
+			<div class="name">{room.modeName}</div>
 		</div>
 		<div class="players">
 			<Icon icon="mdi:account-supervisor" inline />

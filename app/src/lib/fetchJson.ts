@@ -17,9 +17,9 @@ export const fetchJson = async <T>(endpoint: string, options?: options<T>) => {
 	const method = options?.method ?? 'GET';
 	const headers: HeadersInit = {};
 	let body = null;
-	let url = joinURL(PUBLIC_API_URL, endpoint)
-	if(options?.params){
-		url = withQuery(url, options.params)
+	let url = joinURL(PUBLIC_API_URL, endpoint);
+	if (options?.params) {
+		url = withQuery(url, options.params);
 	}
 
 	const handleError = (err: HttpError) => {
@@ -36,12 +36,12 @@ export const fetchJson = async <T>(endpoint: string, options?: options<T>) => {
 		}
 	}
 
-	// try {
+	try {
 		const controller = new AbortController();
 		setTimeout(() => controller.abort(), 5000);
 		const response = await fetcher(url, { method, body, headers, signal: controller.signal });
 
-		if (response.headers.get('Content-Type') != 'application/json') {
+		if (!response.headers.get('Content-Type')?.split(';').includes('application/json')) {
 			return handleError(error(500, { message: 'invalid response content-type' }));
 		}
 
@@ -51,8 +51,7 @@ export const fetchJson = async <T>(endpoint: string, options?: options<T>) => {
 		}
 
 		return respObj as T;
-	// } catch {
-	// 	console.log("error")
-	// 	return handleError(error(500, 'server offline'));
-	// }
+	} catch {
+		return handleError(error(500, 'server offline'));
+	}
 };

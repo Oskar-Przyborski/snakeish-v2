@@ -19,14 +19,11 @@
 			return;
 		}
 
-		const { available } = await fetchJson<{ available: boolean }>(
-			`/room-name-available?name=${state.roomName}`
-		);
+		const { available } = await fetchJson<{ available: boolean }>(`/rooms/name/${state.roomName}`);
 
 		if (available) {
 			nameError = '';
 			btnDisabled = false;
-			return;
 		} else {
 			nameError = 'This name is already used.';
 			btnDisabled = true;

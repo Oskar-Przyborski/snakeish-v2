@@ -5,7 +5,9 @@
 
 <div class="app">
 	<div class="snakeish-logo">
-		<img alt="Snakeish Logo" src="/logo-long-white.png" width="260" />
+		<a href="/">
+			<img alt="Snakeish Logo" src="/logo-long-white.png" width="260" />
+		</a>
 	</div>
 	<Container>
 		<slot />

@@ -1,23 +1,13 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { connectRoomWebsocket, requestJoin, leaveRoom, store, leaveGame } from './classic_game';
 	import { onMount, onDestroy } from 'svelte';
-	import {
-		connectRoomWebsocket,
-		leaveRoom,
-		joinPlayer,
-		appStateStore,
-		leaveGame
-	} from '$lib/app_state';
 	import JoinForm from './join_form.svelte';
 	import Leaderboard from './leaderboard.svelte';
-	import Button from '$lib/components/buttons/button.svelte';
 	import GameRenderer from './game_renderer.svelte';
 	import Panel from '$lib/components/panel.svelte';
 
 	export let data: PageData;
-
-	let appState: App.AppState;
-	const unsubscribe = appStateStore.subscribe((newState) => (appState = newState));
 
 	const bindings = new Map<string, string>([
 		['KeyW', 'up'],
@@ -36,30 +26,29 @@
 	});
 
 	onDestroy(() => {
-		unsubscribe();
 		leaveRoom();
 	});
 
 	function onJoin(event: CustomEvent<{ name: string; color: string }>) {
-		joinPlayer(event.detail.name, event.detail.color);
+		requestJoin(event.detail.name, event.detail.color);
 	}
 
 	function onKeyDown(event: KeyboardEvent) {
-		if (!appState.isPlaying) return;
+		if (!$store.isPlaying) return;
 
 		const direction = bindings.get(event.code);
 		if (direction == null) return;
 
 		event.preventDefault();
-		appState.websocket?.sendMessage('change-direction', { direction });
+		$store.websocket?.sendMessage('change-direction', { direction });
 	}
 </script>
 
-{#if data.id != null && appState.gameState != null}
+{#if data.id != null && $store.gameState != null}
 	<div class="wrapper">
 		<Panel>
 			<div class="game-renderer">
-				<GameRenderer />
+				<GameRenderer {store} />
 			</div>
 		</Panel>
 		<div class="sidebar">
@@ -67,16 +56,16 @@
 				<div class="titles">
 					<h1>{data.name}</h1>
 					<div class="mode">
-						<span class="tag">{data.gameModeTag.toUpperCase()}</span>
-						<h2>{data.gameModeName}</h2>
+						<span class="tag">{data.modeTag.toUpperCase()}</span>
+						<h2>{data.modeName}</h2>
 					</div>
 				</div>
 			</Panel>
 			<Panel>
-				{#if !appState.isPlaying}
+				{#if !$store.isPlaying}
 					<JoinForm on:join={onJoin} />
 				{:else}
-					<Leaderboard players={appState.gameState.players} on:leave={leaveGame} />
+					<Leaderboard players={$store.gameState.players} on:leave={leaveGame} />
 				{/if}
 			</Panel>
 		</div>

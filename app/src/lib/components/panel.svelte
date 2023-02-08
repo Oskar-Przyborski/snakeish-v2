@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let full = false;
-	export let padding: string = "1.3rem"
+	export let padding: string = '1.3rem';
 </script>
 
 <div class="panel" class:full style:padding>

@@ -1,26 +1,16 @@
 package main
 
 import (
-	"encoding/json"
-	"net/http"
-	"snakeish/golang/http_utils"
+	"snakeish/core/room"
+
+	"github.com/gin-gonic/gin"
 )
 
-func GetRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
-	if ended := http_utils.CheckCors(&w, r); ended {
-		return
+func GetRoomsEndpoint(c *gin.Context) {
+	response := []room.RoomPreview{}
+	for _, room := range Core.GetRooms() {
+		response = append(response, room.GetPreview())
 	}
 
-	response := map[string]RoomPreviewStruct{}
-	for key, room := range Manager.Rooms {
-		response[key] = room.GetPreview()
-	}
-
-	json, err := json.Marshal(response)
-	if err != nil {
-		w.WriteHeader(500)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(json)
+	c.JSON(200, response)
 }

@@ -1,80 +1,51 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"snakeish/golang/http_utils"
+	"snakeish/core/room"
+	"time"
 
-	"github.com/google/uuid"
+	"github.com/gin-gonic/gin"
 )
 
 type CreateRoomEndpointData struct {
-	RoomName   string `json:"roomName"`
-	ConfigName string `json:"configName"`
+	RoomName string `json:"roomName" binding:"required"`
+	ModeTag  string `json:"modeTag" binding:"required"`
+	ModeName string `json:"modeName" binding:"required"`
 }
 
 // TODO add PIN code support
-func CreateRoomEndpoint(w http.ResponseWriter, r *http.Request) {
-	if ended := http_utils.CheckCors(&w, r); ended {
+func CreateRoomEndpoint(c *gin.Context) {
+	var data CreateRoomEndpointData
+	if err := c.BindJSON(&data); err != nil {
 		return
 	}
 
-	println("Create room request")
-	if r.Header["Content-Type"] == nil || r.Header["Content-Type"][0] != "application/json" {
-		http_utils.WriteError(&w, 400, "invalid-content-type", "header 'Content-Type' should be 'application/json'")
-		return
-	}
-
-	var reqData CreateRoomEndpointData
-	if err := json.NewDecoder(r.Body).Decode(&reqData); err != nil {
-		http_utils.WriteError(&w, 400, "body-incomplete", "error while parsing request body\nrequest body should contain fields:\nroomName <string>\nconfigName: <string>")
-		return
-	}
-
-	for _, room := range Manager.Rooms {
-		if room.RoomName == reqData.RoomName {
-			http_utils.WriteError(&w, 400, "name-exists", fmt.Sprintf("room with name '%s' already exists", reqData.RoomName))
+	for _, room := range Core.GetRooms() {
+		if room.GetName() == data.RoomName {
+			c.JSON(400, gin.H{
+				"code":    "NAME_EXISTS",
+				"message": "room with given name already exists",
+			})
 			return
 		}
 	}
 
-	room := Room{
-		RoomName: reqData.RoomName,
-		Id:       "rm-" + uuid.NewString(),
-		Users:    []*User{},
-	}
-
-	room.SetConfig(reqData.ConfigName)
-
-	Manager.Rooms[room.Id] = &room
-	go room.StartRoom()
-
-	println("Created room. Id:", room.Id)
-	json, err := json.Marshal(room.GetPreview())
+	room, err := CreateRoomByModeTag(data.RoomName, data.ModeTag, data.ModeName)
 	if err != nil {
-		w.WriteHeader(500)
-		return
+		c.JSON(500, gin.H{
+			"code":    "CREATION_ERROR",
+			"message": "error while creating room",
+		})
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(json)
+	Core.StartAfkForRoom(room.GetId(), 30*time.Second)
+
+	c.JSON(200, room.GetPreview())
+	println("Created room. Id:", room.GetId())
 }
 
-func (room *Room) SetConfig(configName string) {
-	switch configName {
-	default:
-		room.ModeTag = "classic"
-		room.ModeName = "Casual"
-		room.FrameTime = 250
-		room.GridSize = 8
-		room.MaxPlayers = 4
-		room.ApplesQuantity = 3
-	case "classic-huuge":
-		room.ModeTag = "classic"
-		room.ModeName = "Huuge"
-		room.FrameTime = 250
-		room.GridSize = 16
-		room.MaxPlayers = 10
-		room.ApplesQuantity = 8
+func CreateRoomByModeTag(name string, modeTag string, modeName string) (room.IRoom, error) {
+	switch modeTag {
+	default: //classic
+		return CreateClassicRoom(name, modeName)
 	}
 }

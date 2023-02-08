@@ -4,8 +4,9 @@
 	import Button from '$lib/components/buttons/button.svelte';
 	import Panel from '$lib/components/panel.svelte';
 	import Icon from '@iconify/svelte';
+	import type { Player } from './classic_game';
 
-	export let players: App.Player[];
+	export let players: Player[];
 </script>
 
 <div class="leaderboard">
@@ -17,7 +18,7 @@
 					<div class="name">
 						{player.name}
 					</div>
-					<div class="score"><Icon icon="mdi:star-outline" inline /> {player.snakeTail.length}</div>
+					<div class="score"><Icon icon="mdi:star-outline" inline /> {player.score}</div>
 				</div>
 			</Panel>
 		{/each}

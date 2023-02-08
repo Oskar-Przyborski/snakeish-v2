@@ -1,43 +1,19 @@
 package main
 
 import (
-	"encoding/json"
-	"net/http"
-	"snakeish/golang/http_utils"
+	"github.com/gin-gonic/gin"
 )
 
-func RoomNameAvailableEndpoint(w http.ResponseWriter, r *http.Request) {
-	if ended := http_utils.CheckCors(&w, r); ended {
-		return
-	}
-
-	name := r.URL.Query().Get("name")
-	if name == "" {
-		http_utils.WriteError(&w, 400, "missing-parameter", "url should contain 'name' parameter")
-		return
-	}
+func RoomNameAvailableEndpoint(c *gin.Context) {
+	name := c.Params.ByName("name")
 
 	roomNameAvailable := true
-	for _, room := range Manager.Rooms {
-		if room.RoomName == name {
+	for _, room := range Core.GetRooms() {
+		if room.GetName() == name {
 			roomNameAvailable = false
 			break
 		}
 	}
 
-	response := struct {
-		Available bool `json:"available"`
-	}{
-		Available: roomNameAvailable,
-	}
-
-	json, err := json.Marshal(response)
-
-	if err != nil {
-		w.WriteHeader(500)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(json)
+	c.JSON(200, gin.H{"available": roomNameAvailable})
 }

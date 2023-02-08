@@ -10,27 +10,10 @@ declare namespace App {
 		name: string;
 		players: number;
 		maxPlayers: number;
-		gameModeName: string;
-		gameModeTag: string;
+		modeName: string;
+		modeTag: string;
 		id: string;
 	}
-	interface AppState {
-		websocket: import('$lib/websocket').WebSocketClient | null;
-		roomId: string | null;
-		isPlaying: boolean;
-		gameState: GameState | null;
-	}
-	interface GameState {
-		players: Player[];
-		apples: Vector2[];
-		gridSize: number;
-	}
-	interface Player {
-		name: string;
-		color: string;
-		snakeTail: Vector2[];
-	}
-
 	interface Vector2 {
 		x: number;
 		y: number;

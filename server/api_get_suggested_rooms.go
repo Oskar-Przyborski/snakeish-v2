@@ -1,31 +1,28 @@
 package main
 
 import (
-	"encoding/json"
 	"math"
-	"net/http"
-	"snakeish/golang/http_utils"
+	"snakeish/core/room"
 	"sort"
+
+	"github.com/gin-gonic/gin"
 )
 
 type roomEvaluation struct {
 	value float64
-	room  *Room
+	room  room.IRoom
 }
 
 type resposnseStruct struct {
-	Rooms          []RoomPreviewStruct `json:"rooms"`
-	RemainingRooms int                 `json:"remainingRooms"`
+	Rooms          []room.RoomPreview `json:"rooms"`
+	RemainingRooms int                `json:"remainingRooms"`
 }
 
-func GetSuggestedRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
-	if ended := http_utils.CheckCors(&w, r); ended {
-		return
-	}
+func GetSuggestedRoomsEndpoint(c *gin.Context) {
 
 	evaluations := []roomEvaluation{}
 
-	for _, room := range Manager.Rooms {
+	for _, room := range Core.GetRooms() {
 		evaluations = append(evaluations, evaluate(room))
 	}
 
@@ -44,20 +41,13 @@ func GetSuggestedRoomsEndpoint(w http.ResponseWriter, r *http.Request) {
 		response.RemainingRooms = rooms - 4
 	}
 
-	json, err := json.Marshal(response)
-	if err != nil {
-		w.WriteHeader(500)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(json)
-
+	c.JSON(200, response)
 }
 
 // TODO implement better algorithim for suggesting rooms
-func evaluate(room *Room) roomEvaluation {
-	players := float64(room.getPlayersCount())
-	max := float64(room.MaxPlayers)
+func evaluate(room room.IRoom) roomEvaluation {
+	players := float64(room.GetPlayersCount())
+	max := float64(room.GetMaxPlayers())
 	var score float64 = 0
 
 	halfMax := max / 2

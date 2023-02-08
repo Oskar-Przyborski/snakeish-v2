@@ -1,42 +1,38 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+
 	"os"
+	"snakeish/core"
 )
 
-var Manager = CreateAppManager()
+var ClientsManager = CreateConnectedClientsManager()
+var Core = core.CreateCore()
 
 func main() {
-	http.HandleFunc("/api/create-room", CreateRoomEndpoint)
-	http.HandleFunc("/api/get-room", GetRoomEndpoint)
-	http.HandleFunc("/api/get-suggested-rooms", GetSuggestedRoomsEndpoint)
-	http.HandleFunc("/api/get-rooms", GetRoomsEndpoint)
-	http.HandleFunc("/api/room-name-available", RoomNameAvailableEndpoint)
-	http.HandleFunc("/api/ws-connect-room", WsConnectRoomEndpoint)
+	gin.SetMode(gin.ReleaseMode)
+	router := gin.New()
+	router.Use(gin.Recovery())
+	router.Use(cors.Default())
 
-	http.HandleFunc("/api/check", func(w http.ResponseWriter, r *http.Request) {
-		msg := ""
+	api := router.Group("api")
 
-		msg += "Game Rooms\n"
-		for id, room := range Manager.Rooms {
-			msg += id + "\n"
-			msg += "	Players\n"
-			for idx, player := range room.Users {
-				msg += fmt.Sprintf("	%d. %s \n", idx, player.Websocket.Id)
-			}
-		}
+	api.GET("rooms", GetRoomsEndpoint)
+	api.GET("rooms/suggested", GetSuggestedRoomsEndpoint)
+	api.GET("rooms/name/:name", RoomNameAvailableEndpoint)
+	api.POST("rooms/create", CreateRoomEndpoint)
 
-		w.Write([]byte(msg))
-	})
+	api.GET("room/:id", GetRoomEndpoint)
+
+	api.GET("connect/classic/:id", ConnectClassicRoomEndpoint)
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
+
 	println("Listening on port: " + port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		println(err.Error())
-	}
+	router.Run(":" + port)
 }
