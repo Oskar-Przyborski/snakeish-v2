@@ -16,8 +16,8 @@
 			rooms: App.RoomPreview[];
 			remainingRooms: number;
 		}>('/rooms/suggested');
-		rooms = newData.rooms;
-		remainingRooms = newData.remainingRooms;
+		rooms = newData.rooms ?? [];
+		remainingRooms = newData.remainingRooms ?? 0;
 	};
 </script>
 
