@@ -22,6 +22,10 @@ specifiers:
   ufo: ^1.0.1
   vite: ^4.1.1
 
+dependencies:
+  konva: 8.4.2
+  ufo: 1.0.1
+
 devDependencies:
   '@iconify/svelte': 3.1.0_svelte@3.55.1
   '@sveltejs/adapter-auto': 2.0.0_@sveltejs+kit@1.5.0
@@ -32,7 +36,6 @@ devDependencies:
   eslint: 8.33.0
   eslint-config-prettier: 8.6.0_eslint@8.33.0
   eslint-plugin-svelte3: 4.0.0_4omm2ewoudhgnmf7aocafatnc4
-  konva: 8.4.2
   prettier: 2.8.4
   prettier-plugin-svelte: 2.9.0_jrsxveqmsx2uadbqiuq74wlc4u
   sass: 1.58.0
@@ -41,7 +44,6 @@ devDependencies:
   svelte-preprocess: 5.0.1_cjyprvzu4kavkaguwtgkgx5cp4
   tslib: 2.5.0
   typescript: 4.9.5
-  ufo: 1.0.1
   vite: 4.1.1_sass@1.58.0
 
 packages:
@@ -1175,7 +1177,7 @@ packages:
 
   /konva/8.4.2:
     resolution: {integrity: sha512-4VQcrgj/PI8ydJjtLcTuinHBE8o0WGX0YoRwbiN5mpYQiC52aOzJ0XbpKNDJdRvORQphK5LP+jeM0hQJEYIuUA==}
-    dev: true
+    dev: false
 
   /levn/0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -1720,7 +1722,7 @@ packages:
 
   /ufo/1.0.1:
     resolution: {integrity: sha512-boAm74ubXHY7KJQZLlXrtMz52qFvpsbOxDcZOnw/Wf+LS4Mmyu7JxmzD4tDLtUQtmZECypJ0FrCz4QIe6dvKRA==}
-    dev: true
+    dev: false
 
   /undici/5.18.0:
     resolution: {integrity: sha512-1iVwbhonhFytNdg0P4PqyIAXbdlVZVebtPDvuM36m66mRw4OGrCm2MYynJv/UENFLdP13J1nPVQzVE2zTs1OeA==}
