@@ -30,7 +30,8 @@ const mdiIcons = [
 	'refresh',
 	'location-enter',
 	'chevron-left',
-	'information'
+	'information',
+	'account-supervisor'
 ];
 
 loadIcons('mdi', mdiIcons);
