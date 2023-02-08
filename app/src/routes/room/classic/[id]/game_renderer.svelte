@@ -2,371 +2,161 @@
 	import { onDestroy, onMount } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import type { PageState, Player } from './classic_game';
+	import Konva from 'konva';
+	import type { Vector2 } from '$lib/vector';
 
 	export let store: Writable<PageState>;
-
 	let unsubscribe = () => {};
-	onMount(() => {
-		unsubscribe = store.subscribe(updateState);
-	});
 	onDestroy(unsubscribe);
 
-	let canvas: HTMLCanvasElement;
+	let canvasWrapper: HTMLDivElement;
+	let stage: Konva.Stage;
+	let gridLayer: Konva.Layer;
+	let applesLayer: Konva.Layer;
+	let snakesLayer: Konva.Layer;
 
-	interface CanvasConfig {
-		canvas: HTMLCanvasElement;
-		ctx: CanvasRenderingContext2D;
-		gridSize: number;
-		cellSize: number;
-	}
+	onMount(() => {
+		initKonva();
+		unsubscribe = store.subscribe(updateState);
+	});
 
-	function updateState(state: PageState) {
-		if (canvas == null) return;
+	async function updateState(state: PageState) {
 		if (state.gameState == null) return;
+		const cellSize = stage.width() / state.gameState.gridSize;
 
-		const ctx = canvas.getContext('2d');
-		if (ctx == null) return;
-		const cellSize = canvas.width / state.gameState.gridSize;
-
-		const config: CanvasConfig = {
-			canvas,
-			ctx,
-			cellSize,
-			gridSize: state.gameState.gridSize
-		};
-
-		clearGrid(config);
-		drawGrid(config);
-		drawApples(config, state.gameState.apples);
-		drawSnakes(config, state.gameState.players);
+		drawGrid(state.gameState.gridSize, cellSize);
+		drawApples(state.gameState.apples, cellSize);
+		drawPlayers(state.gameState.players, cellSize);
 	}
 
-	function clearGrid(config: CanvasConfig) {
-		config.ctx.clearRect(0, 0, config.canvas.width, config.canvas.height);
+	function initKonva() {
+		stage = new Konva.Stage({
+			container: canvasWrapper,
+			width: 550,
+			height: 550
+		});
+
+		gridLayer = new Konva.Layer();
+		applesLayer = new Konva.Layer();
+		snakesLayer = new Konva.Layer();
+		stage.add(gridLayer, applesLayer, snakesLayer);
 	}
 
-	function drawGrid(config: CanvasConfig) {
-		config.ctx.beginPath();
-		for (let x = 0; x < config.gridSize + 1; x++) {
-			config.ctx.moveTo(x * config.cellSize, 0);
-			config.ctx.lineTo(x * config.cellSize, canvas.height);
+	function drawGrid(gridSize: number, cellSize: number) {
+		if (gridLayer.hasChildren()) return;
+
+		for (let y = 0; y < gridSize; y++) {
+			for (let x = 0; x < gridSize; x++) {
+				const darked = y % 2 == 0 ? x % 2 == 0 : x % 2 == 1;
+				const color = darked ? '#2e3134' : '#36393c';
+				gridLayer.add(
+					new Konva.Rect({
+						width: cellSize,
+						height: cellSize,
+						x: x * cellSize,
+						y: y * cellSize,
+						fill: color
+					})
+				);
+			}
 		}
-		for (let y = 0; y < config.gridSize + 1; y++) {
-			config.ctx.moveTo(0, y * config.cellSize);
-			config.ctx.lineTo(canvas.width, y * config.cellSize);
-		}
-		config.ctx.strokeStyle = 'rgba(0,0,0,1)';
-		config.ctx.stroke();
-		config.ctx.closePath();
+
+		gridLayer.draw();
 	}
 
-	function drawApples(config: CanvasConfig, apples: App.Vector2[]) {
+	function drawApples(apples: Vector2[], cellSize: number) {
+		applesLayer.removeChildren();
 		for (let i = 0; i < apples.length; i++) {
 			const apple = apples[i];
-			let color = 'red';
-			// if (apple.value === 3) {
-			// 	color = 'gold';
-			// }
-			drawRectShape(
-				config,
-				{
-					x: apple.x * config.cellSize + config.cellSize * 0.125,
-					y: apple.y * config.cellSize + config.cellSize * 0.125
-				},
-				{
-					x: config.cellSize * 0.75,
-					y: config.cellSize * 0.75
-				},
-				color
+			const container = new Konva.Group({
+				x: apple.x * cellSize,
+				y: apple.y * cellSize
+			});
+			container.add(
+				new Konva.Rect({
+					x: cellSize * 0.125,
+					y: cellSize * 0.125,
+					width: cellSize * 0.75,
+					height: cellSize * 0.75,
+					fill: '#d62246',
+					cornerRadius: cellSize * 0.2,
+					shadowOpacity: 0.2,
+					shadowOffsetY: 2
+				}),
+				new Konva.Path({
+					x: cellSize * 0.55,
+					y: cellSize * 0.28,
+					data: 'M-0.5 0Q0.5 0 0.5-1 -0.5-1 -0.5 0',
+					fill: 'green',
+					scaleX: 17,
+					scaleY: 17,
+					shadowOpacity: 0.2,
+					shadowOffsetY: 0.15
+				})
 			);
+			applesLayer.add(container);
 		}
+		applesLayer.draw();
 	}
+	function drawPlayers(players: Player[], cellSize: number) {
+		snakesLayer.removeChildren();
 
-	function drawRectShape(
-		config: CanvasConfig,
-		position: App.Vector2,
-		size: App.Vector2,
-		color: string
-	) {
-		config.ctx.fillStyle = color;
-		config.ctx.fillRect(position.x, position.y, size.x, size.y);
-	}
-
-	function drawSnakes(config: CanvasConfig, players: Player[]) {
-		if (players.length == 0) return;
-
+		//draw snake
 		for (let i = 0; i < players.length; i++) {
 			const player = players[i];
-			DrawPlayerSnake(config, player);
+			if (player.snakeTail.length == 0) return;
+
+			const head = player.snakeTail[0];
+			if (player.snakeTail.length > 1) {
+				const points: number[] = [];
+				player.snakeTail.forEach((el) =>
+					points.push(el.x * cellSize + cellSize / 2, el.y * cellSize + cellSize / 2)
+				);
+				snakesLayer.add(
+					new Konva.Line({
+						points,
+						bezier: false,
+						stroke: player.color,
+						strokeWidth: cellSize * 0.65,
+						closed: false,
+						lineCap: 'round',
+						lineJoin: 'round',
+						shadowOffsetY: 3,
+						shadowOpacity: 0.2
+					})
+				);
+			} else {
+				snakesLayer.add(
+					new Konva.Circle({
+						x: head.x * cellSize + cellSize / 2,
+						y: head.y * cellSize + cellSize / 2,
+						width: cellSize * 0.75,
+						height: cellSize * 0.75,
+						fill: player.color,
+						shadowOffsetY: 3,
+						shadowOpacity: 0.2
+					})
+				);
+			}
+			const nameContainer = new Konva.Group({ x: head.x * cellSize, y: head.y * cellSize });
+			const nameText = new Konva.Text({
+				width: cellSize,
+				height: cellSize,
+				text: player.name,
+				fill: 'white',
+				fontFamily: 'DM Sans',
+				fontStyle: 'bold',
+				fontSize: cellSize / 4.5,
+				align: 'center',
+				verticalAlign: 'middle',
+				shadowBlur: 2,
+				shadowOffsetY: 1
+			});
+			nameContainer.add(nameText);
+			snakesLayer.add(nameContainer);
 		}
-	}
-
-	function DrawPlayerSnake(config: CanvasConfig, player: Player) {
-		const snake = player.snakeTail;
-		if (snake.length == 0) return;
-
-		for (let i = 0; i < snake.length; i++) {
-			const currentElement = snake[i];
-			const previousElement = i < snake.length - 1 ? snake[i + 1] : null;
-			const nextElement = i > 0 ? snake[i - 1] : null;
-			drawSnakeElement(config, previousElement, currentElement, nextElement, player.color);
-		}
-		drawText(config, player.name, snake[0]);
-	}
-
-	function drawSnakeElement(
-		config: CanvasConfig,
-		prev: App.Vector2 | null,
-		curr: App.Vector2,
-		next: App.Vector2 | null,
-		color: string
-	) {
-		const prevDiff = prev != null ? { x: prev.x - curr.x, y: prev.y - curr.y } : null;
-		const nextDiff = next != null ? { x: next.x - curr.x, y: next.y - curr.y } : null;
-		const currentElementTopLeftPos = {
-			x: curr.x * config.cellSize,
-			y: curr.y * config.cellSize
-		};
-		switch (JSON.stringify({ prev: prevDiff, next: nextDiff })) {
-			case JSON.stringify({ prev: { x: -1, y: 0 }, next: { x: 1, y: 0 } }):
-			case JSON.stringify({ prev: { x: 1, y: 0 }, next: { x: -1, y: 0 } }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize,
-						y: config.cellSize * 0.75
-					},
-					color
-				);
-				break;
-			case JSON.stringify({ prev: { x: 0, y: 1 }, next: { x: 0, y: -1 } }):
-			case JSON.stringify({ prev: { x: 0, y: -1 }, next: { x: 0, y: 1 } }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y
-					},
-					{
-						x: config.cellSize * 0.75,
-						y: config.cellSize
-					},
-					color
-				);
-				break;
-			case JSON.stringify({ prev: { x: 0, y: 1 }, next: { x: 1, y: 0 } }):
-			case JSON.stringify({ prev: { x: 1, y: 0 }, next: { x: 0, y: 1 } }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize * 0.75,
-						y: config.cellSize * 0.875
-					},
-					color
-				);
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize * 0.875,
-						y: config.cellSize * 0.75
-					},
-					color
-				);
-				break;
-			case JSON.stringify({ prev: { x: -1, y: 0 }, next: { x: 0, y: 1 } }):
-			case JSON.stringify({ prev: { x: 0, y: 1 }, next: { x: -1, y: 0 } }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize * 0.75,
-						y: config.cellSize * 0.875
-					},
-					color
-				);
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize * 0.875,
-						y: config.cellSize * 0.75
-					},
-					color
-				);
-				break;
-			case JSON.stringify({ prev: { x: 0, y: -1 }, next: { x: 1, y: 0 } }):
-			case JSON.stringify({ prev: { x: 1, y: 0 }, next: { x: 0, y: -1 } }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y
-					},
-					{
-						x: config.cellSize * 0.75,
-						y: config.cellSize * 0.875
-					},
-					color
-				);
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize * 0.875,
-						y: config.cellSize * 0.75
-					},
-					color
-				);
-				break;
-			case JSON.stringify({ prev: { x: 0, y: -1 }, next: { x: -1, y: 0 } }):
-			case JSON.stringify({ prev: { x: -1, y: 0 }, next: { x: 0, y: -1 } }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y
-					},
-					{
-						x: config.cellSize * 0.75,
-						y: config.cellSize * 0.875
-					},
-					color
-				);
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize * 0.875,
-						y: config.cellSize * 0.75
-					},
-					color
-				);
-				break;
-			case JSON.stringify({ prev: null, next: { x: 1, y: 0 } }):
-			case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: 1, y: 0 } }):
-			case JSON.stringify({ prev: { x: 1, y: 0 }, next: null }):
-			case JSON.stringify({ prev: { x: 1, y: 0 }, next: { x: 0, y: 0 } }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize * 0.875,
-						y: config.cellSize * 0.75
-					},
-					color
-				);
-				break;
-			case JSON.stringify({ prev: { x: -1, y: 0 }, next: null }):
-			case JSON.stringify({ prev: { x: -1, y: 0 }, next: { x: 0, y: 0 } }):
-			case JSON.stringify({ prev: null, next: { x: -1, y: 0 } }):
-			case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: -1, y: 0 } }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize * 0.875,
-						y: config.cellSize * 0.75
-					},
-					color
-				);
-				break;
-			case JSON.stringify({ prev: null, next: { x: 0, y: -1 } }):
-			case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: 0, y: -1 } }):
-			case JSON.stringify({ prev: { x: 0, y: -1 }, next: null }):
-			case JSON.stringify({ prev: { x: 0, y: -1 }, next: { x: 0, y: 0 } }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y
-					},
-					{
-						x: config.cellSize * 0.75,
-						y: config.cellSize * 0.875
-					},
-					color
-				);
-				break;
-			case JSON.stringify({ prev: { x: 0, y: 1 }, next: null }):
-			case JSON.stringify({ prev: { x: 0, y: 1 }, next: { x: 0, y: 0 } }):
-			case JSON.stringify({ prev: null, next: { x: 0, y: 1 } }):
-			case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: 0, y: 1 } }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize * 0.75,
-						y: config.cellSize * 0.875
-					},
-					color
-				);
-				break;
-			case JSON.stringify({ prev: null, next: null }):
-				drawRectShape(
-					config,
-					{
-						x: currentElementTopLeftPos.x + config.cellSize * 0.125,
-						y: currentElementTopLeftPos.y + config.cellSize * 0.125
-					},
-					{
-						x: config.cellSize * 0.75,
-						y: config.cellSize * 0.75
-					},
-					color
-				);
-				break;
-		}
-	}
-
-	function drawText(config: CanvasConfig, text: string, position: App.Vector2) {
-		config.ctx.fillStyle = 'white';
-		config.ctx.font = config.cellSize / 1.8 + 'px DM Sans';
-		config.ctx.textAlign = 'center';
-
-		//fill text centered vertically and horizontally
-		const xPx = position.x * config.cellSize + config.cellSize / 2;
-		const yPx = position.y * config.cellSize + config.cellSize / 2 + config.cellSize / 6;
-		config.ctx.fillText(text, xPx, yPx);
+		snakesLayer.draw();
 	}
 </script>
 
-<canvas
-	id="game-render"
-	bind:this={canvas}
-	width={550}
-	height={550}
-	style="image-rendering: crisp-edges;"
-/>
+<div bind:this={canvasWrapper} />

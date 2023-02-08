@@ -1,3 +1,4 @@
+import type { Vector2 } from '$lib/vector';
 import { WebSocketClient } from '$lib/websocket';
 import { get, writable } from 'svelte/store';
 
@@ -72,14 +73,14 @@ export interface PageState {
 }
 export interface ClassicGameState {
 	players: Player[];
-	apples: App.Vector2[];
+	apples: Vector2[];
 	gridSize: number;
 }
 export interface Player {
 	id: string;
 	name: string;
 	color: string;
-	snakeTail: App.Vector2[];
+	snakeTail: Vector2[];
 	score: number;
 }
 

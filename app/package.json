@@ -34,6 +34,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"pixi.js": "^7.1.2"
+		"konva": "^8.4.2"
 	}
 }
