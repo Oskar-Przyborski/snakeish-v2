@@ -43,17 +43,18 @@ func (core CoreInstance) GetRoomById(id string) (room.IRoom, bool) {
 	return nil, false
 }
 
-func (core *CoreInstance) CreateClassicRoom(roomName string, modeName string) (*classic_room.ClassicRoom, error) {
+func (core *CoreInstance) CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic_room.ClassicRoom, error) {
 	if _, foundDuplicate := core.GetRoomByName(roomName); foundDuplicate {
 		return &classic_room.ClassicRoom{}, errors.New("name already used by other room")
 	}
 
 	base := room.RoomBase{
-		Name: roomName,
-		Id:   uuid.NewString(),
+		PinRequirer: room.CreatePinRequirer(pin),
+		Name:        roomName,
+		Id:          uuid.NewString(),
 	}
 
-	room := classic_room.CreateClassicRoom(base, modeName)
+	room := classic_room.ConfigureClassicRoom(base, modeName)
 	core.rooms = append(core.rooms, room)
 	go room.StartRoom()
 

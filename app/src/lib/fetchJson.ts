@@ -40,7 +40,7 @@ export const fetchJson = async <T>(endpoint: string, options?: options<T>) => {
 		const controller = new AbortController();
 		setTimeout(() => controller.abort(), 5000);
 		const response = await fetcher(url, { method, body, headers, signal: controller.signal });
-
+		console.log(response)
 		if (!response.headers.get('Content-Type')?.split(';').includes('application/json')) {
 			return handleError(error(500, { message: 'invalid response content-type' }));
 		}

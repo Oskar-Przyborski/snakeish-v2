@@ -10,6 +10,10 @@ func TestCoreInitialization(t *testing.T) {
 	if len(core.GetRooms()) != 0 {
 		t.Fatal("New core instance should have 0 rooms")
 	}
+
+	if len(core.roomsAfkTimers) != 0 {
+		t.Fatalf("New core instance should have 0 afk timers")
+	}
 }
 
 func TestRoomCreation(t *testing.T) {
@@ -17,12 +21,15 @@ func TestRoomCreation(t *testing.T) {
 	roomName := "Hello123"
 	modeName := "Casual"
 
-	room, err := core.CreateClassicRoom(roomName, modeName)
+	room, err := core.CreateClassicRoom(roomName, modeName, nil)
 	if err != nil {
 		t.Fatalf("CoreInstance.CreateRoom() shouldn't return error")
 	}
 	if room.GetName() != roomName {
 		t.Fatalf("IRoom.GetName() should return %s, but returned %s", roomName, room.GetName())
+	}
+	if room.PinRequirer.PinEnabled {
+		t.Fatalf("Room's pin shouldn't be enabled")
 	}
 
 	rooms := core.GetRooms()
@@ -38,8 +45,8 @@ func TestRoomCreation(t *testing.T) {
 
 func TestFindRoomByName(t *testing.T) {
 	core := CreateCore()
-	room1, _ := core.CreateClassicRoom("1", "Casual")
-	room2, _ := core.CreateClassicRoom("2", "Casual")
+	room1, _ := core.CreateClassicRoom("1", "Casual", nil)
+	room2, _ := core.CreateClassicRoom("2", "Casual", nil)
 
 	roomFound1, found1 := core.GetRoomByName("1")
 	roomFound2, found2 := core.GetRoomByName("2")
@@ -64,8 +71,8 @@ func TestFindRoomByName(t *testing.T) {
 }
 func TestFindRoomById(t *testing.T) {
 	core := CreateCore()
-	room1, _ := core.CreateClassicRoom("1", "Casual")
-	room2, _ := core.CreateClassicRoom("2", "Casual")
+	room1, _ := core.CreateClassicRoom("1", "Casual", nil)
+	room2, _ := core.CreateClassicRoom("2", "Casual", nil)
 
 	roomFound1, found1 := core.GetRoomById(room1.GetId())
 	roomFound2, found2 := core.GetRoomById(room2.GetId())
@@ -92,17 +99,17 @@ func TestFindRoomById(t *testing.T) {
 func TestRoomNamesDuplication(t *testing.T) {
 	core := CreateCore()
 
-	_, err1 := core.CreateClassicRoom("room-name", "Casual")
+	_, err1 := core.CreateClassicRoom("room-name", "Casual", nil)
 	if err1 != nil {
 		t.Fatal("CoreInstance.CreateRoom() shouldn't return error")
 	}
 
-	_, err2 := core.CreateClassicRoom("room-name", "Casual")
+	_, err2 := core.CreateClassicRoom("room-name", "Casual", nil)
 	if err2 == nil {
 		t.Fatal("CoreInstance.CreateRoom() should return error")
 	}
 
-	_, err3 := core.CreateClassicRoom("room-name-other", "Casual")
+	_, err3 := core.CreateClassicRoom("room-name-other", "Casual", nil)
 	if err3 != nil {
 		t.Fatal("CoreInstance.CreateRoom() shouldn't return error")
 	}

@@ -1,30 +1,32 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
 	import Button from '$lib/components/buttons/button.svelte';
 	import Panel from '$lib/components/panel.svelte';
 	import Icon from '@iconify/svelte';
-	import type { Player } from './classic_game';
+	import { leaveGame, store } from './classic_game';
 
-	export let players: Player[];
+	$: players = $store.gameState?.players;
 </script>
 
 <div class="leaderboard">
 	<h1>Leaderboard</h1>
 	<div class="list">
-		{#each players.sort((a, b) => b.snakeTail.length - a.snakeTail.length).slice(0, 5) as player}
-			<Panel padding="0.8rem">
-				<div class="player-item">
-					<div class="name">
-						{player.name}
+		{#if players != null}
+			{#each players.sort((a, b) => b.snakeTail.length - a.snakeTail.length).slice(0, 5) as player}
+				<Panel padding="0.8rem">
+					<div class="player-item">
+						<div class="name">
+							{player.name}
+						</div>
+						<div class="score"><Icon icon="mdi:star-outline" inline /> {player.score}</div>
 					</div>
-					<div class="score"><Icon icon="mdi:star-outline" inline /> {player.score}</div>
-				</div>
-			</Panel>
-		{/each}
+				</Panel>
+			{/each}
+		{:else}
+			Loading
+		{/if}
 	</div>
 	<div class="leave-btn">
-		<Button on:click={() => dispatch('leave')} outline>Leave game</Button>
+		<Button on:click={leaveGame} outline>Leave game</Button>
 	</div>
 </div>
 

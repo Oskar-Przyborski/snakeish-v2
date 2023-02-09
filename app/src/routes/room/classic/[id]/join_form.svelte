@@ -1,17 +1,19 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/buttons/button.svelte';
 	import TextInput from '$lib/components/inputs/text_input.svelte';
+	import { requestJoin } from './classic_game';
+	import PinInput from '$lib/components/inputs/pin_input.svelte';
 
-	const dispatcher = createEventDispatcher();
-
-	//TODO PIN code support
+	export let pinEnabled: boolean = false;
 	let name: string;
 	let color: string;
+	let pin: (number | null)[] = []
 
 	const submit = () => {
-		dispatcher('join', { name, color });
+		if (!canSubmit()) return;
+		requestJoin(name, color, pin);
 	};
+	const canSubmit = () => !(pinEnabled && pin.some((n) => n == null));
 </script>
 
 <div class="join-form">
@@ -19,9 +21,15 @@
 	<div class="form">
 		<TextInput bind:value={name}>Name</TextInput>
 		<TextInput bind:value={color}>Color</TextInput>
+		{#if pinEnabled}
+			<div>
+				Room's PIN Code
+				<PinInput bind:pin />
+			</div>
+		{/if}
 	</div>
 	<div class="join-btn">
-		<Button on:click={submit}>Join</Button>
+		<Button on:click={submit} disabled={!canSubmit()}>Join</Button>
 	</div>
 </div>
 

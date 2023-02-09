@@ -29,10 +29,6 @@
 		leaveRoom();
 	});
 
-	function onJoin(event: CustomEvent<{ name: string; color: string }>) {
-		requestJoin(event.detail.name, event.detail.color);
-	}
-
 	function onKeyDown(event: KeyboardEvent) {
 		if (!$store.isPlaying) return;
 
@@ -63,9 +59,9 @@
 			</Panel>
 			<Panel>
 				{#if !$store.isPlaying}
-					<JoinForm on:join={onJoin} />
+					<JoinForm pinEnabled={data.pinEnabled}/>
 				{:else}
-					<Leaderboard players={$store.gameState.players} on:leave={leaveGame} />
+					<Leaderboard />
 				{/if}
 			</Panel>
 		</div>

@@ -16,7 +16,7 @@
 
 	const updateBtnState = async (state: App.RoomCreationState) => {
 		if (state.pinEnabled) {
-			if (state.pin.some((s) => s == '')) btnDisabled = true;
+			if (state.pin.some((s) => s == null)) btnDisabled = true;
 			else btnDisabled = false;
 			return;
 		}

@@ -1,6 +1,7 @@
 package classic_room
 
 import (
+	"errors"
 	r "snakeish/core/room"
 	"snakeish/core/utils"
 	"time"
@@ -40,6 +41,7 @@ func (room *ClassicRoom) GetPreview() r.RoomPreview {
 		ModeName:   room.GetModeName(),
 		Players:    len(room.Players),
 		MaxPlayers: room.MaxPlayers,
+		PinEnbled:  room.PinEnabled,
 	}
 }
 
@@ -51,7 +53,7 @@ func (room *ClassicRoom) StartRoom() {
 	}
 }
 
-func CreateClassicRoom(base r.RoomBase, mode string) *ClassicRoom {
+func ConfigureClassicRoom(base r.RoomBase, mode string) *ClassicRoom {
 	switch mode {
 	default:
 		return &ClassicRoom{
@@ -75,8 +77,15 @@ func CreateClassicRoom(base r.RoomBase, mode string) *ClassicRoom {
 	}
 }
 
-// TODO add name validation
-func (room *ClassicRoom) AddPlayer(name string, color string) *ClassicPlayer {
+func (room *ClassicRoom) AddPlayer(name string, color string, pin [4]int) (*ClassicPlayer, error) {
+	if !room.CheckPin(pin) {
+		return nil, errors.New("incorrect-pin")
+	}
+
+	if !room.IsPlayerNameAvailable(name) {
+		return nil, errors.New("player-name-already-taken")
+	}
+
 	player := ClassicPlayer{
 		Id:              uuid.NewString(),
 		Name:            name,
@@ -87,7 +96,7 @@ func (room *ClassicRoom) AddPlayer(name string, color string) *ClassicPlayer {
 	}
 
 	room.Players = append(room.Players, &player)
-	return &player
+	return &player, nil
 }
 
 func (room *ClassicRoom) RemovePlayer(id string) {
@@ -106,4 +115,14 @@ func (room *ClassicRoom) GetPlayerById(id string) *ClassicPlayer {
 		}
 	}
 	return nil
+}
+
+func (room *ClassicRoom) IsPlayerNameAvailable(name string) bool {
+	for _, player := range room.Players {
+		if player.Name == name {
+			return false
+		}
+	}
+
+	return true
 }

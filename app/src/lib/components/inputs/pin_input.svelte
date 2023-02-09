@@ -4,7 +4,7 @@
 	import Icon from '@iconify/svelte';
 
 	export let disabled = false;
-	export let pin = ['', '', '', ''];
+	export let pin: (number | null)[] = [null, null, null, null];
 	let char1: HTMLInputElement;
 	let char2: HTMLInputElement;
 	let char3: HTMLInputElement;
@@ -26,10 +26,12 @@
 	};
 
 	const registerCharFromEl = (el: HTMLInputElement) => {
-		if (el == char1) pin[0] = el.value;
-		else if (el == char2) pin[1] = el.value;
-		else if (el == char3) pin[2] = el.value;
-		else if (el == char4) pin[3] = el.value;
+		const value = el.value == '' ? null : parseInt(el.value);
+		console.log(value)
+		if (el == char1) pin[0] = value;
+		else if (el == char2) pin[1] = value;
+		else if (el == char3) pin[2] = value;
+		else if (el == char4) pin[3] = value;
 		dispatch('change', { pin });
 	};
 
@@ -67,7 +69,7 @@
 		{disabled}
 		bind:this={char1}
 		on:keydown={onKeypress}
-		value={pin[0]}
+		value={pin[0] == null ? '' : pin[0]}
 	/>
 	<input
 		class="pass-char-input"
@@ -76,7 +78,7 @@
 		{disabled}
 		bind:this={char2}
 		on:keydown={onKeypress}
-		value={pin[1]}
+		value={pin[1] == null ? '' : pin[1]}
 	/>
 	<input
 		class="pass-char-input"
@@ -85,7 +87,7 @@
 		{disabled}
 		bind:this={char3}
 		on:keydown={onKeypress}
-		value={pin[2]}
+		value={pin[2] == null ? '' : pin[2]}
 	/>
 	<input
 		class="pass-char-input"
@@ -94,7 +96,7 @@
 		{disabled}
 		bind:this={char4}
 		on:keydown={onKeypress}
-		value={pin[3]}
+		value={pin[3] == null ? '' : pin[3]}
 	/>
 
 	<button class="show-hide-eye" on:click={() => (pinHidden = !pinHidden)} {disabled}>

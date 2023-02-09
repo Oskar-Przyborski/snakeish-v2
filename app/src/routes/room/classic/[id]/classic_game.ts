@@ -31,8 +31,8 @@ export const connectRoomWebsocket = (roomId: string) => {
 	});
 };
 
-export const requestJoin = (name: string, color: string) => {
-	get(store).websocket?.sendMessage('request-join', { name, color });
+export const requestJoin = (name: string, color: string, pin: (number | null)[]) => {
+	get(store).websocket?.sendMessage('request-join', { name, color, pin });
 };
 
 const joinSuccess = (data: JoinSuccessType) => {

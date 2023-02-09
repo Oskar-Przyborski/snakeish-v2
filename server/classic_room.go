@@ -5,8 +5,8 @@ import (
 	"snakeish/core/utils"
 )
 
-func CreateClassicRoom(roomName string, modeName string) (*classic_room.ClassicRoom, error) {
-	room, err := Core.CreateClassicRoom(roomName, modeName)
+func CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic_room.ClassicRoom, error) {
+	room, err := Core.CreateClassicRoom(roomName, modeName, pin)
 	if err != nil {
 		return &classic_room.ClassicRoom{}, err
 	}
