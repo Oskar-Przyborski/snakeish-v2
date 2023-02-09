@@ -63,11 +63,11 @@
 	};
 </script>
 
-<div class="pin-input" class:error>
+<div class="pin-input" class:error class:disabled>
 	<div class="name">
 		<slot />
 	</div>
-	<div class="input-wrapper" class:disabled>
+	<div class="input-wrapper">
 		<input
 			class="pass-char-input"
 			type={pinHidden ? 'password' : 'text'}
@@ -126,13 +126,6 @@
 			flex-flow: row nowrap;
 			gap: 0.5rem;
 
-			&.disabled {
-				color: #fff8;
-				.pass-char-input {
-					border-bottom-color: #fff8;
-				}
-			}
-
 			.pass-char-input {
 				all: unset;
 				padding-bottom: 0.5rem;
@@ -167,6 +160,22 @@
 			}
 			.pass-char-input {
 				border-bottom-color: #f43737;
+			}
+		}
+
+		&.disabled {
+			.name{
+				color: #fff8;
+			}
+			.alt-text {
+				color: #fff8;
+			}
+			.pass-char-input {
+				color: #fff8;
+				border-bottom-color: #fff8;
+			}
+			.show-hide-eye{
+				color: #fff8;
 			}
 		}
 	}
