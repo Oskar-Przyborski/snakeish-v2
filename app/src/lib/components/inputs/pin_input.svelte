@@ -4,6 +4,8 @@
 	import Icon from '@iconify/svelte';
 
 	export let disabled = false;
+	export let altText: string = '';
+	export let error: boolean = false;
 	export let pin: (number | null)[] = [null, null, null, null];
 	let char1: HTMLInputElement;
 	let char2: HTMLInputElement;
@@ -27,7 +29,7 @@
 
 	const registerCharFromEl = (el: HTMLInputElement) => {
 		const value = el.value == '' ? null : parseInt(el.value);
-		console.log(value)
+		console.log(value);
 		if (el == char1) pin[0] = value;
 		else if (el == char2) pin[1] = value;
 		else if (el == char3) pin[2] = value;
@@ -61,82 +63,110 @@
 	};
 </script>
 
-<div class="input-wrapper" class:disabled>
-	<input
-		class="pass-char-input"
-		type={pinHidden ? 'password' : 'text'}
-		maxlength="1"
-		{disabled}
-		bind:this={char1}
-		on:keydown={onKeypress}
-		value={pin[0] == null ? '' : pin[0]}
-	/>
-	<input
-		class="pass-char-input"
-		type={pinHidden ? 'password' : 'text'}
-		maxlength="1"
-		{disabled}
-		bind:this={char2}
-		on:keydown={onKeypress}
-		value={pin[1] == null ? '' : pin[1]}
-	/>
-	<input
-		class="pass-char-input"
-		type={pinHidden ? 'password' : 'text'}
-		maxlength="1"
-		{disabled}
-		bind:this={char3}
-		on:keydown={onKeypress}
-		value={pin[2] == null ? '' : pin[2]}
-	/>
-	<input
-		class="pass-char-input"
-		type={pinHidden ? 'password' : 'text'}
-		maxlength="1"
-		{disabled}
-		bind:this={char4}
-		on:keydown={onKeypress}
-		value={pin[3] == null ? '' : pin[3]}
-	/>
+<div class="pin-input" class:error>
+	<div class="name">
+		<slot />
+	</div>
+	<div class="input-wrapper" class:disabled>
+		<input
+			class="pass-char-input"
+			type={pinHidden ? 'password' : 'text'}
+			maxlength="1"
+			{disabled}
+			bind:this={char1}
+			on:keydown={onKeypress}
+			value={pin[0] == null ? '' : pin[0]}
+		/>
+		<input
+			class="pass-char-input"
+			type={pinHidden ? 'password' : 'text'}
+			maxlength="1"
+			{disabled}
+			bind:this={char2}
+			on:keydown={onKeypress}
+			value={pin[1] == null ? '' : pin[1]}
+		/>
+		<input
+			class="pass-char-input"
+			type={pinHidden ? 'password' : 'text'}
+			maxlength="1"
+			{disabled}
+			bind:this={char3}
+			on:keydown={onKeypress}
+			value={pin[2] == null ? '' : pin[2]}
+		/>
+		<input
+			class="pass-char-input"
+			type={pinHidden ? 'password' : 'text'}
+			maxlength="1"
+			{disabled}
+			bind:this={char4}
+			on:keydown={onKeypress}
+			value={pin[3] == null ? '' : pin[3]}
+		/>
 
-	<button class="show-hide-eye" on:click={() => (pinHidden = !pinHidden)} {disabled}>
-		<Icon icon={pinHidden ? 'mdi:eye' : 'mdi:eye-off'} inline />
-	</button>
+		<button class="show-hide-eye" on:click={() => (pinHidden = !pinHidden)} {disabled}>
+			<Icon icon={pinHidden ? 'mdi:eye' : 'mdi:eye-off'} inline />
+		</button>
+	</div>
+	{#if altText}
+		<div class="alt-text"><Icon icon="mdi:information" inline /> {altText}</div>
+	{/if}
 </div>
 
 <style lang="scss">
-	.input-wrapper {
-		padding-top: 0.5rem;
-		display: flex;
-		flex-flow: row nowrap;
-		gap: 0.5rem;
+	.pin-input {
+		margin: 1rem 0;
+		.name {
+			color: #fffa;
+		}
+		.input-wrapper {
+			padding-top: 0.5rem;
+			display: flex;
+			flex-flow: row nowrap;
+			gap: 0.5rem;
 
-		&.disabled {
-			color: #fff8;
+			&.disabled {
+				color: #fff8;
+				.pass-char-input {
+					border-bottom-color: #fff8;
+				}
+			}
+
 			.pass-char-input {
-				border-bottom-color: #fff8;
+				all: unset;
+				padding-bottom: 0.5rem;
+				border-bottom: 3px solid white;
+				width: 1em;
+				font-size: 1.2rem;
+				text-align: center;
+				&:focus {
+					border-bottom: 3px solid var(--red);
+				}
+			}
+			.show-hide-eye {
+				all: unset;
+				font-size: 1.5rem;
+				margin-left: 1rem;
+				cursor: pointer;
+
+				&:focus-visible {
+					outline: auto;
+				}
 			}
 		}
-
-		.pass-char-input {
-			all: unset;
-			padding-bottom: 0.5rem;
-			border-bottom: 3px solid white;
-			width: 1em;
-			font-size: 1.2rem;
-			text-align: center;
-			&:focus {
-				border-bottom: 3px solid var(--red);
-			}
+		.alt-text {
+			margin-top: 0.5rem;
+			font-size: 0.9rem;
+			color: #fffa;
 		}
-		.show-hide-eye {
-			all: unset;
-			font-size: 1.5rem;
-			margin-left: 1rem;
-			cursor: pointer;
-
-			&:focus-visible {
-				outline: auto;
+		&.error {
+			.name,
+			.alt-text {
+				color: #f43737;
+			}
+			.pass-char-input {
+				border-bottom-color: #f43737;
 			}
 		}
 	}

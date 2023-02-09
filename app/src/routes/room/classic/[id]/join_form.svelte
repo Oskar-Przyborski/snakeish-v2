@@ -7,7 +7,7 @@
 	export let pinEnabled: boolean = false;
 	let name: string;
 	let color: string;
-	let pin: (number | null)[] = []
+	let pin: (number | null)[] = [];
 
 	const submit = () => {
 		if (!canSubmit()) return;
@@ -22,10 +22,7 @@
 		<TextInput bind:value={name}>Name</TextInput>
 		<TextInput bind:value={color}>Color</TextInput>
 		{#if pinEnabled}
-			<div>
-				Room's PIN Code
-				<PinInput bind:pin />
-			</div>
+			<PinInput bind:pin>Room's PIN Code</PinInput>
 		{/if}
 	</div>
 	<div class="join-btn">

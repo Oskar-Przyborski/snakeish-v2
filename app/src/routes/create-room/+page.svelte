@@ -6,7 +6,7 @@
 	import ChooseMode from './choose_mode.svelte';
 	import StepItem from './step_item.svelte';
 	import ChoosePin from './choose_pin.svelte';
-	import { resetState, store } from '$lib/room_creation_state';
+	import { resetState, store } from './room_creation_state';
 	import BackButton from '$lib/components/buttons/back_button.svelte';
 	import { goto } from '$app/navigation';
 	import { fetchJson } from '$lib/fetchJson';

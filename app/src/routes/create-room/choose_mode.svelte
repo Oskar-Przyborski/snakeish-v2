@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { store } from '$lib/room_creation_state';
+	import { store } from './room_creation_state';
 	import { createEventDispatcher, onDestroy } from 'svelte';
 	const dispatch = createEventDispatcher();
 	import GamemodeCard from './gamemode_card.svelte';
