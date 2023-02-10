@@ -9,7 +9,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"vercel-build": "yum install gcc-c++ cairo-devel pango-devel libjpeg-turbo-devel giflib-devel"
 	},
 	"devDependencies": {
 		"@iconify/svelte": "^3.1.0",
@@ -33,7 +34,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"canvas": "^2.10.2",
+		"canvas": "^2.11.0",
 		"konva": "^8.4.2",
 		"ufo": "^1.0.1"
 	},
