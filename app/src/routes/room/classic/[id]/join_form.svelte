@@ -3,15 +3,28 @@
 	import TextInput from '$lib/components/inputs/text_input.svelte';
 	import { requestJoin } from './classic_game';
 	import PinInput from '$lib/components/inputs/pin_input.svelte';
+	import SkinSelector from '$lib/components/inputs/color_input.svelte';
 
 	export let pinEnabled: boolean = false;
 	let name: string;
-	let color: string;
+	let selectedColor: number;
 	let pin: (number | null)[] = [];
+
+	const skinColors = [
+		'#deb135',
+		'#80e356',
+		'#e37e56',
+		'#56e37e',
+		'#56dee3',
+		'#5672e3',
+		'#8a56e3',
+		'#e356bd',
+		'#e3566b'
+	];
 
 	const submit = () => {
 		if (!canSubmit()) return;
-		requestJoin(name, color, pin);
+		requestJoin(name, skinColors[selectedColor], pin);
 	};
 	const canSubmit = () => !(pinEnabled && pin.some((n) => n == null));
 </script>
@@ -20,7 +33,7 @@
 	<h1>Join Game</h1>
 	<div class="form">
 		<TextInput bind:value={name}>Name</TextInput>
-		<TextInput bind:value={color}>Color</TextInput>
+		<SkinSelector colors={skinColors} bind:selected={selectedColor}>Skin color</SkinSelector>
 		{#if pinEnabled}
 			<PinInput bind:pin>Room's PIN Code</PinInput>
 		{/if}

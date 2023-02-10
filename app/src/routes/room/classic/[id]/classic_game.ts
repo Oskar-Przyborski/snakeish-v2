@@ -50,6 +50,7 @@ export const leaveRoom = () => {
 		state.roomId = null;
 		state.isPlaying = false;
 		state.websocket = null;
+		state.gameState = null
 
 		return state;
 	});
