@@ -15,8 +15,10 @@
 	let pinHidden = true;
 
 	const focusPrevElement = (currEl: HTMLInputElement) => {
-		if (currEl == char1) char1.blur();
-		else if (currEl == char2) char1.select();
+		if (currEl == char1) {
+			char1.blur();
+			dispatch('blur');
+		} else if (currEl == char2) char1.select();
 		else if (currEl == char3) char2.select();
 		else if (currEl == char4) char3.select();
 	};
@@ -24,7 +26,10 @@
 		if (currEl == char1) char2.select();
 		else if (currEl == char2) char3.select();
 		else if (currEl == char3) char4.select();
-		else if (currEl == char4) char4.blur();
+		else if (currEl == char4) {
+			char4.blur();
+			dispatch('blur');
+		}
 	};
 
 	const registerCharFromEl = (el: HTMLInputElement) => {
@@ -163,7 +168,7 @@
 		}
 
 		&.disabled {
-			.name{
+			.name {
 				color: #fff8;
 			}
 			.alt-text {
@@ -173,7 +178,7 @@
 				color: #fff8;
 				border-bottom-color: #fff8;
 			}
-			.show-hide-eye{
+			.show-hide-eye {
 				color: #fff8;
 			}
 		}

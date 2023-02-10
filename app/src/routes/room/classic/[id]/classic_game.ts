@@ -7,7 +7,11 @@ export const store = writable<PageState>({
 	isPlaying: false,
 	gameState: null,
 	playerId: null,
-	websocket: null
+	websocket: null,
+	errors: {
+		name: undefined,
+		pin: undefined
+	}
 });
 
 export const connectRoomWebsocket = (roomId: string) => {
@@ -26,6 +30,7 @@ export const connectRoomWebsocket = (roomId: string) => {
 
 		wsConnection.addListener<ClassicGameState>('game-update', updateGameState);
 		wsConnection.addListener<JoinSuccessType>('join-success', joinSuccess);
+		wsConnection.addListener<JoinError>('join-error', joinError);
 
 		return state;
 	});
@@ -39,8 +44,25 @@ const joinSuccess = (data: JoinSuccessType) => {
 	store.update((state) => {
 		state.isPlaying = true;
 		state.playerId = data.playerId;
+		state.errors = { name: undefined, pin: undefined };
 		return state;
 	});
+};
+const joinError = (data: JoinError) => {
+	switch (data.error) {
+		case 'incorrect-pin':
+			store.update((state) => {
+				state.errors.pin = 'Incorrect PIN code!';
+				return state;
+			});
+			break;
+		case 'player-name-already-taken':
+			store.update((state) => {
+				state.errors.name = 'Name is already taken!';
+				return state;
+			});
+			break;
+	}
 };
 
 export const leaveRoom = () => {
@@ -50,7 +72,7 @@ export const leaveRoom = () => {
 		state.roomId = null;
 		state.isPlaying = false;
 		state.websocket = null;
-		state.gameState = null
+		state.gameState = null;
 
 		return state;
 	});
@@ -71,6 +93,10 @@ export interface PageState {
 	gameState: ClassicGameState | null;
 	playerId: string | null;
 	roomId: string | null;
+	errors: {
+		name: string | undefined;
+		pin: string | undefined;
+	};
 }
 export interface ClassicGameState {
 	players: Player[];
@@ -89,4 +115,7 @@ interface JoinSuccessType {
 	playerId: string;
 	name: string;
 	color: string;
+}
+interface JoinError {
+	error: string;
 }
