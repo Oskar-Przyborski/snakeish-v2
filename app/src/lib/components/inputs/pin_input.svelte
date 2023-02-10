@@ -29,7 +29,6 @@
 
 	const registerCharFromEl = (el: HTMLInputElement) => {
 		const value = el.value == '' ? null : parseInt(el.value);
-		console.log(value);
 		if (el == char1) pin[0] = value;
 		else if (el == char2) pin[1] = value;
 		else if (el == char3) pin[2] = value;
