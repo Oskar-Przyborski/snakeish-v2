@@ -34,8 +34,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"canvas": "^2.8.0",
-		"jsdom": "19.0.0",
+		"canvas": "^2.11.0",
 		"konva": "^8.4.2",
 		"ufo": "^1.0.1"
 	},
