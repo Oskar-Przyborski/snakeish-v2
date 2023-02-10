@@ -20,6 +20,18 @@ type ClassicRoom struct {
 	ModeName       string
 }
 
+var allowedPlayersColors = []string{
+	"#deb135",
+	"#80e356",
+	"#e37e56",
+	"#56e37e",
+	"#56dee3",
+	"#5672e3",
+	"#8a56e3",
+	"#e356bd",
+	"#e3566b",
+}
+
 func (room ClassicRoom) GetModeTag() string {
 	return "classic"
 }
@@ -84,6 +96,9 @@ func (room *ClassicRoom) AddPlayer(name string, color string, pin [4]int) (*Clas
 
 	if !room.IsPlayerNameAvailable(name) {
 		return nil, errors.New("player-name-already-taken")
+	}
+	if !utils.ArrayIncludes(allowedPlayersColors, color) {
+		return nil, errors.New("color-not-allowed")
 	}
 
 	player := ClassicPlayer{
