@@ -33,7 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"canvas": "^2.11.0",
+		"canvas": "^2.10.2",
 		"konva": "^8.4.2",
 		"ufo": "^1.0.1"
 	},
