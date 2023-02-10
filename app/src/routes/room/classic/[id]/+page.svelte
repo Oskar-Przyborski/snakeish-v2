@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { connectRoomWebsocket, requestJoin, leaveRoom, store, leaveGame } from './classic_game';
+	import { connectRoomWebsocket, leaveRoom, store } from './classic_game';
 	import { onMount, onDestroy } from 'svelte';
 	import JoinForm from './join_form.svelte';
 	import Leaderboard from './leaderboard.svelte';
