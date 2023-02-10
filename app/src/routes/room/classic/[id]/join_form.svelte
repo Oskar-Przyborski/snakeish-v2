@@ -27,6 +27,14 @@
 		requestJoin(name, skinColors[selectedColor], pin);
 	};
 	const canSubmit = () => !(pinEnabled && pin.some((n) => n == null));
+
+	const onNameInputBlur = () => {
+		if(name.length < 3 || name.length > 10){
+			$store.errors.name = "Name should be 3-10 chars long!"
+		} else {
+			$store.errors.name = undefined
+		}
+	}
 </script>
 
 <div class="join-form">
@@ -36,7 +44,7 @@
 			bind:value={name}
 			error={$store.errors.name != undefined}
 			altText={$store.errors.name}
-			on:blur={($store.errors.name = undefined)}
+			on:blur={onNameInputBlur}
 		>
 			Name
 		</TextInput>

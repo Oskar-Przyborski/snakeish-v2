@@ -94,6 +94,10 @@ func (room *ClassicRoom) AddPlayer(name string, color string, pin [4]int) (*Clas
 		return nil, errors.New("incorrect-pin")
 	}
 
+	if len(name) < 3 || len(name) > 10 {
+		return nil, errors.New("player-name-incorrect-length")
+	}
+
 	if !room.IsPlayerNameAvailable(name) {
 		return nil, errors.New("player-name-already-taken")
 	}
