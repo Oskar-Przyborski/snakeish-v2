@@ -7,7 +7,12 @@
 <a class="room-preview-container" href={`/room/${room.modeTag}/${room.id}`}>
 	<div class="top">
 		<div class="name">{room.name}</div>
-		<span class="enter-icon"><Icon icon="mdi:location-enter" inline /></span>
+		<span class="enter-icon">
+			{#if room.pinEnabled}
+				<span class="lock"><Icon icon="mdi:lock-outline" inline /></span>
+			{/if}
+			<Icon icon="mdi:location-enter" inline />
+		</span>
 	</div>
 	<div class="bottom">
 		<div class="game-mode">
@@ -60,6 +65,12 @@
 			.enter-icon {
 				color: white;
 				font-size: 2rem;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				.lock {
+					font-size: 1.6rem;
+				}
 			}
 		}
 		.bottom {

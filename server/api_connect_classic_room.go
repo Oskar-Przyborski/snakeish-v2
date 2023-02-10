@@ -56,13 +56,20 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		type requestType struct {
 			Color string `json:"color"`
 			Name  string `json:"name"`
+			Pin   [4]int `json:"pin"`
 		}
 		data := requestType{}
 		if err := c.BindJSON(&data); err != nil {
 			return
 		}
 
-		player := classicRoom.AddPlayer(data.Name, data.Color)
+		player, err := classicRoom.AddPlayer(data.Name, data.Color, data.Pin)
+		if err != nil {
+			connectedClient.WebSocket.Send("join-error", map[string]any{
+				"error": err.Error(),
+			})
+			return
+		}
 
 		connectedClient.IsPlayer = true
 		connectedClient.PlayerId = player.Id

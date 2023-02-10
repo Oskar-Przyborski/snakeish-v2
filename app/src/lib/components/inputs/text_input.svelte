@@ -21,6 +21,8 @@
 		bind:value
 		on:focus={() => (focused = true)}
 		on:blur={() => (focused = false)}
+		on:focus
+		on:blur
 	/>
 	<div class="border" class:focused />
 	{#if altText}

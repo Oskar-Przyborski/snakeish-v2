@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, onDestroy } from 'svelte';
 	const dispatch = createEventDispatcher();
-	import { store } from '$lib/room_creation_state';
+	import { store } from './room_creation_state';
 	import TextInput from '$lib/components/inputs/text_input.svelte';
 	import Panel from '$lib/components/panel.svelte';
 	import Button from '$lib/components/buttons/button.svelte';

@@ -5,7 +5,7 @@ const defaultStateCreator = () => {
 		roomName: '',
 		configName: null,
 		pinEnabled: false,
-		pin: ['', '', '', '']
+		pin: [null, null, null, null]
 	};
 };
 

@@ -10,4 +10,5 @@ type IRoom interface {
 	GetPreview() RoomPreview
 	OnUpdate(func())
 	StartRoom()
+	CheckPin([4]int) bool
 }

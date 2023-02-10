@@ -13,6 +13,7 @@ declare namespace App {
 		modeName: string;
 		modeTag: string;
 		id: string;
+		pinEnabled: boolean;
 	}
 	interface Vector2 {
 		x: number;
@@ -23,6 +24,6 @@ declare namespace App {
 		roomName: string;
 		configName: string | null;
 		pinEnabled: boolean;
-		pin: string[];
+		pin: (number | null)[];
 	}
 }

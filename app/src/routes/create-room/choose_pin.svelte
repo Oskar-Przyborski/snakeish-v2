@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { store } from '$lib/room_creation_state';
+	import { store } from './room_creation_state';
 	import { createEventDispatcher, onDestroy } from 'svelte';
 	const dispatch = createEventDispatcher();
 	import ToggleInput from '$lib/components/inputs/toggle_input.svelte';
@@ -16,7 +16,7 @@
 
 	const updateBtnState = async (state: App.RoomCreationState) => {
 		if (state.pinEnabled) {
-			if (state.pin.some((s) => s == '')) btnDisabled = true;
+			if (state.pin.some((s) => s == null)) btnDisabled = true;
 			else btnDisabled = false;
 			return;
 		}
@@ -34,14 +34,13 @@
 		<ToggleInput bind:value={$store.pinEnabled} />
 	</div>
 	<Panel>
-		<div class="pin-wrapper" class:disabled={!$store.pinEnabled}>
+		<PinInput
+			pin={$store.pin}
+			on:change={(e) => ($store.pin = e.detail.pin)}
+			disabled={!$store.pinEnabled}
+		>
 			Enter the pin
-			<PinInput
-				pin={$store.pin}
-				on:change={(e) => ($store.pin = e.detail.pin)}
-				disabled={!$store.pinEnabled}
-			/>
-		</div>
+		</PinInput>
 	</Panel>
 </div>
 <div class="continue-section">
@@ -65,9 +64,6 @@
 		}
 	}
 
-	.pin-wrapper.disabled {
-		color: #fff8;
-	}
 	.continue-section {
 		margin-top: 1.5rem;
 		display: flex;

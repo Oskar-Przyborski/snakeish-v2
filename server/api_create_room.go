@@ -8,12 +8,12 @@ import (
 )
 
 type CreateRoomEndpointData struct {
-	RoomName string `json:"roomName" binding:"required"`
-	ModeTag  string `json:"modeTag" binding:"required"`
-	ModeName string `json:"modeName" binding:"required"`
+	RoomName string  `json:"roomName" binding:"required"`
+	ModeTag  string  `json:"modeTag" binding:"required"`
+	ModeName string  `json:"modeName" binding:"required"`
+	Pin      *[4]int `json:"pin"`
 }
 
-// TODO add PIN code support
 func CreateRoomEndpoint(c *gin.Context) {
 	var data CreateRoomEndpointData
 	if err := c.BindJSON(&data); err != nil {
@@ -30,7 +30,7 @@ func CreateRoomEndpoint(c *gin.Context) {
 		}
 	}
 
-	room, err := CreateRoomByModeTag(data.RoomName, data.ModeTag, data.ModeName)
+	room, err := CreateRoomByModeTag(data.RoomName, data.ModeTag, data.ModeName, data.Pin)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"code":    "CREATION_ERROR",
@@ -43,9 +43,9 @@ func CreateRoomEndpoint(c *gin.Context) {
 	println("Created room. Id:", room.GetId())
 }
 
-func CreateRoomByModeTag(name string, modeTag string, modeName string) (room.IRoom, error) {
+func CreateRoomByModeTag(name string, modeTag string, modeName string, pin *[4]int) (room.IRoom, error) {
 	switch modeTag {
 	default: //classic
-		return CreateClassicRoom(name, modeName)
+		return CreateClassicRoom(name, modeName, pin)
 	}
 }
