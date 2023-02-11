@@ -49,7 +49,7 @@ func generateGameUpdateResponse(room classic_room.ClassicRoom) GameUpdateRespons
 	return response
 }
 
-func ConnectWebsocket(room *classic_room.ClassicRoom, socket *sockets.GosocketClient) {
+func ConnectWebsocket(room *classic_room.ClassicRoom, socket *sockets.SocketClient) {
 	core.StopAfkForRoom(room.Id)
 
 	client := clients.CreateClient(socket, room)

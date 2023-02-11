@@ -22,7 +22,7 @@ func GetInstance() *ClientsManager {
 	return &instance
 }
 
-func CreateClient(gosocket *sockets.GosocketClient, room room.IRoom) *Client {
+func CreateClient(gosocket *sockets.SocketClient, room room.IRoom) *Client {
 	client := &Client{
 		WebSocket:    gosocket,
 		Room:         room,

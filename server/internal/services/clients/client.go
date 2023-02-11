@@ -7,7 +7,7 @@ import (
 )
 
 type Client struct {
-	WebSocket    *sockets.GosocketClient
+	WebSocket    *sockets.SocketClient
 	Room         room.IRoom
 	IsPlayer     bool
 	PlayerId     string

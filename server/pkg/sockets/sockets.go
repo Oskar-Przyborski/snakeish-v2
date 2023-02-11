@@ -32,16 +32,16 @@ func EncodeMessage(event string, payload interface{}) string {
 }
 
 // Creates client from request (upgrades the request to WebSocket)
-func CreateClient(w http.ResponseWriter, r *http.Request) (*GosocketClient, error) {
+func CreateClient(w http.ResponseWriter, r *http.Request) (*SocketClient, error) {
 	var id string = "ws-" + uuid.NewString()
 	headers := http.Header{}
 
 	ws, err := upgrader.Upgrade(w, r, headers)
 	if err != nil {
-		return &GosocketClient{}, fmt.Errorf("error while handshaking: %s", err.Error())
+		return &SocketClient{}, fmt.Errorf("error while handshaking: %s", err.Error())
 	}
 
-	client := GosocketClient{
+	client := SocketClient{
 		WebSocket:    ws,
 		Id:           id,
 		Listeners:    map[string]func(MessageContext){},
@@ -57,7 +57,7 @@ var upgrader = websocket.Upgrader{
 	CheckOrigin:     func(r *http.Request) bool { return true },
 }
 
-type GosocketClient struct {
+type SocketClient struct {
 	WebSocket    *websocket.Conn
 	Id           string
 	Listeners    map[string]func(MessageContext)
@@ -65,7 +65,7 @@ type GosocketClient struct {
 }
 
 // Starts an infinite loop for listening to the events from client
-func (client *GosocketClient) ListenForMessages() {
+func (client *SocketClient) ListenForMessages() {
 	for {
 
 		msgType, bytes, err := client.WebSocket.ReadMessage()
@@ -93,17 +93,17 @@ func (client *GosocketClient) ListenForMessages() {
 }
 
 // Adds event listener that listen for events from clients
-func (client *GosocketClient) AddListener(event string, callback func(MessageContext)) {
+func (client *SocketClient) AddListener(event string, callback func(MessageContext)) {
 	client.Listeners[event] = callback
 }
 
 // Removes event listener
-func (client *GosocketClient) RemoveListener(event string) {
+func (client *SocketClient) RemoveListener(event string) {
 	delete(client.Listeners, event)
 }
 
 // Sends event to the client
-func (client *GosocketClient) Send(event string, payload interface{}) {
+func (client *SocketClient) Send(event string, payload interface{}) {
 	client.WebSocket.WriteMessage(1, []byte(EncodeMessage(event, payload)))
 }
 
