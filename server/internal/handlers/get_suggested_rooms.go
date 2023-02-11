@@ -1,8 +1,9 @@
-package main
+package handlers
 
 import (
 	"math"
-	"snakeish/core/room"
+	"snakeish/pkg/core"
+	"snakeish/pkg/core/room"
 	"sort"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,7 @@ func GetSuggestedRoomsEndpoint(c *gin.Context) {
 
 	evaluations := []roomEvaluation{}
 
-	for _, room := range Core.GetRooms() {
+	for _, room := range core.Instance.GetRooms() {
 		evaluations = append(evaluations, evaluate(room))
 	}
 

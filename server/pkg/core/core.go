@@ -2,21 +2,22 @@ package core
 
 import (
 	"errors"
+	"snakeish/pkg/core/room"
+	classic_room "snakeish/pkg/core/room/classic"
 	"time"
-
-	"snakeish/core/room"
-	classic_room "snakeish/core/room/classic"
 
 	"github.com/google/uuid"
 )
+
+var Instance CoreInstance
 
 type CoreInstance struct {
 	rooms          []room.IRoom
 	roomsAfkTimers map[string]*time.Timer
 }
 
-func CreateCore() CoreInstance {
-	return CoreInstance{
+func InitCore() {
+	Instance = CoreInstance{
 		rooms:          []room.IRoom{},
 		roomsAfkTimers: make(map[string]*time.Timer),
 	}

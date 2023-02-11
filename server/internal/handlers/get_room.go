@@ -1,6 +1,8 @@
-package main
+package handlers
 
 import (
+	"snakeish/pkg/core"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +18,7 @@ type RoomPreviewStruct struct {
 func GetRoomEndpoint(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	room, _ := Core.GetRoomById(id)
+	room, _ := core.Instance.GetRoomById(id)
 	if room == nil {
 		c.JSON(404, gin.H{
 			"code":    "ROOM_NOT_FOUND",

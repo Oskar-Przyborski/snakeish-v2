@@ -1,4 +1,4 @@
-package gosockets
+package sockets
 
 import (
 	"encoding/json"

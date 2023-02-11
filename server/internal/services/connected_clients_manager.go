@@ -1,28 +1,30 @@
-package main
+package services
 
 import (
-	"snakeish/core/room"
-	"snakeish/gosockets"
+	"snakeish/pkg/core/room"
+	"snakeish/pkg/sockets"
 )
+
+var ClientsManager ConnectedClientsManager
 
 type ConnectedClientsManager struct {
 	clients []*ConnectedClient
 }
 
 type ConnectedClient struct {
-	WebSocket *gosockets.GosocketClient
+	WebSocket *sockets.GosocketClient
 	RoomId    string
 	IsPlayer  bool
 	PlayerId  string
 }
 
-func CreateConnectedClientsManager() ConnectedClientsManager {
-	return ConnectedClientsManager{
+func Init() {
+	ClientsManager = ConnectedClientsManager{
 		clients: []*ConnectedClient{},
 	}
 }
 
-func (manager *ConnectedClientsManager) CreateConnectedClient(gosocket *gosockets.GosocketClient, room room.IRoom) *ConnectedClient {
+func (manager *ConnectedClientsManager) CreateConnectedClient(gosocket *sockets.GosocketClient, room room.IRoom) *ConnectedClient {
 	client := &ConnectedClient{
 		WebSocket: gosocket,
 		RoomId:    room.GetId(),

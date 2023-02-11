@@ -1,14 +1,15 @@
-package main
+package handlers
 
 import (
-	"snakeish/core/room"
+	"snakeish/pkg/core"
+	"snakeish/pkg/core/room"
 
 	"github.com/gin-gonic/gin"
 )
 
 func GetRoomsEndpoint(c *gin.Context) {
 	response := []room.RoomPreview{}
-	for _, room := range Core.GetRooms() {
+	for _, room := range core.Instance.GetRooms() {
 		response = append(response, room.GetPreview())
 	}
 

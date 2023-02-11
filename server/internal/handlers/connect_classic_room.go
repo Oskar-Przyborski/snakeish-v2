@@ -1,9 +1,11 @@
-package main
+package handlers
 
 import (
-	classic_room "snakeish/core/room/classic"
-	"snakeish/core/utils"
-	"snakeish/gosockets"
+	"snakeish/internal/services"
+	"snakeish/pkg/core"
+	classic_room "snakeish/pkg/core/room/classic"
+	"snakeish/pkg/core/utils"
+	"snakeish/pkg/sockets"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -12,7 +14,7 @@ import (
 func ConnectClassicRoomEndpoint(c *gin.Context) {
 	roomId := c.Params.ByName("id")
 
-	room, found := Core.GetRoomById(roomId)
+	room, found := core.Instance.GetRoomById(roomId)
 	if !found {
 		c.JSON(404, gin.H{
 			"code":    "ROOM_NOT_FOUND",
@@ -31,7 +33,7 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 
 	classicRoom := room.(*classic_room.ClassicRoom)
 
-	websocket, err := gosockets.CreateClient(c.Writer, c.Request)
+	websocket, err := sockets.CreateClient(c.Writer, c.Request)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"code":    "WEBSOCKET_ERROR",
@@ -40,19 +42,19 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	Core.StopAfkForRoom(roomId)
-	connectedClient := ClientsManager.CreateConnectedClient(websocket, room)
+	core.Instance.StopAfkForRoom(roomId)
+	connectedClient := services.ClientsManager.CreateConnectedClient(websocket, room)
 	connectedClient.WebSocket.OnDisconnect = append(connectedClient.WebSocket.OnDisconnect, func() {
 		classicRoom.RemovePlayer(connectedClient.PlayerId)
-		ClientsManager.RemoveConnectedClient(websocket.Id)
+		services.ClientsManager.RemoveConnectedClient(websocket.Id)
 
 		if classicRoom.GetPlayersCount() == 0 {
-			Core.StartAfkForRoom(roomId, 30*time.Second)
+			core.Instance.StartAfkForRoom(roomId, 30*time.Second)
 		}
 		println("Disconnected client with id: " + websocket.Id)
 	})
 
-	connectedClient.WebSocket.AddListener("request-join", func(c gosockets.MessageContext) {
+	connectedClient.WebSocket.AddListener("request-join", func(c sockets.MessageContext) {
 		type requestType struct {
 			Color string `json:"color"`
 			Name  string `json:"name"`
@@ -86,13 +88,13 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		})
 	})
 
-	connectedClient.WebSocket.AddListener("request-leave", func(c gosockets.MessageContext) {
+	connectedClient.WebSocket.AddListener("request-leave", func(c sockets.MessageContext) {
 		classicRoom.RemovePlayer(connectedClient.PlayerId)
 		connectedClient.IsPlayer = false
 		connectedClient.PlayerId = ""
 	})
 
-	connectedClient.WebSocket.AddListener("change-direction", func(c gosockets.MessageContext) {
+	connectedClient.WebSocket.AddListener("change-direction", func(c sockets.MessageContext) {
 		player := classicRoom.GetPlayerById(connectedClient.PlayerId)
 
 		type ChangeDirectionPayload struct {

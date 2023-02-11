@@ -3,7 +3,7 @@ package classic_room
 import (
 	"errors"
 	"math/rand"
-	"snakeish/core/utils"
+	"snakeish/pkg/core/utils"
 )
 
 func (room *ClassicRoom) Update() {

@@ -1,12 +1,13 @@
-package main
+package services
 
 import (
-	classic_room "snakeish/core/room/classic"
-	"snakeish/core/utils"
+	"snakeish/pkg/core"
+	classic_room "snakeish/pkg/core/room/classic"
+	"snakeish/pkg/core/utils"
 )
 
 func CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic_room.ClassicRoom, error) {
-	room, err := Core.CreateClassicRoom(roomName, modeName, pin)
+	room, err := core.Instance.CreateClassicRoom(roomName, modeName, pin)
 	if err != nil {
 		return &classic_room.ClassicRoom{}, err
 	}
