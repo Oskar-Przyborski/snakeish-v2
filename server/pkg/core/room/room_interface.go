@@ -10,5 +10,6 @@ type IRoom interface {
 	GetPreview() RoomPreview
 	StartRoom()
 	CheckPin([4]int) bool
+	IsPinEnabled() bool
 	RemovePlayer(string)
 }

@@ -36,6 +36,10 @@ func (manager PinRequirer) CheckPin(value [4]int) bool {
 	}
 }
 
+func (manager PinRequirer) IsPinEnabled() bool {
+	return manager.PinEnabled
+}
+
 func CreatePinRequirer(pin *[4]int) PinRequirer {
 	pinRequirer := PinRequirer{}
 	if pin == nil {
