@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var Instance CoreInstance
+var instance CoreInstance
 
 type CoreInstance struct {
 	rooms          []room.IRoom
@@ -17,26 +17,26 @@ type CoreInstance struct {
 }
 
 func InitCore() {
-	Instance = CoreInstance{
+	instance = CoreInstance{
 		rooms:          []room.IRoom{},
 		roomsAfkTimers: make(map[string]*time.Timer),
 	}
 }
 
-func (core CoreInstance) GetRooms() []room.IRoom {
-	return core.rooms
+func GetRooms() []room.IRoom {
+	return instance.rooms
 }
 
-func (core CoreInstance) GetRoomByName(name string) (room.IRoom, bool) {
-	for _, room := range core.GetRooms() {
+func GetRoomByName(name string) (room.IRoom, bool) {
+	for _, room := range GetRooms() {
 		if room.GetName() == name {
 			return room, true
 		}
 	}
 	return nil, false
 }
-func (core CoreInstance) GetRoomById(id string) (room.IRoom, bool) {
-	for _, room := range core.GetRooms() {
+func GetRoomById(id string) (room.IRoom, bool) {
+	for _, room := range GetRooms() {
 		if room.GetId() == id {
 			return room, true
 		}
@@ -44,8 +44,8 @@ func (core CoreInstance) GetRoomById(id string) (room.IRoom, bool) {
 	return nil, false
 }
 
-func (core *CoreInstance) CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic_room.ClassicRoom, error) {
-	if _, foundDuplicate := core.GetRoomByName(roomName); foundDuplicate {
+func CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic_room.ClassicRoom, error) {
+	if _, foundDuplicate := GetRoomByName(roomName); foundDuplicate {
 		return &classic_room.ClassicRoom{}, errors.New("name already used by other room")
 	}
 
@@ -56,34 +56,34 @@ func (core *CoreInstance) CreateClassicRoom(roomName string, modeName string, pi
 	}
 
 	room := classic_room.ConfigureClassicRoom(base, modeName)
-	core.rooms = append(core.rooms, room)
+	instance.rooms = append(instance.rooms, room)
 	go room.StartRoom()
 
 	return room, nil
 }
 
-func (core *CoreInstance) RemoveRoom(id string) {
-	for idx, room := range core.GetRooms() {
+func RemoveRoom(id string) {
+	for idx, room := range GetRooms() {
 		if room.GetId() == id {
-			core.rooms = append(core.rooms[:idx], core.rooms[idx+1:]...)
+			instance.rooms = append(instance.rooms[:idx], instance.rooms[idx+1:]...)
 			return
 		}
 	}
 }
 
-func (core *CoreInstance) StartAfkForRoom(roomId string, duration time.Duration) {
-	if timer := core.roomsAfkTimers[roomId]; timer != nil {
+func StartAfkForRoom(roomId string, duration time.Duration) {
+	if timer := instance.roomsAfkTimers[roomId]; timer != nil {
 		timer.Reset(duration)
 	} else {
-		core.roomsAfkTimers[roomId] =
+		instance.roomsAfkTimers[roomId] =
 			time.AfterFunc(duration, func() {
-				core.RemoveRoom(roomId)
+				RemoveRoom(roomId)
 			})
 	}
 }
-func (core *CoreInstance) StopAfkForRoom(roomId string) {
-	if timer := core.roomsAfkTimers[roomId]; timer != nil {
+func StopAfkForRoom(roomId string) {
+	if timer := instance.roomsAfkTimers[roomId]; timer != nil {
 		timer.Stop()
-		delete(core.roomsAfkTimers, roomId)
+		delete(instance.roomsAfkTimers, roomId)
 	}
 }

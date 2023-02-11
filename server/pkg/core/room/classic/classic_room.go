@@ -4,6 +4,7 @@ import (
 	"errors"
 	"snakeish/pkg/core/room"
 	"snakeish/pkg/core/utils"
+	"snakeish/pkg/notifier"
 	"time"
 
 	"github.com/google/uuid"
@@ -18,6 +19,7 @@ type ClassicRoom struct {
 	GridSize       int
 	ApplesQuantity int
 	ModeName       string
+	OnUpdate       notifier.Notifier[*ClassicRoom]
 }
 
 var allowedPlayersColors = []string{

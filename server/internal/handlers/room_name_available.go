@@ -10,7 +10,7 @@ func RoomNameAvailableEndpoint(c *gin.Context) {
 	name := c.Params.ByName("name")
 
 	roomNameAvailable := true
-	for _, room := range core.Instance.GetRooms() {
+	for _, room := range core.GetRooms() {
 		if room.GetName() == name {
 			roomNameAvailable = false
 			break

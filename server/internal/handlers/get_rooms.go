@@ -9,7 +9,7 @@ import (
 
 func GetRoomsEndpoint(c *gin.Context) {
 	response := []room.RoomPreview{}
-	for _, room := range core.Instance.GetRooms() {
+	for _, room := range core.GetRooms() {
 		response = append(response, room.GetPreview())
 	}
 

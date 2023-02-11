@@ -18,7 +18,7 @@ type RoomPreviewStruct struct {
 func GetRoomEndpoint(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	room, _ := core.Instance.GetRoomById(id)
+	room, _ := core.GetRoomById(id)
 	if room == nil {
 		c.JSON(404, gin.H{
 			"code":    "ROOM_NOT_FOUND",

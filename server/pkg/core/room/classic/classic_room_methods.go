@@ -39,9 +39,7 @@ func (room *ClassicRoom) Update() {
 	}
 
 	room.SpawnMissingApples()
-	if room.Listener != nil {
-		room.Listener()
-	}
+	room.OnUpdate.Notify(room)
 }
 
 func (room *ClassicRoom) SpawnMissingApples() {

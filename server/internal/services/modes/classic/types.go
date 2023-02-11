@@ -15,3 +15,19 @@ type GameUpdateResponse struct {
 	Apples   []utils.Vector2 `json:"apples"`
 	Players  []Player        `json:"players"`
 }
+
+type JoinRequestType struct {
+	Color string `json:"color"`
+	Name  string `json:"name"`
+	Pin   [4]int `json:"pin"`
+}
+
+type JoinSuccesType struct {
+	PlayerId string `json:"playerId"`
+	Name     string `json:"name"`
+	Color    string `json:"color"`
+}
+
+type ChangeDirectionRequest struct {
+	Direction string `json:"direction"`
+}

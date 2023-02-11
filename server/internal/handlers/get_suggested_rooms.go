@@ -23,7 +23,7 @@ func GetSuggestedRoomsEndpoint(c *gin.Context) {
 
 	evaluations := []roomEvaluation{}
 
-	for _, room := range core.Instance.GetRooms() {
+	for _, room := range core.GetRooms() {
 		evaluations = append(evaluations, evaluate(room))
 	}
 

@@ -22,7 +22,7 @@ func CreateRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	for _, room := range core.Instance.GetRooms() {
+	for _, room := range core.GetRooms() {
 		if room.GetName() == data.RoomName {
 			c.JSON(400, gin.H{
 				"code":    "NAME_EXISTS",
@@ -39,7 +39,7 @@ func CreateRoomEndpoint(c *gin.Context) {
 			"message": "error while creating room",
 		})
 	}
-	core.Instance.StartAfkForRoom(room.GetId(), 30*time.Second)
+	core.StartAfkForRoom(room.GetId(), 30*time.Second)
 
 	c.JSON(200, room.GetPreview())
 	println("Created room. Id:", room.GetId())
