@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 	"snakeish/internal/handlers"
-	"snakeish/internal/services"
+	"snakeish/internal/services/clients_manager"
 	"snakeish/pkg/core"
 
 	"github.com/gin-contrib/cors"
@@ -12,7 +12,7 @@ import (
 
 func main() {
 	core.InitCore()
-	services.Init()
+	clients_manager.Init()
 
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()

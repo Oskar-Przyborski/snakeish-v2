@@ -1,11 +1,11 @@
-package services
+package clients_manager
 
 import (
 	"snakeish/pkg/core/room"
 	"snakeish/pkg/sockets"
 )
 
-var ClientsManager ConnectedClientsManager
+var instance ConnectedClientsManager
 
 type ConnectedClientsManager struct {
 	clients []*ConnectedClient
@@ -19,12 +19,15 @@ type ConnectedClient struct {
 }
 
 func Init() {
-	ClientsManager = ConnectedClientsManager{
+	instance = ConnectedClientsManager{
 		clients: []*ConnectedClient{},
 	}
 }
+func GetInstance() *ConnectedClientsManager {
+	return &instance
+}
 
-func (manager *ConnectedClientsManager) CreateConnectedClient(gosocket *sockets.GosocketClient, room room.IRoom) *ConnectedClient {
+func CreateConnectedClient(gosocket *sockets.GosocketClient, room room.IRoom) *ConnectedClient {
 	client := &ConnectedClient{
 		WebSocket: gosocket,
 		RoomId:    room.GetId(),
@@ -32,22 +35,22 @@ func (manager *ConnectedClientsManager) CreateConnectedClient(gosocket *sockets.
 		PlayerId:  "",
 	}
 
-	manager.clients = append(manager.clients, client)
+	instance.clients = append(instance.clients, client)
 	return client
 }
 
-func (manager *ConnectedClientsManager) RemoveConnectedClient(websocketID string) {
-	for idx, client := range manager.clients {
+func RemoveConnectedClient(websocketID string) {
+	for idx, client := range instance.clients {
 		if client.WebSocket.Id == websocketID {
-			manager.clients = append(manager.clients[:idx], manager.clients[idx+1:]...)
+			instance.clients = append(instance.clients[:idx], instance.clients[idx+1:]...)
 			break
 		}
 	}
 }
 
-func (manager *ConnectedClientsManager) GetClientsFromRoom(roomId string) []*ConnectedClient {
+func GetClientsFromRoom(roomId string) []*ConnectedClient {
 	foundClients := []*ConnectedClient{}
-	for _, client := range manager.clients {
+	for _, client := range instance.clients {
 		if client.RoomId == roomId {
 			foundClients = append(foundClients, client)
 		}

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"snakeish/internal/services"
+	"snakeish/internal/services/modes/classic"
 	"snakeish/pkg/core"
 	"snakeish/pkg/core/room"
 	"time"
@@ -48,6 +48,6 @@ func CreateRoomEndpoint(c *gin.Context) {
 func CreateRoomByModeTag(name string, modeTag string, modeName string, pin *[4]int) (room.IRoom, error) {
 	switch modeTag {
 	default: //classic
-		return services.CreateClassicRoom(name, modeName, pin)
+		return classic.CreateRoom(name, modeName, pin)
 	}
 }

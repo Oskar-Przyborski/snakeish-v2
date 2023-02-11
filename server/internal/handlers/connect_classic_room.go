@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"snakeish/internal/services"
+	"snakeish/internal/services/clients_manager"
 	"snakeish/pkg/core"
 	classic_room "snakeish/pkg/core/room/classic"
 	"snakeish/pkg/core/utils"
@@ -43,10 +43,10 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 	}
 
 	core.Instance.StopAfkForRoom(roomId)
-	connectedClient := services.ClientsManager.CreateConnectedClient(websocket, room)
+	connectedClient := clients_manager.CreateConnectedClient(websocket, room)
 	connectedClient.WebSocket.OnDisconnect = append(connectedClient.WebSocket.OnDisconnect, func() {
 		classicRoom.RemovePlayer(connectedClient.PlayerId)
-		services.ClientsManager.RemoveConnectedClient(websocket.Id)
+		clients_manager.RemoveConnectedClient(websocket.Id)
 
 		if classicRoom.GetPlayersCount() == 0 {
 			core.Instance.StartAfkForRoom(roomId, 30*time.Second)
