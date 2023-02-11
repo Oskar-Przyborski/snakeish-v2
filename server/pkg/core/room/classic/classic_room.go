@@ -2,15 +2,16 @@ package classic_room
 
 import (
 	"errors"
-	r "snakeish/core/room"
-	"snakeish/core/utils"
+	"snakeish/pkg/core/room"
+	"snakeish/pkg/core/utils"
+	"snakeish/pkg/notifier"
 	"time"
 
 	"github.com/google/uuid"
 )
 
 type ClassicRoom struct {
-	r.RoomBase
+	room.RoomBase
 	Apples         []utils.Vector2
 	Players        []*ClassicPlayer
 	MaxPlayers     int
@@ -18,6 +19,7 @@ type ClassicRoom struct {
 	GridSize       int
 	ApplesQuantity int
 	ModeName       string
+	OnUpdate       notifier.Notifier[*ClassicRoom]
 }
 
 var allowedPlayersColors = []string{
@@ -45,15 +47,15 @@ func (room ClassicRoom) GetPlayersCount() int {
 	return len(room.Players)
 }
 
-func (room *ClassicRoom) GetPreview() r.RoomPreview {
-	return r.RoomPreview{
-		Id:         room.Id,
-		Name:       room.Name,
-		ModeTag:    room.GetModeTag(),
-		ModeName:   room.GetModeName(),
-		Players:    len(room.Players),
-		MaxPlayers: room.MaxPlayers,
-		PinEnbled:  room.PinEnabled,
+func (croom *ClassicRoom) GetPreview() room.RoomPreview {
+	return room.RoomPreview{
+		Id:         croom.Id,
+		Name:       croom.Name,
+		ModeTag:    croom.GetModeTag(),
+		ModeName:   croom.GetModeName(),
+		Players:    len(croom.Players),
+		MaxPlayers: croom.MaxPlayers,
+		PinEnbled:  croom.PinEnabled,
 	}
 }
 
@@ -65,7 +67,7 @@ func (room *ClassicRoom) StartRoom() {
 	}
 }
 
-func ConfigureClassicRoom(base r.RoomBase, mode string) *ClassicRoom {
+func ConfigureClassicRoom(base room.RoomBase, mode string) *ClassicRoom {
 	switch mode {
 	default:
 		return &ClassicRoom{

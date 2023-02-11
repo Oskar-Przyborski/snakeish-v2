@@ -8,7 +8,8 @@ type IRoom interface {
 	GetPlayersCount() int
 	GetMaxPlayers() int
 	GetPreview() RoomPreview
-	OnUpdate(func())
 	StartRoom()
 	CheckPin([4]int) bool
+	IsPinEnabled() bool
+	RemovePlayer(string)
 }

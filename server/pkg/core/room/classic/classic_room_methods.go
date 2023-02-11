@@ -3,7 +3,7 @@ package classic_room
 import (
 	"errors"
 	"math/rand"
-	"snakeish/core/utils"
+	"snakeish/pkg/core/utils"
 )
 
 func (room *ClassicRoom) Update() {
@@ -39,9 +39,7 @@ func (room *ClassicRoom) Update() {
 	}
 
 	room.SpawnMissingApples()
-	if room.Listener != nil {
-		room.Listener()
-	}
+	room.OnUpdate.Notify(room)
 }
 
 func (room *ClassicRoom) SpawnMissingApples() {

@@ -1,9 +1,8 @@
 package room
 
 type RoomBase struct {
-	Id       string
-	Name     string
-	Listener func()
+	Id   string
+	Name string
 	PinRequirer
 }
 
@@ -12,9 +11,6 @@ func (room RoomBase) GetName() string {
 }
 func (room RoomBase) GetId() string {
 	return room.Id
-}
-func (room *RoomBase) OnUpdate(listener func()) {
-	room.Listener = listener
 }
 
 type RoomPreview struct {
@@ -38,6 +34,10 @@ func (manager PinRequirer) CheckPin(value [4]int) bool {
 	} else {
 		return true
 	}
+}
+
+func (manager PinRequirer) IsPinEnabled() bool {
+	return manager.PinEnabled
 }
 
 func CreatePinRequirer(pin *[4]int) PinRequirer {

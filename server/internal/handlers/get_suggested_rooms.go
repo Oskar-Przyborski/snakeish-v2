@@ -1,8 +1,9 @@
-package main
+package handlers
 
 import (
 	"math"
-	"snakeish/core/room"
+	"snakeish/pkg/core"
+	"snakeish/pkg/core/room"
 	"sort"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,7 @@ func GetSuggestedRoomsEndpoint(c *gin.Context) {
 
 	evaluations := []roomEvaluation{}
 
-	for _, room := range Core.GetRooms() {
+	for _, room := range core.GetRooms() {
 		evaluations = append(evaluations, evaluate(room))
 	}
 
@@ -44,7 +45,6 @@ func GetSuggestedRoomsEndpoint(c *gin.Context) {
 	c.JSON(200, response)
 }
 
-// TODO implement better algorithim for suggesting rooms
 func evaluate(room room.IRoom) roomEvaluation {
 	players := float64(room.GetPlayersCount())
 	max := float64(room.GetMaxPlayers())
@@ -53,6 +53,10 @@ func evaluate(room room.IRoom) roomEvaluation {
 	halfMax := max / 2
 	playersScore := (halfMax - math.Abs(players-halfMax)) / halfMax
 	score += playersScore * 5
+
+	if room.IsPinEnabled() {
+		score -= 5
+	}
 
 	return roomEvaluation{
 		value: score,

@@ -1,7 +1,9 @@
-package main
+package handlers
 
 import (
-	"snakeish/core/room"
+	"snakeish/internal/services/modes/classic"
+	"snakeish/pkg/core"
+	"snakeish/pkg/core/room"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +22,7 @@ func CreateRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	for _, room := range Core.GetRooms() {
+	for _, room := range core.GetRooms() {
 		if room.GetName() == data.RoomName {
 			c.JSON(400, gin.H{
 				"code":    "NAME_EXISTS",
@@ -37,7 +39,7 @@ func CreateRoomEndpoint(c *gin.Context) {
 			"message": "error while creating room",
 		})
 	}
-	Core.StartAfkForRoom(room.GetId(), 30*time.Second)
+	core.StartAfkForRoom(room.GetId(), 30*time.Second)
 
 	c.JSON(200, room.GetPreview())
 	println("Created room. Id:", room.GetId())
@@ -46,6 +48,6 @@ func CreateRoomEndpoint(c *gin.Context) {
 func CreateRoomByModeTag(name string, modeTag string, modeName string, pin *[4]int) (room.IRoom, error) {
 	switch modeTag {
 	default: //classic
-		return CreateClassicRoom(name, modeName, pin)
+		return classic.CreateRoom(name, modeName, pin)
 	}
 }

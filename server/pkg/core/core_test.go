@@ -5,23 +5,23 @@ import (
 )
 
 func TestCoreInitialization(t *testing.T) {
-	core := CreateCore()
+	InitCore()
 
-	if len(core.GetRooms()) != 0 {
+	if len(GetRooms()) != 0 {
 		t.Fatal("New core instance should have 0 rooms")
 	}
 
-	if len(core.roomsAfkTimers) != 0 {
+	if len(instance.roomsAfkTimers) != 0 {
 		t.Fatalf("New core instance should have 0 afk timers")
 	}
 }
 
 func TestRoomCreation(t *testing.T) {
-	core := CreateCore()
+	InitCore()
 	roomName := "Hello123"
 	modeName := "Casual"
 
-	room, err := core.CreateClassicRoom(roomName, modeName, nil)
+	room, err := CreateClassicRoom(roomName, modeName, nil)
 	if err != nil {
 		t.Fatalf("CoreInstance.CreateRoom() shouldn't return error")
 	}
@@ -32,7 +32,7 @@ func TestRoomCreation(t *testing.T) {
 		t.Fatalf("Room's pin shouldn't be enabled")
 	}
 
-	rooms := core.GetRooms()
+	rooms := GetRooms()
 
 	if len(rooms) != 1 {
 		t.Fatalf("CoreInstance.GetRooms() should return only 1 object, but returned %d objects", len(rooms))
@@ -44,13 +44,13 @@ func TestRoomCreation(t *testing.T) {
 }
 
 func TestFindRoomByName(t *testing.T) {
-	core := CreateCore()
-	room1, _ := core.CreateClassicRoom("1", "Casual", nil)
-	room2, _ := core.CreateClassicRoom("2", "Casual", nil)
+	InitCore()
+	room1, _ := CreateClassicRoom("1", "Casual", nil)
+	room2, _ := CreateClassicRoom("2", "Casual", nil)
 
-	roomFound1, found1 := core.GetRoomByName("1")
-	roomFound2, found2 := core.GetRoomByName("2")
-	_, found3 := core.GetRoomByName("3")
+	roomFound1, found1 := GetRoomByName("1")
+	roomFound2, found2 := GetRoomByName("2")
+	_, found3 := GetRoomByName("3")
 
 	if found1 == false {
 		t.Fatalf("CoreInstance.GetRoomByName() should return true, but returned %t", found1)
@@ -70,13 +70,13 @@ func TestFindRoomByName(t *testing.T) {
 	}
 }
 func TestFindRoomById(t *testing.T) {
-	core := CreateCore()
-	room1, _ := core.CreateClassicRoom("1", "Casual", nil)
-	room2, _ := core.CreateClassicRoom("2", "Casual", nil)
+	InitCore()
+	room1, _ := CreateClassicRoom("1", "Casual", nil)
+	room2, _ := CreateClassicRoom("2", "Casual", nil)
 
-	roomFound1, found1 := core.GetRoomById(room1.GetId())
-	roomFound2, found2 := core.GetRoomById(room2.GetId())
-	_, found3 := core.GetRoomById("jfhaksjdhfklhas")
+	roomFound1, found1 := GetRoomById(room1.GetId())
+	roomFound2, found2 := GetRoomById(room2.GetId())
+	_, found3 := GetRoomById("jfhaksjdhfklhas")
 
 	if found1 == false {
 		t.Fatalf("CoreInstance.GetRoomById() should return true, but returned %t", found1)
@@ -97,24 +97,24 @@ func TestFindRoomById(t *testing.T) {
 }
 
 func TestRoomNamesDuplication(t *testing.T) {
-	core := CreateCore()
+	InitCore()
 
-	_, err1 := core.CreateClassicRoom("room-name", "Casual", nil)
+	_, err1 := CreateClassicRoom("room-name", "Casual", nil)
 	if err1 != nil {
 		t.Fatal("CoreInstance.CreateRoom() shouldn't return error")
 	}
 
-	_, err2 := core.CreateClassicRoom("room-name", "Casual", nil)
+	_, err2 := CreateClassicRoom("room-name", "Casual", nil)
 	if err2 == nil {
 		t.Fatal("CoreInstance.CreateRoom() should return error")
 	}
 
-	_, err3 := core.CreateClassicRoom("room-name-other", "Casual", nil)
+	_, err3 := CreateClassicRoom("room-name-other", "Casual", nil)
 	if err3 != nil {
 		t.Fatal("CoreInstance.CreateRoom() shouldn't return error")
 	}
 
-	rooms := core.GetRooms()
+	rooms := GetRooms()
 	if len(rooms) != 2 {
 		t.Fatalf("CoreInstance.GetRooms() should return 2 objects, but returned %d objects", len(rooms))
 	}

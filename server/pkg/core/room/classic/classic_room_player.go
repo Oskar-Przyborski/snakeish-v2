@@ -1,6 +1,6 @@
 package classic_room
 
-import "snakeish/core/utils"
+import "snakeish/pkg/core/utils"
 
 type ClassicPlayer struct {
 	Id              string
