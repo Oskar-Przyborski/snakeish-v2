@@ -31,9 +31,10 @@ func onUpdate(room *classic_room.ClassicRoom) {
 
 func generateGameUpdateResponse(room classic_room.ClassicRoom) GameUpdateResponse {
 	response := GameUpdateResponse{
-		GridSize: room.GridSize,
-		Apples:   room.Apples,
-		Players:  []Player{},
+		FrameTime: room.FrameTime,
+		GridSize:  room.GridSize,
+		Apples:    room.Apples,
+		Players:   []Player{},
 	}
 
 	for _, player := range room.Players {
@@ -43,6 +44,7 @@ func generateGameUpdateResponse(room classic_room.ClassicRoom) GameUpdateRespons
 			Color:     player.Color,
 			SnakeTail: player.SnakeTail,
 			Score:     len(player.SnakeTail),
+			Direction: player.Direction,
 		})
 	}
 

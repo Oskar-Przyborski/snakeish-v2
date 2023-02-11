@@ -1,6 +1,6 @@
-import type { Vector2 } from '$lib/vector';
 import { WebSocketClient } from '$lib/websocket';
 import { get, writable } from 'svelte/store';
+import type { ClassicGameState, JoinError, JoinSuccessType, PageState } from './types';
 
 export const store = writable<PageState>({
 	roomId: null,
@@ -86,36 +86,3 @@ export const leaveGame = () => {
 		return state;
 	});
 };
-
-export interface PageState {
-	isPlaying: boolean;
-	websocket: import('$lib/websocket').WebSocketClient | null;
-	gameState: ClassicGameState | null;
-	playerId: string | null;
-	roomId: string | null;
-	errors: {
-		name: string | undefined;
-		pin: string | undefined;
-	};
-}
-export interface ClassicGameState {
-	players: Player[];
-	apples: Vector2[];
-	gridSize: number;
-}
-export interface Player {
-	id: string;
-	name: string;
-	color: string;
-	snakeTail: Vector2[];
-	score: number;
-}
-
-interface JoinSuccessType {
-	playerId: string;
-	name: string;
-	color: string;
-}
-interface JoinError {
-	error: string;
-}
