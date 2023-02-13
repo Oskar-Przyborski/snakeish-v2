@@ -23,7 +23,7 @@ export interface Player {
 	color: string;
 	snakeTail: Vector2[];
 	score: number;
-	Direction: Vector2
+	direction: Vector2
 }
 
 export interface JoinSuccessType {
