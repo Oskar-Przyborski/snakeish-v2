@@ -6,6 +6,7 @@
 	import type { ClassicGameState, PageState, Player } from './types';
 	import { GameFramesRenderer } from '$lib/renderers/game_frames';
 	import { renderSnake } from '$lib/renderers/snake';
+	import { renderApple } from '$lib/renderers/apple';
 
 	export let store: Writable<PageState>;
 	let unsubscribe = () => {};
@@ -39,7 +40,7 @@
 
 		drawGrid(state.gameState.gridSize, cellSize);
 		drawApples(state.gameState.apples, cellSize);
-		gameFrameRenderer?.setGameData(state.gameState)
+		gameFrameRenderer?.setGameData(state.gameState);
 	}
 
 	function initKonva() {
@@ -81,33 +82,7 @@
 		applesLayer.removeChildren();
 		for (let i = 0; i < apples.length; i++) {
 			const apple = apples[i];
-			const container = new Konva.Group({
-				x: apple.x * cellSize,
-				y: apple.y * cellSize
-			});
-			container.add(
-				new Konva.Rect({
-					x: cellSize * 0.125,
-					y: cellSize * 0.125,
-					width: cellSize * 0.75,
-					height: cellSize * 0.75,
-					fill: '#d62246',
-					cornerRadius: cellSize * 0.2,
-					shadowOpacity: 0.2,
-					shadowOffsetY: 2
-				}),
-				new Konva.Path({
-					x: cellSize * 0.55,
-					y: cellSize * 0.28,
-					data: 'M-0.5 0Q0.5 0 0.5-1 -0.5-1 -0.5 0',
-					fill: 'green',
-					scaleX: 17,
-					scaleY: 17,
-					shadowOpacity: 0.2,
-					shadowOffsetY: 0.15
-				})
-			);
-			applesLayer.add(container);
+			applesLayer.add(renderApple(apple, cellSize));
 		}
 		applesLayer.draw();
 	}
@@ -119,7 +94,7 @@
 			const snake = renderSnake(player.snakeTail, player.direction, cellSize, moveValue, {
 				color: player.color,
 				name: player.name
-			})
+			});
 			snakesLayer.add(snake);
 		}
 		snakesLayer.draw();
