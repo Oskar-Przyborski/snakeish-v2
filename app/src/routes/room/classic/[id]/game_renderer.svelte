@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import type { Writable } from 'svelte/store';
-	import type { PageState, Player } from './classic_game';
+	import { get, type Writable } from 'svelte/store';
 	import Konva from 'konva';
 	import type { Vector2 } from '$lib/vector';
+	import type { ClassicGameState, PageState, Player } from './types';
+	import { GameFramesRenderer } from '$lib/renderers/game_frames';
+	import { renderSnake } from '$lib/renderers/snake';
+	import { renderApple } from '$lib/renderers/apple';
 
 	export let store: Writable<PageState>;
 	let unsubscribe = () => {};
@@ -14,9 +17,20 @@
 	let gridLayer: Konva.Layer;
 	let applesLayer: Konva.Layer;
 	let snakesLayer: Konva.Layer;
+	let gameFrameRenderer: GameFramesRenderer<ClassicGameState> | null;
 
 	onMount(() => {
 		initKonva();
+		const pageState = get(store);
+		gameFrameRenderer = new GameFramesRenderer<ClassicGameState>(
+			50,
+			pageState.gameState!.frameTime,
+			pageState.gameState!,
+			(state: ClassicGameState, moveValue: number) => {
+				// console.log("frame update", moveValue)
+				drawPlayers(state.players, stage.width() / state.gridSize, moveValue);
+			}
+		);
 		unsubscribe = store.subscribe(updateState);
 	});
 
@@ -26,7 +40,7 @@
 
 		drawGrid(state.gameState.gridSize, cellSize);
 		drawApples(state.gameState.apples, cellSize);
-		drawPlayers(state.gameState.players, cellSize);
+		gameFrameRenderer?.setGameData(state.gameState);
 	}
 
 	function initKonva() {
@@ -68,92 +82,20 @@
 		applesLayer.removeChildren();
 		for (let i = 0; i < apples.length; i++) {
 			const apple = apples[i];
-			const container = new Konva.Group({
-				x: apple.x * cellSize,
-				y: apple.y * cellSize
-			});
-			container.add(
-				new Konva.Rect({
-					x: cellSize * 0.125,
-					y: cellSize * 0.125,
-					width: cellSize * 0.75,
-					height: cellSize * 0.75,
-					fill: '#d62246',
-					cornerRadius: cellSize * 0.2,
-					shadowOpacity: 0.2,
-					shadowOffsetY: 2
-				}),
-				new Konva.Path({
-					x: cellSize * 0.55,
-					y: cellSize * 0.28,
-					data: 'M-0.5 0Q0.5 0 0.5-1 -0.5-1 -0.5 0',
-					fill: 'green',
-					scaleX: 17,
-					scaleY: 17,
-					shadowOpacity: 0.2,
-					shadowOffsetY: 0.15
-				})
-			);
-			applesLayer.add(container);
+			applesLayer.add(renderApple(apple, cellSize));
 		}
 		applesLayer.draw();
 	}
-	function drawPlayers(players: Player[], cellSize: number) {
-		snakesLayer.removeChildren();
 
-		//draw snake
+	function drawPlayers(players: Player[], cellSize: number, moveValue: number) {
+		snakesLayer.removeChildren();
 		for (let i = 0; i < players.length; i++) {
 			const player = players[i];
-			if (player.snakeTail.length == 0) return;
-
-			const head = player.snakeTail[0];
-			if (player.snakeTail.length > 1) {
-				const points: number[] = [];
-				player.snakeTail.forEach((el) =>
-					points.push(el.x * cellSize + cellSize / 2, el.y * cellSize + cellSize / 2)
-				);
-				snakesLayer.add(
-					new Konva.Line({
-						points,
-						bezier: false,
-						stroke: player.color,
-						strokeWidth: cellSize * 0.65,
-						closed: false,
-						lineCap: 'round',
-						lineJoin: 'round',
-						shadowOffsetY: 3,
-						shadowOpacity: 0.2
-					})
-				);
-			} else {
-				snakesLayer.add(
-					new Konva.Circle({
-						x: head.x * cellSize + cellSize / 2,
-						y: head.y * cellSize + cellSize / 2,
-						width: cellSize * 0.75,
-						height: cellSize * 0.75,
-						fill: player.color,
-						shadowOffsetY: 3,
-						shadowOpacity: 0.2
-					})
-				);
-			}
-			const nameContainer = new Konva.Group({ x: head.x * cellSize, y: head.y * cellSize });
-			const nameText = new Konva.Text({
-				width: cellSize,
-				height: cellSize,
-				text: player.name,
-				fill: 'white',
-				fontFamily: 'DM Sans',
-				fontStyle: 'bold',
-				fontSize: cellSize / 4.5,
-				align: 'center',
-				verticalAlign: 'middle',
-				shadowBlur: 2,
-				shadowOffsetY: 1
+			const snake = renderSnake(player.snakeTail, player.direction, cellSize, moveValue, {
+				color: player.color,
+				name: player.name
 			});
-			nameContainer.add(nameText);
-			snakesLayer.add(nameContainer);
+			snakesLayer.add(snake);
 		}
 		snakesLayer.draw();
 	}
