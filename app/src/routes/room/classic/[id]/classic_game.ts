@@ -86,26 +86,3 @@ export const leaveGame = () => {
 		return state;
 	});
 };
-
-export class FrameManager {
-	lastDeltaTimes: number[];
-	lastFrameTime: number;
-	constructor() {
-		this.lastDeltaTimes = [];
-		this.lastFrameTime = Date.now();
-	}
-
-	registerFrame() {
-		const now = Date.now();
-		const deltaTime = now - this.lastFrameTime;
-		this.lastFrameTime = now;
-		this.lastDeltaTimes.push(deltaTime);
-		if (this.lastDeltaTimes.length > 20) {
-			this.lastDeltaTimes.shift();
-		}
-	}
-
-	avgDelta() {
-		return this.lastDeltaTimes.reduce((prev, curr) => prev + curr) / this.lastDeltaTimes.length;
-	}
-}
