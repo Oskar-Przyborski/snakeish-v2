@@ -31,6 +31,10 @@ func CreateClient(gosocket *sockets.SocketClient, room room.IRoom) *Client {
 		OnDisconnect: notifier.Create[*Client](),
 	}
 
+	client.WebSocket.OnDisconnect = append(client.WebSocket.OnDisconnect, func() {
+		client.OnDisconnect.Notify(client)
+	})
+
 	instance.clients = append(instance.clients, client)
 	return client
 }

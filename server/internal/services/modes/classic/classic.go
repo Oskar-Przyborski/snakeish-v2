@@ -67,17 +67,12 @@ func ConnectWebsocket(room *classic_room.ClassicRoom, socket *sockets.SocketClie
 }
 
 func onClientDisconnect(client *clients.Client) {
-	clients.RemoveClient(client.WebSocket.Id)
+	client.Room.RemovePlayer(client.PlayerId)
 
-	if client.IsPlayer {
-		if room, found := core.GetRoomById(client.Room.GetId()); found {
-			room.RemovePlayer(client.PlayerId)
-
-			if room.GetPlayersCount() == 0 {
-				core.StartAfkForRoom(room.GetId(), 30*time.Second)
-			}
-		}
+	if client.Room.GetPlayersCount() == 0 {
+		core.StartAfkForRoom(client.Room.GetId(), 30*time.Second)
 	}
+	clients.RemoveClient(client.WebSocket.Id)
 
 	println("Disconnected client with id: " + client.WebSocket.Id)
 }
