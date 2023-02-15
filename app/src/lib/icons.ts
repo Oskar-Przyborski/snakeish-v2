@@ -32,7 +32,8 @@ const mdiIcons = [
 	'chevron-left',
 	'chevron-right',
 	'information',
-	'account-supervisor'
+	'account-supervisor',
+	'account'
 ];
 
 loadIcons('mdi', mdiIcons);
