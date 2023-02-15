@@ -15,6 +15,7 @@
 				<Panel padding="0.8rem">
 					<div class="player-item">
 						<div class="name">
+							<div class="color" style={`background-color: ${player.color};`} />
 							{player.name}
 						</div>
 						<div class="score"><Icon icon="mdi:star-outline" inline /> {player.score}</div>
@@ -45,8 +46,17 @@
 			align-items: center;
 			gap: 1rem;
 			.name {
+				display: flex;
+				flex-flow: row nowrap;
+				align-items: center;
+				gap: 0.5rem;
 				font-weight: 500;
 				font-size: 1.3rem;
+				.color {
+					width: 1rem;
+					height: 1rem;
+					border-radius: 1rem;
+				}
 			}
 			.score {
 				font-size: 1.2rem;
