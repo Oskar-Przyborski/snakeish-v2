@@ -24,6 +24,7 @@ const mdiIcons = [
 	'gamepad-variant',
 	'lock',
 	'lock-outline',
+	'lock-open-outline',
 	'magnify',
 	'plus',
 	'coffee',
@@ -33,7 +34,9 @@ const mdiIcons = [
 	'chevron-right',
 	'information',
 	'account-supervisor',
-	'account'
+	'account',
+	'arrow-down-drop-circle-outline',
+	'arrow-up-drop-circle-outline'
 ];
 
 loadIcons('mdi', mdiIcons);
