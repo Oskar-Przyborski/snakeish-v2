@@ -37,6 +37,8 @@ export const connectRoomWebsocket = (roomId: string) => {
 };
 
 export const requestJoin = (name: string, color: string, pin: (number | null)[]) => {
+	localStorage.setItem("player-name", name)
+	localStorage.setItem("player-color", color)
 	get(store).websocket?.sendMessage('request-join', { name, color, pin });
 };
 

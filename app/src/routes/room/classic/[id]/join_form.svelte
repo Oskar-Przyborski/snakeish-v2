@@ -4,10 +4,11 @@
 	import { requestJoin, store } from './classic_game';
 	import PinInput from '$lib/components/inputs/pin_input.svelte';
 	import SkinSelector from '$lib/components/inputs/color_input.svelte';
+	import { onMount } from 'svelte';
 
 	export let pinEnabled: boolean = false;
-	let name: string;
-	let selectedColor: number;
+	let name: string
+	let selectedColor: number
 	let pin: (number | null)[] = [];
 
 	const skinColors = [
@@ -35,6 +36,14 @@
 			$store.errors.name = undefined
 		}
 	}
+
+	onMount(()=>{
+		name = localStorage.getItem("player-name") ?? ""
+		const color = localStorage.getItem("player-color")
+		if(color) {
+			selectedColor = skinColors.indexOf(color)
+		}
+	})
 </script>
 
 <div class="join-form">
