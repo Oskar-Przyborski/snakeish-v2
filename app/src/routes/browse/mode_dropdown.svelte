@@ -1,21 +1,28 @@
 <script lang="ts">
-	import CheckboxInput from '$lib/components/inputs/checkbox_input.svelte';
+	import { browser } from '$app/environment';
+	import { onDestroy, onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
-	import { onMount } from 'svelte';
+	import CheckboxInput from '$lib/components/inputs/checkbox_input.svelte';
 
 	let expanded = false;
-	let dropdownElement: HTMLDivElement;
+	let element: HTMLDivElement;
+
+	function onClickOutside(e: MouseEvent) {
+		if (e.target != null && !element.contains(e.target as Node)) {
+			expanded = false;
+		}
+	}
 
 	onMount(() => {
-		document.addEventListener('click', (ev) => {
-			if (ev.target && !dropdownElement.contains(ev.target as Node) && !ev.defaultPrevented) {
-				expanded = false
-			}
-		});
+		if (browser) window.addEventListener('click', onClickOutside);
+	});
+
+	onDestroy(() => {
+		if (browser) window.removeEventListener('click', onClickOutside);
 	});
 </script>
 
-<div class="mode-tag" bind:this={dropdownElement}>
+<div class="mode-tag" bind:this={element}>
 	<button class="name" on:click={() => (expanded = !expanded)}>
 		Mode Tag
 		<Icon icon={`mdi:arrow-${expanded ? 'up' : 'down'}-drop-circle-outline`} inline />
