@@ -1,8 +1,13 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 	import Icon from '@iconify/svelte';
 
 	export let checked = false;
-	const toggle = () => (checked = !checked);
+	const toggle = () => {
+		checked = !checked;
+		dispatch("change")
+	};
 </script>
 
 <div class="checkbox" class:checked>
@@ -16,7 +21,7 @@
 
 <style lang="scss">
 	.checkbox {
-        cursor: pointer;
+		cursor: pointer;
 
 		display: flex;
 		flex-flow: row nowrap;
@@ -29,9 +34,9 @@
 			border: 2px solid white;
 			border-radius: 0.3rem;
 
-            .icon {
-                display: none;
-            }
+			.icon {
+				display: none;
+			}
 		}
 
 		&.checked {
@@ -39,14 +44,14 @@
 				border-color: var(--red);
 				background-color: var(--red);
 				position: relative;
-                .icon{
-                    display: block;
-                }
+				.icon {
+					display: block;
+				}
 			}
 		}
-        .label{
-            user-select: none;
-            font-size: 1.1rem;
-        }
+		.label {
+			user-select: none;
+			font-size: 1.1rem;
+		}
 	}
 </style>

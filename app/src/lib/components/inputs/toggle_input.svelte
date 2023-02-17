@@ -1,8 +1,16 @@
 <script lang="ts">
+	import { createEventDispatcher } from "svelte";
+	const dispatch = createEventDispatcher()
+
 	export let value: boolean;
+
+	const toggle = () => {
+		value = !value;
+		dispatch("change")
+	};
 </script>
 
-<button class="switch" class:checked={value} on:click={() => (value = !value)}>
+<button class="switch" class:checked={value} on:click={toggle}>
 	<div class="slider" />
 </button>
 

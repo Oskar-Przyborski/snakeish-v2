@@ -6,15 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type RoomPreviewStruct struct {
-	Id           string `json:"id"`
-	Name         string `json:"name"`
-	Players      int    `json:"players"`
-	MaxPlayers   int    `json:"maxPlayers"`
-	GameModeName string `json:"gameModeName"`
-	GameModeTag  string `json:"gameModeTag"`
-}
-
 func GetRoomEndpoint(c *gin.Context) {
 	id := c.Params.ByName("id")
 

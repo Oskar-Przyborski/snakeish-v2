@@ -5,10 +5,21 @@
 	import Icon from '@iconify/svelte';
 	import TextInput from '$lib/components/inputs/text_input.svelte';
 	import ToggleInput from '$lib/components/inputs/toggle_input.svelte';
-	import Button from '$lib/components/buttons/button.svelte';
 	import ModeDropdown from './mode_dropdown.svelte';
+	import { fetchJson } from '$lib/fetchJson';
 
 	export let data: PageData;
+
+	let onlyPublic: boolean = false;
+
+	const refresh = async () => {
+		console.log(onlyPublic)
+		data.rooms = await fetchJson('rooms', {
+			params: {
+				public: onlyPublic ? '1' : '0'
+			}
+		});
+	};
 </script>
 
 <div class="browse-all">
@@ -22,24 +33,28 @@
 				</span>
 			</div>
 			<div class="btns">
-				<ModeDropdown/>
+				<ModeDropdown />
 				<div class="public-only">
 					<span style="font-size: 1.4rem;">
 						<Icon icon="mdi:lock-open-outline" inline />
 					</span>
-					<ToggleInput value={false} />
+					<ToggleInput bind:value={onlyPublic} on:change={refresh} />
 				</div>
 			</div>
 		</div>
 	</Panel>
 	<Panel>
-		<div class="list">
-			{#each data.rooms as room}
-				<div class="preview-wrapper">
-					<RoomPreview {room} />
-				</div>
-			{/each}
-		</div>
+		{#if data.rooms.length > 0}
+			<div class="list">
+				{#each data.rooms as room}
+					<div class="preview-wrapper">
+						<RoomPreview {room} />
+					</div>
+				{/each}
+			</div>
+		{:else}
+			There is no room that matches your filters. But you can create one!
+		{/if}
 	</Panel>
 </div>
 
