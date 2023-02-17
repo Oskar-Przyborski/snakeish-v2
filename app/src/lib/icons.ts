@@ -30,6 +30,7 @@ const mdiIcons = [
 	'coffee',
 	'refresh',
 	'location-enter',
+	'check',
 	'chevron-left',
 	'chevron-right',
 	'information',
