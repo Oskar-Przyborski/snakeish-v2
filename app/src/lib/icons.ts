@@ -24,7 +24,7 @@ const mdiIcons = [
 	'gamepad-variant',
 	'lock',
 	'lock-outline',
-	'lock-open-outline',
+	'lock-open-variant-outline',
 	'magnify',
 	'plus',
 	'coffee',

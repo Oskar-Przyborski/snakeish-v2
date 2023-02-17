@@ -36,7 +36,7 @@
 				<ModeDropdown />
 				<div class="public-only">
 					<span style="font-size: 1.4rem;">
-						<Icon icon="mdi:lock-open-outline" inline />
+						<Icon icon="mdi:lock-open-variant-outline" inline />
 					</span>
 					<ToggleInput bind:value={onlyPublic} on:change={refresh} />
 				</div>
