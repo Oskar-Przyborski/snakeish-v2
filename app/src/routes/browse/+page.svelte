@@ -10,15 +10,15 @@
 
 	export let data: PageData;
 
-	let onlyPublic: boolean = false;
+	let publicOnly: boolean = false;
+	let search: string = '';
 
 	const refresh = async () => {
-		console.log(onlyPublic)
-		data.rooms = await fetchJson('rooms', {
-			params: {
-				public: onlyPublic ? '1' : '0'
-			}
-		});
+		const params: any = {};
+		if (publicOnly) params['public'] = 1;
+		if (search != '') params['s'] = search;;
+		
+		data.rooms = await fetchJson('rooms', { params });
 	};
 </script>
 
@@ -27,7 +27,7 @@
 		<div class="top-section">
 			<h1>Browse Rooms</h1>
 			<div class="search">
-				<TextInput placeholder="Search" />
+				<TextInput placeholder="Search" bind:value={search} on:change={refresh} />
 				<span style="font-size: 1.4rem;">
 					<Icon icon="mdi:magnify" inline />
 				</span>
@@ -38,7 +38,7 @@
 					<span style="font-size: 1.4rem;">
 						<Icon icon="mdi:lock-open-variant-outline" inline />
 					</span>
-					<ToggleInput bind:value={onlyPublic} on:change={refresh} />
+					<ToggleInput bind:value={publicOnly} on:change={refresh} />
 				</div>
 			</div>
 		</div>

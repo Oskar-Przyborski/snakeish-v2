@@ -21,6 +21,7 @@
 		bind:value
 		on:focus={() => (focused = true)}
 		on:blur={() => (focused = false)}
+		on:change
 		on:focus
 		on:blur
 	/>

@@ -6,15 +6,15 @@
 	export let checked = false;
 	const toggle = () => {
 		checked = !checked;
-		dispatch("change")
+		dispatch('change');
 	};
 </script>
 
-<div class="checkbox" class:checked>
-	<button on:click={toggle}>
+<div class="checkbox" class:checked on:click={toggle} on:keypress={toggle}>
+	<button>
 		<span class="icon"><Icon icon="mdi:check-bold" /></span>
 	</button>
-	<div on:click={toggle} on:keypress={toggle} class="label">
+	<div class="label">
 		<slot />
 	</div>
 </div>

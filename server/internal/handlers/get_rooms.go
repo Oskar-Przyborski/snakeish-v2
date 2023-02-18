@@ -1,8 +1,9 @@
 package handlers
 
 import (
+	"regexp"
 	"snakeish/pkg/core"
-	"snakeish/pkg/core/room"
+	r "snakeish/pkg/core/room"
 
 	"github.com/gin-gonic/gin"
 	"github.com/thoas/go-funk"
@@ -13,18 +14,33 @@ func GetRoomsEndpoint(c *gin.Context) {
 
 	//filtering
 	filterOnlyPublic(&rooms, c.Query("public") == "1")
+	filterSearch(&rooms, c.Query("s"))
 
-	response := funk.Map(rooms, func(room room.IRoom) room.RoomPreview {
+	response := funk.Map(rooms, func(room r.IRoom) r.RoomPreview {
 		return room.GetPreview()
 	})
 
 	c.JSON(200, response)
 }
 
-func filterOnlyPublic(rooms *[]room.IRoom, value bool) {
+func filterOnlyPublic(rooms *[]r.IRoom, value bool) {
 	if value {
-		(*rooms) = (funk.Filter(*rooms, func(room room.IRoom) bool {
+		(*rooms) = (funk.Filter(*rooms, func(room r.IRoom) bool {
 			return !room.IsPinEnabled()
-		}).([]room.IRoom))
+		}).([]r.IRoom))
 	}
+}
+func filterSearch(rooms *[]r.IRoom, query string) {
+	if query == "" {
+		return
+	}
+
+	rgx, err := regexp.Compile("(?i).*" + query + ".*")
+	if err != nil {
+		return
+	}
+
+	(*rooms) = funk.Filter((*rooms), func(room r.IRoom) bool {
+		return rgx.MatchString(room.GetName())
+	}).([]r.IRoom)
 }
