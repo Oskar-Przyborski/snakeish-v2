@@ -34,13 +34,11 @@
 	onDestroy(unsubscibe);
 </script>
 
-<Panel>
-	<div class="input-wrapper">
-		<TextInput bind:value={$store.roomName} error={nameError != ''} altText={nameError}>
-			Room Name
-		</TextInput>
-	</div>
-</Panel>
+<div class="input-wrapper">
+	<TextInput bind:value={$store.roomName} error={nameError != ''} altText={nameError}>
+		Room Name
+	</TextInput>
+</div>
 
 <div class="continue-section">
 	<Button on:click={onContinue} disabled={btnDisabled}>Continue</Button>

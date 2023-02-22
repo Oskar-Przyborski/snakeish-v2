@@ -35,13 +35,10 @@
 	const nextStep = () => currStep++;
 </script>
 
-<Panel full>
+<Panel margin>
 	<div class="container">
 		<div class="top-header">
-			<div class="title">
-				<BackButton on:click={() => goto('/')} />
-				<h1>Creating room</h1>
-			</div>
+			<h1>Creating room</h1>
 			<Divider />
 		</div>
 		<div class="bottom">
@@ -74,20 +71,12 @@
 
 <style lang="scss">
 	.container {
-		height: 100%;
 		display: grid;
 		grid-template-rows: max-content 1fr;
 		.top-header {
-			.title {
-				display: flex;
-				flex-flow: row nowrap;
-				gap: 0.5rem;
-				align-items: center;
+			h1 {
+				margin: 0;
 				margin-bottom: 1rem;
-
-				h1 {
-					margin: 0;
-				}
 			}
 		}
 		.bottom {

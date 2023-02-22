@@ -28,10 +28,6 @@
 		overflow-y: scroll;
 		display: grid;
 		grid-template-columns: 1fr 15%;
-
-		.content {
-			padding: 1rem;
-		}
 	}
 	.ad-wrapper {
 		display: grid;

@@ -55,8 +55,8 @@
 		overflow-x: hidden;
 
 		padding: 0.8rem 1rem;
-		background-color: hsl(0, 3%, 15%);
-		color: white;
+		border-right: 2px solid #eee;
+		background-color: #fff;
 		font-size: 1.3rem;
 
 		.logo {
@@ -72,12 +72,12 @@
 				margin: 0.5rem 0;
 				padding: 0.6rem;
 				border-radius: 0.3rem;
-				color: hsl(0, 0%, 85%);
+				color: #555;
 
 				&:hover,
 				&.active {
-					color: white;
-					background-color: hsl(0, 3%, 20%);
+					color: #333;
+					background-color: #eee;
 				}
 			}
 			a {

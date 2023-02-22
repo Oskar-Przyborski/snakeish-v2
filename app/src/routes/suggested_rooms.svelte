@@ -11,7 +11,7 @@
 	export let onRefresh: () => void;
 </script>
 
-<Panel>
+<Panel margin>
 	<div class="header">
 		<h1>Suggested Rooms</h1>
 		<RefreshButton callback={onRefresh} />
@@ -40,9 +40,11 @@
 <style lang="scss">
 	.no-rooms-error {
 		text-align: center;
+		color: #333;
 	}
 	h1 {
 		margin: 0;
+		font-size: 1.6rem;
 	}
 
 	.header {

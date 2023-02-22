@@ -7,14 +7,14 @@
 <style lang="scss">
 	.divider {
 		height: 0px;
-		border-bottom: 2px solid #ffffff20;
+		border-bottom: 2px solid #eee;
 
 		&.vertical {
 			height: initial;
 			border-bottom: none;
 
 			width: 0px;
-			border-right: 2px solid #ffffff20;
+			border-right: 2px solid #eee;
 		}
 	}
 </style>

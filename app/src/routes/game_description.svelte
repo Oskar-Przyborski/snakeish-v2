@@ -2,7 +2,7 @@
 	import Panel from '$lib/components/panel.svelte';
 </script>
 
-<Panel>
+<Panel margin>
 	<h1>Snakeish</h1>
 	<p>
 		Online multiplayer traditional snake game that contains two game modes - classic and

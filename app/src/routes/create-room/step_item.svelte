@@ -24,7 +24,7 @@
 		gap: 1rem;
 		align-items: center;
 
-		color: #fff7;
+		color: #555;
 
 		.name {
 			.title {
@@ -36,17 +36,17 @@
 			}
 		}
 		.icon {
-			color: #fff7;
+			// color: #fff7;
 			font-size: 1.8rem;
 			display: grid;
 			place-items: center;
-			background-color: #fff2;
+			background-color: #ccc;
 			border-radius: 50%;
 			padding: 0.6rem;
 		}
 
 		&.active {
-			color: #fff;
+			color: #000;
 			.icon {
 				color: #fff;
 				background-color: var(--red);
@@ -54,10 +54,10 @@
 		}
 
 		&.prev-active {
-			color: #fff;
+			color: #000;
 			.icon {
 				color: #fff;
-				background-color: #fff7;
+				background-color: #aaa;
 			}
 		}
 	}

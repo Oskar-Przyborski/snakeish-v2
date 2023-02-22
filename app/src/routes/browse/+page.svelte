@@ -23,7 +23,7 @@
 </script>
 
 <div class="browse-all">
-	<Panel>
+	<Panel margin>
 		<div class="top-section">
 			<h1>Browse Rooms</h1>
 			<div class="search">
@@ -43,7 +43,7 @@
 			</div>
 		</div>
 	</Panel>
-	<Panel>
+	<Panel margin>
 		{#if data.rooms.length > 0}
 			<div class="list">
 				{#each data.rooms as room}
@@ -59,11 +59,6 @@
 </div>
 
 <style lang="scss">
-	.browse-all {
-		display: flex;
-		flex-flow: column nowrap;
-		gap: 1rem;
-	}
 	.top-section {
 		display: flex;
 		align-items: center;
