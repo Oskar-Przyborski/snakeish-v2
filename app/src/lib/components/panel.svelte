@@ -12,7 +12,7 @@
 	.panel {
 		border: 2px solid #eee;
 		background-color: #fff;
-		border-radius: 10px;
+		border-radius: 0.4rem;
 		&.margin {
 			margin: 1rem;
 		}

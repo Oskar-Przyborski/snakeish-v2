@@ -25,7 +25,6 @@
 		on:focus
 		on:blur
 	/>
-	<div class="border" class:focused />
 	{#if altText}
 		<div class="alt-text"><Icon icon="mdi:information" inline /> {altText}</div>
 	{/if}
@@ -35,22 +34,18 @@
 	.text-input {
 		margin: 1rem 0;
 		.name {
-			color: #fffa;
+			color: #222;
+			font-size: 0.92rem;
+			margin-bottom: 0.4rem;
 		}
 		input {
 			all: unset;
-			width: 100%;
-			font-size: inherit;
-			padding: 0.5rem 0.1rem;
+			width: calc(100% - 2rem);
+			font-size: 1rem;
+			padding: 0.5rem 1rem;
 			text-align: left;
-		}
-		.border {
-			border-bottom: 3px solid white;
-			transition: border-bottom 0.1s, box-shadow 0.1s;
-			&.focused {
-				border-bottom: 3px solid #d62246;
-				box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.384);
-			}
+			border: 2px solid #eee;
+			border-radius: 0.4rem;
 		}
 		.alt-text {
 			margin-top: 0.3rem;
@@ -62,8 +57,8 @@
 			.alt-text {
 				color: #f43737;
 			}
-			.border {
-				border-bottom: 3px solid #f43737;
+			input {
+				border-color: #f43737;
 			}
 		}
 	}
