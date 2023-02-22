@@ -37,7 +37,11 @@ const mdiIcons = [
 	'account-supervisor',
 	'account',
 	'arrow-down-drop-circle-outline',
-	'arrow-up-drop-circle-outline'
+	'arrow-up-drop-circle-outline',
+	'home-outline',
+	'magnify-outline',
+	'coffee-outline',
+	'plus-outline'
 ];
 
 loadIcons('mdi', mdiIcons);

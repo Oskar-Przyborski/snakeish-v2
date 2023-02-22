@@ -1,29 +1,51 @@
-<script>
-	import Container from '$lib/components/container.svelte';
+<script lang="ts">
 	import Footer from '$lib/components/footer.svelte';
+	import Sidenav from './sidenav.svelte';
+	import { page } from '$app/stores';
 </script>
 
 <div class="app">
-	<div class="snakeish-logo">
-		<a href="/">
-			<img alt="Snakeish Logo" src="/logo-long-white.png" width="260" />
-		</a>
+	<Sidenav route={$page.url.pathname} />
+	<div class="content-wrapper">
+		<div class="content">
+			<main><slot /></main>
+			<Footer />
+		</div>
+		<div class="ad-wrapper">
+			<div class="example-ad">ad</div>
+		</div>
 	</div>
-	<Container>
-		<slot />
-	</Container>
-	<Footer />
 </div>
 
 <style lang="scss">
 	.app {
-		padding: 0 1rem;
 		height: 100%;
 		display: grid;
-		grid-template-rows: max-content 1fr max-content;
+		grid-template-columns: 220px 1fr;
 	}
-	.snakeish-logo {
-		text-align: center;
-		padding: 0.5em 0;
+	.content-wrapper {
+		width: 100%;
+		overflow-y: scroll;
+		display: grid;
+		grid-template-columns: 1fr 15%;
+
+		.content {
+			padding: 1rem;
+		}
+	}
+	.ad-wrapper {
+		display: grid;
+		place-items: center;
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		.example-ad {
+			height: 500px;
+			width: 150px;
+			background-color: #666;
+			color: white;
+			display: grid;
+			place-items: center;
+		}
 	}
 </style>
