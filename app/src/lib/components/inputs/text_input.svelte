@@ -5,8 +5,8 @@
 	export let placeholder = '';
 	export let width: any = null;
 	export let fontSize: any = null;
-	export let altText: string = '';
-	export let error: boolean = false;
+	export let altText = '';
+	export let error = false;
 
 	let focused = false;
 </script>

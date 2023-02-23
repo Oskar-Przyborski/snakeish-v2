@@ -3,7 +3,6 @@
 	const dispatch = createEventDispatcher();
 	import { store } from './room_creation_state';
 	import TextInput from '$lib/components/inputs/text_input.svelte';
-	import Panel from '$lib/components/panel.svelte';
 	import Button from '$lib/components/buttons/button.svelte';
 	import { fetchJson } from '$lib/fetchJson';
 

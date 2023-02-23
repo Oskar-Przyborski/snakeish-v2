@@ -75,6 +75,6 @@ export const renderSnake = (
 	});
 	nameContainer.add(nameText);
 	snakeGroup.add(nameContainer);
-    
+
 	return snakeGroup;
 };

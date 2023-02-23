@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
-	const dispatch = createEventDispatcher()
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 
 	export let value: boolean;
 
 	const toggle = () => {
 		value = !value;
-		dispatch("change")
+		dispatch('change');
 	};
 </script>
 

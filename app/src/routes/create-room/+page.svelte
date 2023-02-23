@@ -7,7 +7,6 @@
 	import StepItem from './step_item.svelte';
 	import ChoosePin from './choose_pin.svelte';
 	import { resetState, store } from './room_creation_state';
-	import BackButton from '$lib/components/buttons/back_button.svelte';
 	import { goto } from '$app/navigation';
 	import { fetchJson } from '$lib/fetchJson';
 	import modes from '$lib/modes';
@@ -65,7 +64,7 @@
 </Panel>
 
 <style lang="scss">
-	.header{
+	.header {
 		margin: 1rem;
 	}
 	.container {

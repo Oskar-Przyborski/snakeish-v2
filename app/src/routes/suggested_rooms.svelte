@@ -26,7 +26,9 @@
 		</div>
 		{#if remainingRooms != 0}
 			<div class="remaining-rooms">
-				...and {remainingRooms} more <Button href="/browse"><Icon icon="mdi:magnify" inline /> Browse All</Button>
+				...and {remainingRooms} more <Button href="/browse"
+					><Icon icon="mdi:magnify" inline /> Browse All</Button
+				>
 			</div>
 		{/if}
 	{:else}

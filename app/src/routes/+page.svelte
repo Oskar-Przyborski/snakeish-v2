@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { PageServerData } from './$types';
-	import SuggestedRooms from './suggested_rooms.svelte';
 	import GameDescription from './game_description.svelte';
 	import { fetchJson } from '$lib/fetchJson';
 	import RefreshButton from './refresh_button.svelte';
-	import RoomPreview from '../lib/components/room_preview.svelte';
+	import RoomPreview from '$lib/components/room_preview.svelte';
 	import Panel from '$lib/components/panel.svelte';
 	import Button from '$lib/components/buttons/button.svelte';
 	import Divider from '$lib/components/divider.svelte';

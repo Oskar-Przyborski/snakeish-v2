@@ -31,7 +31,8 @@
 		border: 2px solid #eee;
 		border-radius: 0.5rem;
 		padding: 1rem;
-		transition: background-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out, color 0.1s ease-in-out;
+		transition: background-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out,
+			color 0.1s ease-in-out;
 		cursor: pointer;
 		.top {
 			display: flex;

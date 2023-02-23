@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import RoomPreview from '../../lib/components/room_preview.svelte';
+	import RoomPreview from '$lib/components/room_preview.svelte';
 	import Panel from '$lib/components/panel.svelte';
 	import Icon from '@iconify/svelte';
 	import TextInput from '$lib/components/inputs/text_input.svelte';
@@ -10,8 +10,8 @@
 
 	export let data: PageData;
 
-	let publicOnly: boolean = false;
-	let search: string = '';
+	let publicOnly = false;
+	let search = '';
 
 	const refresh = async () => {
 		const params: any = {};
@@ -44,7 +44,7 @@
 	{#each data.rooms as room}
 		<RoomPreview {room} />
 	{:else}
-		<Panel>
+		<Panel margin>
 			<div class="no-rooms-error">
 				There is no room that matches your filters. But you can create one!
 			</div>

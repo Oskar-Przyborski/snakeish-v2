@@ -35,5 +35,5 @@ export const renderApple = (
 			shadowOffsetY: 0.15
 		})
 	);
-	return apple
+	return apple;
 };

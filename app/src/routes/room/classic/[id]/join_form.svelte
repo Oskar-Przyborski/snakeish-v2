@@ -7,8 +7,8 @@
 	import { onMount } from 'svelte';
 
 	export let pinEnabled: boolean = false;
-	let name: string
-	let selectedColor: number
+	let name: string;
+	let selectedColor: number;
 	let pin: (number | null)[] = [];
 
 	const skinColors = [
@@ -30,20 +30,20 @@
 	const canSubmit = () => !(pinEnabled && pin.some((n) => n == null));
 
 	const onNameInputBlur = () => {
-		if(name.length < 3 || name.length > 10){
-			$store.errors.name = "Name should be 3-10 chars long!"
+		if (name.length < 3 || name.length > 10) {
+			$store.errors.name = 'Name should be 3-10 chars long!';
 		} else {
-			$store.errors.name = undefined
+			$store.errors.name = undefined;
 		}
-	}
+	};
 
-	onMount(()=>{
-		name = localStorage.getItem("player-name") ?? ""
-		const color = localStorage.getItem("player-color")
-		if(color) {
-			selectedColor = skinColors.indexOf(color)
+	onMount(() => {
+		name = localStorage.getItem('player-name') ?? '';
+		const color = localStorage.getItem('player-color');
+		if (color) {
+			selectedColor = skinColors.indexOf(color);
 		}
-	})
+	});
 </script>
 
 <div class="join-form">

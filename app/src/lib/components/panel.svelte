@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let full = false;
-	export let padding: string = '1.3rem';
+	export let padding = '1.3rem';
 	export let margin = false;
 </script>
 
@@ -16,7 +16,6 @@
 		&.margin {
 			margin: 1rem;
 		}
-		
 
 		&.full {
 			width: 100%;

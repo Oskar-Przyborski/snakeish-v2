@@ -4,8 +4,8 @@
 	import Icon from '@iconify/svelte';
 
 	export let disabled = false;
-	export let altText: string = '';
-	export let error: boolean = false;
+	export let altText = '';
+	export let error = false;
 	export let pin: (number | null)[] = [null, null, null, null];
 	let char1: HTMLInputElement;
 	let char2: HTMLInputElement;

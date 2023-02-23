@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 
 	export let colors: string[];
-	export let selected: number = 0;
+	export let selected = 0;
 	const nextColor = () => (selected = (selected + 1) % colors.length);
 	const prevColor = () => (selected = selected == 0 ? colors.length - 1 : selected - 1);
 </script>
