@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import RoomPreview from '../room_preview.svelte';
+	import RoomPreview from '../../lib/components/room_preview.svelte';
 	import Panel from '$lib/components/panel.svelte';
 	import Icon from '@iconify/svelte';
 	import TextInput from '$lib/components/inputs/text_input.svelte';
@@ -16,53 +16,48 @@
 	const refresh = async () => {
 		const params: any = {};
 		if (publicOnly) params['public'] = 1;
-		if (search != '') params['s'] = search;;
-		
+		if (search != '') params['s'] = search;
+
 		data.rooms = await fetchJson('rooms', { params });
 	};
 </script>
 
 <h1 class="header">Browse</h1>
 <div class="browse-all">
-	<Panel margin>
-		<div class="top-section">
-			<div class="search">
-				<TextInput placeholder="Search" bind:value={search} on:change={refresh} />
+	<div class="top-section">
+		<div class="search">
+			<TextInput placeholder="Search" bind:value={search} on:change={refresh} />
+			<span style="font-size: 1.4rem;">
+				<Icon icon="mdi:magnify" inline />
+			</span>
+		</div>
+		<div class="btns">
+			<ModeDropdown />
+			<div class="public-only">
 				<span style="font-size: 1.4rem;">
-					<Icon icon="mdi:magnify" inline />
+					<Icon icon="mdi:lock-open-variant-outline" inline />
 				</span>
-			</div>
-			<div class="btns">
-				<ModeDropdown />
-				<div class="public-only">
-					<span style="font-size: 1.4rem;">
-						<Icon icon="mdi:lock-open-variant-outline" inline />
-					</span>
-					<ToggleInput bind:value={publicOnly} on:change={refresh} />
-				</div>
+				<ToggleInput bind:value={publicOnly} on:change={refresh} />
 			</div>
 		</div>
-	</Panel>
-	<Panel margin>
-		{#if data.rooms.length > 0}
-			<div class="list">
-				{#each data.rooms as room}
-					<div class="preview-wrapper">
-						<RoomPreview {room} />
-					</div>
-				{/each}
+	</div>
+	{#each data.rooms as room}
+		<RoomPreview {room} />
+	{:else}
+		<Panel>
+			<div class="no-rooms-error">
+				There is no room that matches your filters. But you can create one!
 			</div>
-		{:else}
-			There is no room that matches your filters. But you can create one!
-		{/if}
-	</Panel>
+		</Panel>
+	{/each}
 </div>
 
 <style lang="scss">
-	.header{
-		padding-left:1rem;
+	.header {
+		margin: 1rem;
 	}
 	.top-section {
+		margin: 1rem;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -86,13 +81,8 @@
 			gap: 1rem;
 		}
 	}
-	.list {
-		display: grid;
-		grid-template-columns: 50% 50%;
-		margin: 1rem -0.5rem;
 
-		.preview-wrapper {
-			padding: 0.5rem;
-		}
+	.no-rooms-error {
+		text-align: center;
 	}
 </style>

@@ -46,6 +46,7 @@
 			text-align: left;
 			border: 2px solid #eee;
 			border-radius: 0.4rem;
+			background-color: white;
 		}
 		.alt-text {
 			margin-top: 0.3rem;

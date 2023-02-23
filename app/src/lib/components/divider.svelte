@@ -8,6 +8,7 @@
 	.divider {
 		height: 0px;
 		border-bottom: 2px solid #eee;
+		margin: 1rem;
 
 		&.vertical {
 			height: initial;

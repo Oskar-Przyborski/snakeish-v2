@@ -66,7 +66,7 @@
 
 <style lang="scss">
 	.header{
-		padding-left: 1rem;
+		margin: 1rem;
 	}
 	.container {
 		display: grid;

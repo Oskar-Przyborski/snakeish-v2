@@ -45,7 +45,8 @@
 			user-select: none;
 			font-size: 1.3rem;
 			padding: 0.8rem 1rem;
-			background-color: #fff1;
+			background-color: #fff;
+			border: 2px solid #eee;
 			border-radius: 0.5rem;
 		}
 

@@ -27,9 +27,13 @@
 		width: 100%;
 		overflow-y: scroll;
 		display: grid;
-		grid-template-columns: 1fr 15%;
+		grid-template-columns: 1fr max-content;
+		.content {
+			padding-top: 0.5rem;
+		}
 	}
 	.ad-wrapper {
+		padding: 0 0.5rem;
 		display: grid;
 		place-items: center;
 		position: sticky;

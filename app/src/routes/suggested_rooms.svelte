@@ -3,7 +3,7 @@
 	import Panel from '$lib/components/panel.svelte';
 	import Icon from '@iconify/svelte';
 	import RefreshButton from './refresh_button.svelte';
-	import RoomPreview from './room_preview.svelte';
+	import RoomPreview from '../lib/components/room_preview.svelte';
 
 	export let rooms: App.RoomPreview[];
 	export let remainingRooms = 0;
@@ -50,14 +50,6 @@
 	.header {
 		display: flex;
 		justify-content: space-between;
-	}
-	.rooms-grid {
-		display: grid;
-		grid-template-columns: 50% 50%;
-		margin: 1rem -0.5rem;
-		.preview-wrapper {
-			padding: 0.5rem;
-		}
 	}
 	.remaining-rooms {
 		font-size: 1.1rem;
