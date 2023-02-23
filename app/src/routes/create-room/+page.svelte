@@ -35,60 +35,47 @@
 	const nextStep = () => currStep++;
 </script>
 
+<h1 class="header">Create</h1>
 <Panel margin>
 	<div class="container">
-		<div class="top-header">
-			<h1>Creating room</h1>
-			<Divider />
+		<div class="navigation-panel">
+			{#each data.steps as step, idx}
+				<StepItem {step} active={currStep == idx} prevActive={idx < currStep} />
+			{/each}
 		</div>
-		<div class="bottom">
-			<div class="navigation-panel">
-				{#each data.steps as step, idx}
-					<StepItem {step} active={currStep == idx} prevActive={idx < currStep} />
-				{/each}
+		<Divider vertical />
+		<div class="step-view">
+			<div class="top-headers">
+				<div>Step {currStep + 1}/{data.steps.length}</div>
+				<h1>{data.steps[currStep].stepView.title}</h1>
+				<div>{data.steps[currStep].stepView.description}</div>
 			</div>
-			<Divider vertical />
-			<div class="step-view">
-				<div class="top-headers">
-					<div>Step {currStep + 1}/{data.steps.length}</div>
-					<h1>{data.steps[currStep].stepView.title}</h1>
-					<div>{data.steps[currStep].stepView.description}</div>
-				</div>
-				<div class="divider">
-					<Divider />
-				</div>
-				{#if currStep == 0}
-					<ChooseName on:continue={nextStep} />
-				{:else if currStep == 1}
-					<ChooseMode on:continue={nextStep} on:back={prevStep} />
-				{:else if currStep == 2}
-					<ChoosePin on:create-room={createRoom} on:back={prevStep} />
-				{/if}
+			<div class="divider">
+				<Divider />
 			</div>
+			{#if currStep == 0}
+				<ChooseName on:continue={nextStep} />
+			{:else if currStep == 1}
+				<ChooseMode on:continue={nextStep} on:back={prevStep} />
+			{:else if currStep == 2}
+				<ChoosePin on:create-room={createRoom} on:back={prevStep} />
+			{/if}
 		</div>
 	</div>
 </Panel>
 
 <style lang="scss">
+	.header{
+		padding-left: 1rem;
+	}
 	.container {
 		display: grid;
-		grid-template-rows: max-content 1fr;
-		.top-header {
-			h1 {
-				margin: 0;
-				margin-bottom: 1rem;
-			}
-		}
-		.bottom {
-			display: grid;
-			grid-template-columns: 25% max-content 1fr;
-			gap: 1rem;
-		}
+		grid-template-columns: 25% max-content 1fr;
+		gap: 1rem;
 	}
 
 	.step-view {
-		padding: 2rem 1rem;
-		padding-bottom: 1rem;
+		padding: 1rem 1rem;
 		.top-headers {
 			margin-bottom: 1.5rem;
 			h1 {

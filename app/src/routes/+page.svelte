@@ -18,5 +18,12 @@
 	};
 </script>
 
+<h1 class="header">Home</h1>
 <SuggestedRooms {rooms} {remainingRooms} onRefresh={refresh} />
 <GameDescription />
+
+<style lang="scss">
+	.header {
+		padding-left: 1rem;
+	}
+</style>

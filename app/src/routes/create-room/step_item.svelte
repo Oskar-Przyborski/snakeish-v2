@@ -18,8 +18,7 @@
 
 <style lang="scss">
 	.step-item {
-		margin: 2rem 0;
-
+		padding: 1rem 0;
 		display: flex;
 		gap: 1rem;
 		align-items: center;

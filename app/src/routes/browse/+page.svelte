@@ -22,10 +22,10 @@
 	};
 </script>
 
+<h1 class="header">Browse</h1>
 <div class="browse-all">
 	<Panel margin>
 		<div class="top-section">
-			<h1>Browse Rooms</h1>
 			<div class="search">
 				<TextInput placeholder="Search" bind:value={search} on:change={refresh} />
 				<span style="font-size: 1.4rem;">
@@ -59,13 +59,13 @@
 </div>
 
 <style lang="scss">
+	.header{
+		padding-left:1rem;
+	}
 	.top-section {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		h1 {
-			margin: 0;
-		}
 
 		.btns {
 			display: flex;
