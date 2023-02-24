@@ -26,22 +26,23 @@ const mdiIcons = [
 	'lock-outline',
 	'lock-open-variant-outline',
 	'magnify',
-	'plus',
+	'plus-bold',
+	'plus-outline',
 	'coffee',
+	'coffee-outline',
 	'refresh',
-	'location-enter',
-	'check',
 	'chevron-left',
 	'chevron-right',
 	'information',
-	'account-supervisor',
 	'account',
-	'arrow-down-drop-circle-outline',
-	'arrow-up-drop-circle-outline',
+	'account-supervisor',
+	'menu-up',
+	'menu-down',
+	'home',
 	'home-outline',
-	'magnify-outline',
-	'coffee-outline',
-	'plus-outline'
+	'weather-sunny',
+	'moon-waning-crescent',
+	'star-outline'
 ];
 
 loadIcons('mdi', mdiIcons);

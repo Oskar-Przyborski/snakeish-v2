@@ -14,7 +14,7 @@
 			title: 'Browse',
 			href: '/browse',
 			iconFull: 'mdi:magnify',
-			iconEmpty: 'mdi:magnify-outline'
+			iconEmpty: 'mdi:magnify'
 		},
 		{
 			title: 'Create',
