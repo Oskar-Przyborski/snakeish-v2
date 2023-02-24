@@ -62,7 +62,7 @@
 		for (let y = 0; y < gridSize; y++) {
 			for (let x = 0; x < gridSize; x++) {
 				const darked = y % 2 == 0 ? x % 2 == 0 : x % 2 == 1;
-				const color = darked ? '#2e3134' : '#36393c';
+				const color = darked ? getComputedStyle(document.documentElement).getPropertyValue("--grid-1") : getComputedStyle(document.documentElement).getPropertyValue("--grid-2");
 				gridLayer.add(
 					new Konva.Rect({
 						width: cellSize,

@@ -48,18 +48,16 @@
 			</div>
 		</Panel>
 		<div class="sidebar">
-			<Panel>
-				<div class="titles">
-					<h1>{data.name}</h1>
-					<div class="mode">
-						<span class="tag">{data.modeTag.toUpperCase()}</span>
-						<h2>{data.modeName}</h2>
-					</div>
+			<div class="titles">
+				<h1>{data.name}</h1>
+				<div class="mode">
+					<span class="tag">{data.modeTag.toUpperCase()}</span>
+					<h2>{data.modeName}</h2>
 				</div>
-			</Panel>
+			</div>
 			<Panel>
 				{#if !$store.isPlaying}
-					<JoinForm pinEnabled={data.pinEnabled}/>
+					<JoinForm pinEnabled={data.pinEnabled} />
 				{:else}
 					<Leaderboard />
 				{/if}
@@ -69,17 +67,18 @@
 {:else}
 	<p style="text-align:center">Loading</p>
 {/if}
+<div class="ad-wrapper">
+	<div class="example-ad">ad</div>
+</div>
 
 <svelte:window on:keydown={onKeyDown} />
 
 <style lang="scss">
 	.wrapper {
+		padding: 1rem;
 		display: grid;
 		grid-template-columns: 3fr 2fr;
 		gap: 1rem;
-		h1 {
-			margin: 0rem 0;
-		}
 	}
 	.game-renderer {
 		display: grid;
@@ -91,10 +90,15 @@
 		gap: 1rem;
 
 		.titles {
+			padding: 1rem;
 			display: flex;
 			flex-flow: row nowrap;
 			align-items: center;
 			justify-content: space-between;
+
+			h1 {
+				margin: 0;
+			}
 			.mode {
 				.tag {
 					font-size: 0.75rem;
@@ -107,6 +111,18 @@
 					margin: 0.3rem 0;
 				}
 			}
+		}
+	}
+	.ad-wrapper {
+		display: grid;
+		place-items: center;
+		.example-ad {
+			height: 100px;
+			width: 700px;
+			background-color: #666;
+			color: white;
+			display: grid;
+			place-items: center;
 		}
 	}
 </style>

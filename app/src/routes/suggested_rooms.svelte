@@ -3,7 +3,7 @@
 	import Panel from '$lib/components/panel.svelte';
 	import Icon from '@iconify/svelte';
 	import RefreshButton from './refresh_button.svelte';
-	import RoomPreview from './room_preview.svelte';
+	import RoomPreview from '../lib/components/room_preview.svelte';
 
 	export let rooms: App.RoomPreview[];
 	export let remainingRooms = 0;
@@ -11,7 +11,7 @@
 	export let onRefresh: () => void;
 </script>
 
-<Panel>
+<Panel margin>
 	<div class="header">
 		<h1>Suggested Rooms</h1>
 		<RefreshButton callback={onRefresh} />
@@ -26,7 +26,9 @@
 		</div>
 		{#if remainingRooms != 0}
 			<div class="remaining-rooms">
-				...and {remainingRooms} more <Button><Icon icon="mdi:magnify" inline /> Browse All</Button>
+				...and {remainingRooms} more <Button href="/browse"
+					><Icon icon="mdi:magnify" inline /> Browse All</Button
+				>
 			</div>
 		{/if}
 	{:else}
@@ -40,22 +42,16 @@
 <style lang="scss">
 	.no-rooms-error {
 		text-align: center;
+		color: var(--text-light);
 	}
 	h1 {
 		margin: 0;
+		font-size: 1.6rem;
 	}
 
 	.header {
 		display: flex;
 		justify-content: space-between;
-	}
-	.rooms-grid {
-		display: grid;
-		grid-template-columns: 50% 50%;
-		margin: 1rem -0.5rem;
-		.preview-wrapper {
-			padding: 0.5rem;
-		}
 	}
 	.remaining-rooms {
 		font-size: 1.1rem;

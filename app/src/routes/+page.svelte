@@ -1,11 +1,13 @@
 <script lang="ts">
 	import type { PageServerData } from './$types';
-	import Button from '$lib/components/buttons/button.svelte';
-	import Panel from '$lib/components/panel.svelte';
-	import Icon from '@iconify/svelte';
-	import SuggestedRooms from './suggested_rooms.svelte';
 	import GameDescription from './game_description.svelte';
 	import { fetchJson } from '$lib/fetchJson';
+	import RefreshButton from './refresh_button.svelte';
+	import RoomPreview from '$lib/components/room_preview.svelte';
+	import Panel from '$lib/components/panel.svelte';
+	import Button from '$lib/components/buttons/button.svelte';
+	import Divider from '$lib/components/divider.svelte';
+	import Icon from '@iconify/svelte';
 
 	export let data: PageServerData;
 	let rooms = data.rooms;
@@ -21,53 +23,75 @@
 	};
 </script>
 
-<div class="top">
-	<div class="panels-col">
-		<SuggestedRooms {rooms} {remainingRooms} onRefresh={refresh} />
-		<GameDescription />
+<div class="header">
+	<h1>Home</h1>
+	<RefreshButton callback={refresh} />
+</div>
+{#if rooms.length != 0}
+	<div class="grid">
+		{#each rooms as room}
+			<RoomPreview {room} />
+		{/each}
 	</div>
-	<div class="panels-col">
-		<Panel>
-			<div class="centered-panel">
-				<h1>Wanna have own room?</h1>
-				<div class="btn-wrapper">
-					<Button href="/create-room">
-						<b><Icon icon="mdi:plus" inline /> Create</b>
-					</Button>
-				</div>
-			</div>
-		</Panel>
-		<Panel>
-			<div class="centered-panel">
-				<h2>Do you like this game?</h2>
-				<Button><Icon icon="mdi:coffee" inline /> Buy me a coffee!</Button>
-			</div>
-		</Panel>
+	{#if remainingRooms != 0}
+		<div class="remaining-rooms">
+			...and {remainingRooms} more
+			<Button href="/browse" outline>
+				<Icon icon="mdi:magnify" inline /> Browse All
+			</Button>
+		</div>
+	{/if}
+{:else}
+	<Panel margin>
+		<div class="no-rooms-error">
+			<h2>There is no any room here 😬</h2>
+			<p>Don't worry, you can <a href="/create-room">create one</a>!</p>
+		</div>
+	</Panel>
+{/if}
+<Divider />
+<Panel margin>
+	<div class="own-room">
+		<span>Want to have your own room?</span>
+		<Button href="/create-room" outline>Create</Button>
 	</div>
+</Panel>
+<div style="margin: 1rem;">
+	<GameDescription />
 </div>
 
 <style lang="scss">
-	.top {
-		display: grid;
-		grid-template-columns: 75% 25%;
-		gap: 1rem;
-		align-items: flex-start;
+	.header {
+		margin: 1rem;
+		display: flex;
+		justify-content: space-between;
+		h1 {
+			margin: 0;
+		}
 	}
 
-	.panels-col {
+	.own-room {
 		display: flex;
-		flex-flow: column;
+		flex-flow: row wrap;
+		justify-content: space-between;
+		align-items: center;
 		gap: 1rem;
+		span {
+			font-size: 1.3rem;
+			font-weight: 500;
+		}
 	}
-	.centered-panel {
+	.no-rooms-error {
 		text-align: center;
-		h1,
-		h2 {
-			margin: 0;
-			margin-bottom: 1rem;
-		}
-		.btn-wrapper {
-			font-size: 1.2rem;
-		}
+		color: var(--text-light);
+	}
+	.remaining-rooms {
+		margin: 1rem;
+		font-size: 1.1rem;
+
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		gap: 1rem;
 	}
 </style>

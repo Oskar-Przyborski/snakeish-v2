@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 
 	export let colors: string[];
-	export let selected: number = 0;
+	export let selected = 0;
 	const nextColor = () => (selected = (selected + 1) % colors.length);
 	const prevColor = () => (selected = selected == 0 ? colors.length - 1 : selected - 1);
 </script>
@@ -22,7 +22,7 @@
 
 <style lang="scss">
 	.name {
-		color: #fffa;
+		color: var(--text-light);
 	}
 	.row {
 		display: flex;
@@ -38,11 +38,11 @@
 	.arrow-btn {
 		cursor: pointer;
 		font-size: 2rem;
-		color: white;
+		color: var(--text);
 		background-color: transparent;
 		border: none;
 		&:hover {
-			color: #cacaca;
+			color: var(--text-light);
 		}
 	}
 </style>

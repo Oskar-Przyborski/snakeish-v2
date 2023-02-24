@@ -56,6 +56,8 @@ func CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic_
 	}
 
 	room := classic_room.ConfigureClassicRoom(base, modeName)
+	StartAfkForRoom(room.GetId(), 30*time.Second)
+
 	instance.rooms = append(instance.rooms, room)
 	go room.StartRoom()
 

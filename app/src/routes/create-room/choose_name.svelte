@@ -3,7 +3,6 @@
 	const dispatch = createEventDispatcher();
 	import { store } from './room_creation_state';
 	import TextInput from '$lib/components/inputs/text_input.svelte';
-	import Panel from '$lib/components/panel.svelte';
 	import Button from '$lib/components/buttons/button.svelte';
 	import { fetchJson } from '$lib/fetchJson';
 
@@ -34,13 +33,11 @@
 	onDestroy(unsubscibe);
 </script>
 
-<Panel>
-	<div class="input-wrapper">
-		<TextInput bind:value={$store.roomName} error={nameError != ''} altText={nameError}>
-			Room Name
-		</TextInput>
-	</div>
-</Panel>
+<div class="input-wrapper">
+	<TextInput bind:value={$store.roomName} error={nameError != ''} altText={nameError}>
+		Room Name
+	</TextInput>
+</div>
 
 <div class="continue-section">
 	<Button on:click={onContinue} disabled={btnDisabled}>Continue</Button>

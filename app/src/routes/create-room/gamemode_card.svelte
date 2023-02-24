@@ -28,10 +28,11 @@
 <style lang="scss">
 	.gamemode-card {
 		all: unset;
-		border: 3px solid #ffffff;
-		border-radius: 0.8rem;
+		border: 2px solid var(--outline);
+		border-radius: 0.5rem;
 		padding: 1rem;
-		transition: border 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+		transition: background-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out,
+			color 0.1s ease-in-out;
 		cursor: pointer;
 		.top {
 			display: flex;
@@ -58,7 +59,8 @@
 
 			.checkbox {
 				font-size: 1.2rem;
-				background-color: var(--red);
+				color: var(--red);
+				background-color: white;
 				width: 1.6rem;
 				height: 1.6rem;
 				display: grid;
@@ -68,7 +70,7 @@
 		}
 
 		&:hover {
-			box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
+			box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.05);
 		}
 		&:focus-visible {
 			outline-color: rgb(255, 255, 255);
@@ -78,7 +80,8 @@
 		}
 
 		&.selected {
-			border: 3px solid #d62246;
+			color: white;
+			background: var(--red);
 			// box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.384);
 		}
 	}

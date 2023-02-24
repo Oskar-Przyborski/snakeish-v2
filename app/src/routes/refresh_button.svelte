@@ -32,6 +32,7 @@
 
 <style lang="scss">
 	.refresh-button {
+		width: max-content;
 		display: grid;
 		place-items: center;
 		font-size: 2rem;

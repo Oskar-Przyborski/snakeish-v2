@@ -4,7 +4,6 @@
 	const dispatch = createEventDispatcher();
 	import ToggleInput from '$lib/components/inputs/toggle_input.svelte';
 	import PinInput from '$lib/components/inputs/pin_input.svelte';
-	import Panel from '$lib/components/panel.svelte';
 	import TextButton from '$lib/components/buttons/text_button.svelte';
 	import Button from '$lib/components/buttons/button.svelte';
 	import Icon from '@iconify/svelte';
@@ -33,15 +32,13 @@
 		<h2>Use PIN code protection</h2>
 		<ToggleInput bind:value={$store.pinEnabled} />
 	</div>
-	<Panel>
-		<PinInput
-			pin={$store.pin}
-			on:change={(e) => ($store.pin = e.detail.pin)}
-			disabled={!$store.pinEnabled}
-		>
-			Enter the pin
-		</PinInput>
-	</Panel>
+	<PinInput
+		pin={$store.pin}
+		on:change={(e) => ($store.pin = e.detail.pin)}
+		disabled={!$store.pinEnabled}
+	>
+		Enter the pin
+	</PinInput>
 </div>
 <div class="continue-section">
 	<TextButton on:click={onBack}>Back</TextButton>

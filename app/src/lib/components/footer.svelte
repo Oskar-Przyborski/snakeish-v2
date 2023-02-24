@@ -4,8 +4,8 @@
 
 <footer>
 	<b>Snakeish</b> by<br />
-	<a href="https://github.com/Oskar-Przyborski">
-		Oskar Przyborski <Icon icon="mdi:github" inline={true} />
+	<a href="https://github.com/Oskar-Przyborski" target="_blank" rel="noreferrer noopener nofollow">
+		Oskar Przyborski <Icon icon="mdi:github" inline />
 	</a>
 </footer>
 

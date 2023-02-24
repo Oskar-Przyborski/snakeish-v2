@@ -1,8 +1,16 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
 	export let value: boolean;
+
+	const toggle = () => {
+		value = !value;
+		dispatch('change');
+	};
 </script>
 
-<button class="switch" class:checked={value} on:click={() => (value = !value)}>
+<button class="switch" class:checked={value} on:click={toggle}>
 	<div class="slider" />
 </button>
 
@@ -15,11 +23,11 @@
 		width: 2em;
 		border-radius: 2em;
 		padding: 0.25em;
-		background-color: #fff8;
+		background-color: #555;
 		transition: background-color 0.1s ease-in-out;
 
 		&:hover {
-			background-color: #fff6;
+			background-color: #444;
 		}
 
 		.slider {

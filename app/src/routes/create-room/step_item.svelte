@@ -18,13 +18,12 @@
 
 <style lang="scss">
 	.step-item {
-		margin: 2rem 0;
-
+		padding: 1rem 0;
 		display: flex;
 		gap: 1rem;
 		align-items: center;
 
-		color: #fff7;
+		color: var(--text-light);
 
 		.name {
 			.title {
@@ -36,28 +35,28 @@
 			}
 		}
 		.icon {
-			color: #fff7;
+			color: white;
 			font-size: 1.8rem;
 			display: grid;
 			place-items: center;
-			background-color: #fff2;
+			background-color: var(--text-disabled);
 			border-radius: 50%;
 			padding: 0.6rem;
 		}
 
 		&.active {
-			color: #fff;
+			color: var(--text);
 			.icon {
-				color: #fff;
+				color: white;
 				background-color: var(--red);
 			}
 		}
 
 		&.prev-active {
-			color: #fff;
+			color: var(--text);
 			.icon {
-				color: #fff;
-				background-color: #fff7;
+				color: white;
+				background-color: #aaa;
 			}
 		}
 	}

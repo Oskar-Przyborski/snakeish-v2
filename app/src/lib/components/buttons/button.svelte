@@ -35,7 +35,7 @@
 
 		display: inline-block;
 		cursor: pointer;
-		transition: background-color 0.1s, box-shadow 0.2s, border 0.1s;
+		transition: background-color 0.1s, box-shadow 0.2s, border 0.1s, color 0.1s;
 
 		&:not(.disabled):hover {
 			box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
@@ -52,7 +52,9 @@
 
 		&.outline {
 			background-color: transparent;
+			color: var(--text);
 			&:not(.disabled):hover {
+				color: #fff;
 				box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
 			}
 

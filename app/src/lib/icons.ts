@@ -24,16 +24,25 @@ const mdiIcons = [
 	'gamepad-variant',
 	'lock',
 	'lock-outline',
+	'lock-open-variant-outline',
 	'magnify',
-	'plus',
+	'plus-bold',
+	'plus-outline',
 	'coffee',
+	'coffee-outline',
 	'refresh',
-	'location-enter',
 	'chevron-left',
 	'chevron-right',
 	'information',
+	'account',
 	'account-supervisor',
-	'account'
+	'menu-up',
+	'menu-down',
+	'home',
+	'home-outline',
+	'weather-sunny',
+	'moon-waning-crescent',
+	'star-outline'
 ];
 
 loadIcons('mdi', mdiIcons);

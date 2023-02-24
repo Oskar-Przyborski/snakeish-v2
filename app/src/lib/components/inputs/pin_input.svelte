@@ -4,8 +4,8 @@
 	import Icon from '@iconify/svelte';
 
 	export let disabled = false;
-	export let altText: string = '';
-	export let error: boolean = false;
+	export let altText = '';
+	export let error = false;
 	export let pin: (number | null)[] = [null, null, null, null];
 	let char1: HTMLInputElement;
 	let char2: HTMLInputElement;
@@ -122,7 +122,9 @@
 	.pin-input {
 		margin: 1rem 0;
 		.name {
-			color: #fffa;
+			color: var(--text-light);
+			font-size: 0.92rem;
+			margin-bottom: 0.4rem;
 		}
 		.input-wrapper {
 			padding-top: 0.5rem;
@@ -133,7 +135,7 @@
 			.pass-char-input {
 				all: unset;
 				padding-bottom: 0.5rem;
-				border-bottom: 3px solid white;
+				border-bottom: 3px solid var(--text-light);
 				width: 1em;
 				font-size: 1.2rem;
 				text-align: center;
@@ -155,7 +157,7 @@
 		.alt-text {
 			margin-top: 0.5rem;
 			font-size: 0.9rem;
-			color: #fffa;
+			color: var(--text-light);
 		}
 		&.error {
 			.name,
@@ -168,18 +170,11 @@
 		}
 
 		&.disabled {
-			.name {
-				color: #fff8;
-			}
-			.alt-text {
-				color: #fff8;
+			.name, .alt-text, .pass-char-input, .show-hide-eye {
+				color: var(--text-disabled);
 			}
 			.pass-char-input {
-				color: #fff8;
-				border-bottom-color: #fff8;
-			}
-			.show-hide-eye {
-				color: #fff8;
+				border-bottom-color: var(--text-disabled);
 			}
 		}
 	}
