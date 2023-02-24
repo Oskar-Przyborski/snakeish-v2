@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
@@ -15,8 +15,35 @@
 		%sveltekit.head%
 		<style>
 			:root {
+				--background: #fafafa;
+				--surface: #fff;
+				--outline: #e2e2e2;
+
+				--text: #000;
+				--text-light: #333;
+				--text-disabled: #555;
+
 				--red: #d62246;
 				--hover-red: #ca1e41;
+
+				--grid-1: #ddd;
+				--grid-2: #eee;
+			}
+
+			:root[data-theme='dark'] {
+				--background: #181818;
+				--surface: #222;
+				--outline: #333;
+
+				--text: #fff;
+				--text-light: #ddd;
+				--text-disabled: #666;
+
+				--red: #d62246;
+				--hover-red: #d62246;
+
+				--grid-1: #333;
+				--grid-2: #444;
 			}
 
 			* {
@@ -24,11 +51,13 @@
 			}
 
 			body {
-				background: #fafafa;
+				color: var(--text);
+				background: var(--background);
 				font-family: 'DM Sans', sans-serif;
 				height: 100vh;
 				margin: 0;
 			}
+
 			a {
 				color: inherit;
 			}

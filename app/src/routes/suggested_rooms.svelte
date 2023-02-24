@@ -42,7 +42,7 @@
 <style lang="scss">
 	.no-rooms-error {
 		text-align: center;
-		color: #333;
+		color: var(--text-light);
 	}
 	h1 {
 		margin: 0;

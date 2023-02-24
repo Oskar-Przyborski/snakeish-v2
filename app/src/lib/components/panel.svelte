@@ -10,8 +10,8 @@
 
 <style lang="scss">
 	.panel {
-		border: 2px solid #eee;
-		background-color: #fff;
+		border: 2px solid var(--outline);
+		background-color: var(--surface);
 		border-radius: 0.4rem;
 		&.margin {
 			margin: 1rem;

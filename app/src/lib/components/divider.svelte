@@ -7,7 +7,7 @@
 <style lang="scss">
 	.divider {
 		height: 0px;
-		border-bottom: 2px solid #eee;
+		border-bottom: 2px solid var(--outline);
 		margin: 1rem;
 
 		&.vertical {
@@ -15,7 +15,7 @@
 			border-bottom: none;
 
 			width: 0px;
-			border-right: 2px solid #eee;
+			border-right: 2px solid var(--outline);
 		}
 	}
 </style>

@@ -83,7 +83,7 @@
 	}
 	.no-rooms-error {
 		text-align: center;
-		color: #333;
+		color: var(--text-light);
 	}
 	.remaining-rooms {
 		margin: 1rem;

@@ -87,9 +87,9 @@
 				display: flex;
 				align-items: center;
 				gap: 0.4rem;
-				background: #fff;
+				background: var(--surface);
 				padding: 0.35rem 0.6rem;
-				border: 2px solid #eee;
+				border: 2px solid var(--outline);
 				border-radius: 0.5rem;
 			}
 		}

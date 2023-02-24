@@ -122,7 +122,7 @@
 	.pin-input {
 		margin: 1rem 0;
 		.name {
-			color: #222;
+			color: var(--text-light);
 			font-size: 0.92rem;
 			margin-bottom: 0.4rem;
 		}
@@ -135,7 +135,7 @@
 			.pass-char-input {
 				all: unset;
 				padding-bottom: 0.5rem;
-				border-bottom: 3px solid #222;
+				border-bottom: 3px solid var(--text-light);
 				width: 1em;
 				font-size: 1.2rem;
 				text-align: center;
@@ -157,7 +157,7 @@
 		.alt-text {
 			margin-top: 0.5rem;
 			font-size: 0.9rem;
-			color: #222;
+			color: var(--text-light);
 		}
 		&.error {
 			.name,
@@ -170,18 +170,11 @@
 		}
 
 		&.disabled {
-			.name {
-				color: #555;
-			}
-			.alt-text {
-				color: #555;
+			.name, .alt-text, .pass-char-input, .show-hide-eye {
+				color: var(--text-disabled);
 			}
 			.pass-char-input {
-				color: #555;
-				border-bottom-color: #555;
-			}
-			.show-hide-eye {
-				color: #555;
+				border-bottom-color: var(--text-disabled);
 			}
 		}
 	}

@@ -38,12 +38,12 @@
 		margin: 1rem;
 		padding: 1.2rem 1.5rem;
 
-		color: black;
+		color: var(--text);
 		text-decoration: none;
 
-		background-color: white;
+		background-color: var(--surface);
 		border-radius: 12px;
-		border: 2px solid #eee;
+		border: 2px solid var(--outline);
 
 		display: flex;
 		justify-content: space-between;
@@ -78,7 +78,7 @@
 			.tag {
 				width: max-content;
 				padding: 3px 4px;
-				background: #ccc;
+				background: var(--outline);
 			}
 			.name {
 				font-size: 1.3rem;

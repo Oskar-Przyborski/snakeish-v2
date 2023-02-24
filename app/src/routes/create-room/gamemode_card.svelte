@@ -28,7 +28,7 @@
 <style lang="scss">
 	.gamemode-card {
 		all: unset;
-		border: 2px solid #eee;
+		border: 2px solid var(--outline);
 		border-radius: 0.5rem;
 		padding: 1rem;
 		transition: background-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out,

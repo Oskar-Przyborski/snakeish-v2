@@ -33,7 +33,7 @@
 			height: 1rem;
 			border: 2px solid #ccc;
 			border-radius: 0.3rem;
-			background-color: #fff;
+			background-color: var(--surface);
 
 			.icon {
 				color: #fff;

@@ -66,8 +66,8 @@
 			user-select: none;
 			font-size: 1.1rem;
 			padding: 0.5rem 1rem;
-			background-color: #fff;
-			border: 2px solid #eee;
+			background-color: var(--surface);
+			border: 2px solid var(--outline);
 			border-radius: 0.5rem;
 		}
 
@@ -81,8 +81,8 @@
 			right: 0;
 			// min-width: 100%;
 
-			background: #fff;
-			border: 2px solid #eee;
+			background: var(--surface);
+			border: 2px solid var(--outline);
 			border-radius: 0.5rem;
 			padding: 0.4rem 0;
 			margin-top: 0.2rem;

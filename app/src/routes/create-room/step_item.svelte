@@ -23,7 +23,7 @@
 		gap: 1rem;
 		align-items: center;
 
-		color: #555;
+		color: var(--text-light);
 
 		.name {
 			.title {
@@ -35,27 +35,27 @@
 			}
 		}
 		.icon {
-			// color: #fff7;
+			color: white;
 			font-size: 1.8rem;
 			display: grid;
 			place-items: center;
-			background-color: #ccc;
+			background-color: var(--text-disabled);
 			border-radius: 50%;
 			padding: 0.6rem;
 		}
 
 		&.active {
-			color: #000;
+			color: var(--text);
 			.icon {
-				color: #fff;
+				color: white;
 				background-color: var(--red);
 			}
 		}
 
 		&.prev-active {
-			color: #000;
+			color: var(--text);
 			.icon {
-				color: #fff;
+				color: white;
 				background-color: #aaa;
 			}
 		}

@@ -29,11 +29,11 @@
 		display: grid;
 		grid-template-columns: 1fr max-content;
 		.content {
-			padding-top: 0.5rem;
+			padding: 0.5rem;
 		}
 	}
 	.ad-wrapper {
-		padding: 0 0.5rem;
+		padding: 0 0.7rem;
 		display: grid;
 		place-items: center;
 		position: sticky;

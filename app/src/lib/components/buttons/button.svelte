@@ -52,7 +52,7 @@
 
 		&.outline {
 			background-color: transparent;
-			color: #000;
+			color: var(--text);
 			&:not(.disabled):hover {
 				color: #fff;
 				box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);

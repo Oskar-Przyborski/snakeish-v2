@@ -22,7 +22,7 @@
 
 <style lang="scss">
 	.name {
-		color: #222;
+		color: var(--text-light);
 	}
 	.row {
 		display: flex;
@@ -38,11 +38,11 @@
 	.arrow-btn {
 		cursor: pointer;
 		font-size: 2rem;
-		color: #000;
+		color: var(--text);
 		background-color: transparent;
 		border: none;
 		&:hover {
-			color: #222;
+			color: var(--text-light);
 		}
 	}
 </style>

@@ -34,7 +34,7 @@
 	.text-input {
 		margin: 1rem 0;
 		.name {
-			color: #222;
+			color: var(--color-light);
 			font-size: 0.92rem;
 			margin-bottom: 0.4rem;
 		}
@@ -44,9 +44,9 @@
 			font-size: 1rem;
 			padding: 0.5rem 1rem;
 			text-align: left;
-			border: 2px solid #eee;
+			border: 2px solid var(--outline);
 			border-radius: 0.4rem;
-			background-color: white;
+			background-color: var(--surface);
 		}
 		.alt-text {
 			margin-top: 0.3rem;
