@@ -31,10 +31,12 @@
 			all: unset;
 			width: 1rem;
 			height: 1rem;
-			border: 2px solid white;
+			border: 2px solid #ccc;
 			border-radius: 0.3rem;
+			background-color: #fff;
 
 			.icon {
+				color: #fff;
 				display: none;
 			}
 		}

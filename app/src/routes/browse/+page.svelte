@@ -5,39 +5,52 @@
 	import Icon from '@iconify/svelte';
 	import TextInput from '$lib/components/inputs/text_input.svelte';
 	import ToggleInput from '$lib/components/inputs/toggle_input.svelte';
-	import ModeDropdown from './mode_dropdown.svelte';
+	import MultiselectDropdown from '../../lib/components/inputs/multiselect_dropdown.svelte';
 	import { fetchJson } from '$lib/fetchJson';
 
 	export let data: PageData;
 
 	let publicOnly = false;
 	let search = '';
+	let modes = [
+		{ name: 'Casual', checked: false },
+		{ name: 'Huuge', checked: false }
+	];
 
-	const refresh = async () => {
+	const refresh = async (
+		publicOnly: boolean,
+		search: string,
+		modes: { name: string; checked: boolean }[]
+	) => {
 		const params: any = {};
 		if (publicOnly) params['public'] = 1;
 		if (search != '') params['s'] = search;
 
+		const checkedModes = modes.filter(mode=>mode.checked)
+		if(checkedModes.length != 0) params['modes'] = checkedModes.map(m=>m.name).join(",")
+
 		data.rooms = await fetchJson('rooms', { params });
 	};
+
+	$: refresh(publicOnly, search, modes);
 </script>
 
 <h1 class="header">Browse</h1>
 <div class="browse-all">
 	<div class="top-section">
 		<div class="search">
-			<TextInput placeholder="Search" bind:value={search} on:change={refresh} />
+			<TextInput placeholder="Search" bind:value={search} />
 			<span style="font-size: 1.4rem;">
 				<Icon icon="mdi:magnify" inline />
 			</span>
 		</div>
 		<div class="btns">
-			<ModeDropdown />
+			<MultiselectDropdown bind:values={modes}>Modes</MultiselectDropdown>
 			<div class="public-only">
 				<span style="font-size: 1.4rem;">
 					<Icon icon="mdi:lock-open-variant-outline" inline />
 				</span>
-				<ToggleInput bind:value={publicOnly} on:change={refresh} />
+				<ToggleInput bind:value={publicOnly} />
 			</div>
 		</div>
 	</div>
@@ -69,9 +82,12 @@
 
 			.public-only {
 				display: flex;
-				// flex-flow: column nowrap;
 				align-items: center;
 				gap: 0.4rem;
+				background: #fff;
+				padding: 0.35rem 0.6rem;
+				border: 2px solid #eee;
+				border-radius: 0.5rem;
 			}
 		}
 
