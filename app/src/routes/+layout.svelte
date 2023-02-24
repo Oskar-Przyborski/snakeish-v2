@@ -2,8 +2,10 @@
 	import Footer from '$lib/components/footer.svelte';
 	import Sidenav from './sidenav.svelte';
 	import { page } from '$app/stores';
+	import Analytics from '$lib/components/analytics.svelte';
 </script>
 
+<Analytics />
 <div class="app">
 	<Sidenav route={$page.url.pathname} />
 	<div class="content-wrapper">
