@@ -33,8 +33,9 @@
 	let theme = 'dark';
 
 	onMount(() => {
-		const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-		theme = localStorage.getItem('theme') ?? systemDark ? 'dark' : 'light'
+		const systemDark =
+			window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+		theme = localStorage.getItem('theme') ?? systemDark ? 'dark' : 'light';
 		document.documentElement?.setAttribute('data-theme', theme);
 	});
 
@@ -50,9 +51,13 @@
 <nav class="sidenav">
 	<div class="top">
 		<a href="/">
-			<img class="logo" alt="Snakeish Logo" src="/logo-long-white.png" width="260" />
+			{#if theme == 'light'}
+				<img class="logo" alt="Snakeish Logo" src="/logo-long-black.png" width="260" />
+			{:else}
+				<img class="logo" alt="Snakeish Logo" src="/logo-long-white.png" width="260" />
+			{/if}
 		</a>
-		<ul>
+		<ul style="margin: 1rem 0;">
 			{#each elements as el}
 				<a href={el.href}>
 					<li class:active={route === el.href}>
