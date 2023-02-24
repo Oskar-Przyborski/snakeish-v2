@@ -7,6 +7,7 @@
 	import ToggleInput from '$lib/components/inputs/toggle_input.svelte';
 	import MultiselectDropdown from '../../lib/components/inputs/multiselect_dropdown.svelte';
 	import { fetchJson } from '$lib/fetchJson';
+	import { browser } from '$app/environment';
 
 	export let data: PageData;
 
@@ -22,12 +23,14 @@
 		search: string,
 		modes: { name: string; checked: boolean }[]
 	) => {
+		if (!browser) return;
+		
 		const params: any = {};
 		if (publicOnly) params['public'] = 1;
 		if (search != '') params['s'] = search;
 
-		const checkedModes = modes.filter(mode=>mode.checked)
-		if(checkedModes.length != 0) params['modes'] = checkedModes.map(m=>m.name).join(",")
+		const checkedModes = modes.filter((mode) => mode.checked);
+		if (checkedModes.length != 0) params['modes'] = checkedModes.map((m) => m.name).join(',');
 
 		data.rooms = await fetchJson('rooms', { params });
 	};
