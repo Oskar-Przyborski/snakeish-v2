@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Footer from '$lib/components/footer.svelte';
-	import Sidenav from './sidenav.svelte';
+	import Sidenav from '../lib/components/sidenav.svelte';
 	import { page } from '$app/stores';
 	import Analytics from '$lib/components/analytics.svelte';
 </script>

@@ -1,63 +1,48 @@
 <script lang="ts">
 	import Button from '$lib/components/buttons/button.svelte';
 	import Panel from '$lib/components/panel.svelte';
+	import RoomPreview from '$lib/components/room_preview.svelte';
 	import Icon from '@iconify/svelte';
-	import RefreshButton from './refresh_button.svelte';
-	import RoomPreview from '../lib/components/room_preview.svelte';
 
 	export let rooms: App.RoomPreview[];
-	export let remainingRooms = 0;
-
-	export let onRefresh: () => void;
+	export let remainingRooms: number;
 </script>
 
-<Panel margin>
-	<div class="header">
-		<h1>Suggested Rooms</h1>
-		<RefreshButton callback={onRefresh} />
+{#if rooms.length != 0}
+	<div>
+		{#each rooms as room}
+			<RoomPreview {room} />
+		{/each}
 	</div>
-	{#if rooms.length != 0}
-		<div class="rooms-grid">
-			{#each rooms as room}
-				<div class="preview-wrapper">
-					<RoomPreview {room} />
-				</div>
-			{/each}
-		</div>
-		{#if remainingRooms != 0}
-			<div class="remaining-rooms">
-				...and {remainingRooms} more <Button href="/browse"
-					><Icon icon="mdi:magnify" inline /> Browse All</Button
-				>
-			</div>
-		{/if}
-	{:else}
-		<div class="no-rooms-error">
-			<h2>There is no any room here!</h2>
-			<p>Don't worry, you can create one!</p>
+	{#if remainingRooms != 0}
+		<div class="remaining-rooms">
+			...and {remainingRooms} more
+			<Button href="/browse" outline>
+				<Icon icon="mdi:magnify" inline /> Browse All
+			</Button>
 		</div>
 	{/if}
-</Panel>
+{:else}
+	<Panel margin>
+		<div class="no-rooms-error">
+			<h2>There is no any room here 😬</h2>
+			<p>Don't worry, you can <a href="/create-room">create one</a>!</p>
+		</div>
+	</Panel>
+{/if}
 
 <style lang="scss">
 	.no-rooms-error {
 		text-align: center;
 		color: var(--text-light);
 	}
-	h1 {
-		margin: 0;
-		font-size: 1.6rem;
-	}
-
-	.header {
-		display: flex;
-		justify-content: space-between;
-	}
 	.remaining-rooms {
+		margin: 1rem;
 		font-size: 1.1rem;
+
 		display: flex;
 		justify-content: flex-end;
-		gap: 1rem;
 		align-items: center;
+		gap: 1rem;
 	}
 </style>
