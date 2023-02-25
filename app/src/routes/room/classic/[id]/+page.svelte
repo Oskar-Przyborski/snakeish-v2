@@ -6,6 +6,7 @@
 	import Leaderboard from './leaderboard.svelte';
 	import GameRenderer from './game_renderer.svelte';
 	import Panel from '$lib/components/panel.svelte';
+	import modes from '$lib/modes';
 
 	export let data: PageData;
 
@@ -39,6 +40,12 @@
 		$store.websocket?.sendMessage('change-direction', { direction });
 	}
 </script>
+
+<svelte:head>
+	<title>Play Snakeish - {data.name}, {data.modeName} mode</title>
+	<meta name="title" content={`Play Snakeish - ${data.name}, ${data.modeName} mode`} />
+	<meta name="description" content="Play snake online mulitplayer with your friends on classic mode!" />
+</svelte:head>
 
 {#if data.id != null && $store.gameState != null}
 	<div class="wrapper">

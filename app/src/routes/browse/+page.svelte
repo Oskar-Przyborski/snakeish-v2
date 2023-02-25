@@ -38,6 +38,12 @@
 	$: refresh(publicOnly, search, modes);
 </script>
 
+<svelte:head>
+	<title>Snakeish - Browse Rooms</title>
+	<meta name="title" content="Snakeish - Browse Rooms" />
+	<meta name="description" content="Search for best room in Snakeish - online multiplayer snake game" />
+</svelte:head>
+
 <h1 class="header">Browse</h1>
 <div class="browse-all">
 	<div class="top-section">

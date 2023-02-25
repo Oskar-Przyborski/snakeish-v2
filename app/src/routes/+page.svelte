@@ -23,6 +23,15 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Snakeish - Online Multiplayer Snake Game</title>
+	<meta name="title" content="Snakeish - Online Multiplayer Snake Game" />
+	<meta
+		name="description"
+		content="Snakeish - Best free online multiplayer snake game with many gamemodes. Play with friends!"
+	/>
+</svelte:head>
+
 <div class="header">
 	<h1>Home</h1>
 	<RefreshButton callback={refresh} />

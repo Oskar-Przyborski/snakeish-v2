@@ -34,6 +34,12 @@
 	const nextStep = () => currStep++;
 </script>
 
+<svelte:head>
+	<title>Snakeish - Create Room</title>
+	<meta name="title" content="Snakeish - Create Room" />
+	<meta name="description" content="Create Room in Snakeish - online multiplayer snake game" />
+</svelte:head>
+
 <h1 class="header">Create</h1>
 <Panel margin>
 	<div class="container">
