@@ -50,14 +50,14 @@
 		<div class="search">
 			<TextInput placeholder="Search" bind:value={search} />
 			<span style="font-size: 1.4rem;">
-				<Icon icon="mdi:magnify" inline />
+				<Icon icon="material-symbols:search-rounded" inline />
 			</span>
 		</div>
 		<div class="btns">
 			<MultiselectDropdown bind:values={modes}>Modes</MultiselectDropdown>
 			<div class="public-only">
 				<span style="font-size: 1.4rem;">
-					<Icon icon="mdi:lock-open-variant-outline" inline />
+					<Icon icon="material-symbols:lock-open-outline-rounded" inline />
 				</span>
 				<ToggleInput bind:value={publicOnly} />
 			</div>

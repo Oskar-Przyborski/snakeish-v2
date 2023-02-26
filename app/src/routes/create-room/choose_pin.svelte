@@ -44,7 +44,7 @@
 	<TextButton on:click={onBack}>Back</TextButton>
 	<Button on:click={onCreateRoom} disabled={btnDisabled}
 		>Create Room
-		<Icon icon="mdi:rocket-launch" inline />
+		<Icon icon="material-symbols:rocket-launch-rounded" inline />
 	</Button>
 </div>
 

@@ -11,11 +11,11 @@
 	<span class="name"><slot /></span>
 	<div class="row">
 		<button on:click={prevColor} class="arrow-btn">
-			<Icon inline icon="mdi:chevron-left" />
+			<Icon inline icon="material-symbols:chevron-left-rounded" />
 		</button>
 		<div class="color-indicator" style={`background-color: ${colors[selected]};`} />
 		<button on:click={nextColor} class="arrow-btn">
-			<Icon inline icon="mdi:chevron-right" />
+			<Icon inline icon="material-symbols:chevron-right-rounded" />
 		</button>
 	</div>
 </div>

@@ -110,11 +110,11 @@
 		/>
 
 		<button class="show-hide-eye" on:click={() => (pinHidden = !pinHidden)} {disabled}>
-			<Icon icon={pinHidden ? 'mdi:eye' : 'mdi:eye-off'} inline />
+			<Icon icon={pinHidden ? 'material-symbols:visibility-outline-rounded' : 'material-symbols:visibility-off-outline-rounded'} inline />
 		</button>
 	</div>
 	{#if altText}
-		<div class="alt-text"><Icon icon="mdi:information" inline /> {altText}</div>
+		<div class="alt-text"><Icon icon="material-symbols:info-outline-rounded" inline /> {altText}</div>
 	{/if}
 </div>
 

@@ -36,7 +36,7 @@
 			{:else}
 				Selected {checked}
 			{/if}
-			<Icon icon={`mdi:menu-${expanded ? 'up' : 'down'}`} inline />
+			<Icon icon={`material-symbols:arrow-drop-${expanded ? 'up' : 'down'}-rounded`} inline />
 		</button>
 		<div class="content" class:expanded>
 			<ul>

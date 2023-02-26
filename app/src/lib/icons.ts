@@ -12,37 +12,37 @@ const loadIcons = async (prefix: string, icons: string[]) => {
 	}
 };
 
-const mdiIcons = [
-	'github',
-	'eye',
-	'eye-off',
-	'rocket-launch',
-	'check-bold',
-	'pencil',
-	'pencil-outline',
-	'gamepad-variant-outline',
-	'gamepad-variant',
-	'lock',
-	'lock-outline',
-	'lock-open-variant-outline',
-	'magnify',
-	'plus-bold',
-	'plus-outline',
+const materialSymbolsIcons = [
+	'home-rounded',
+	'home-outline-rounded',
+	'search-rounded',
 	'coffee',
 	'coffee-outline',
-	'refresh',
-	'chevron-left',
-	'chevron-right',
-	'information',
-	'account',
-	'account-supervisor',
-	'menu-up',
-	'menu-down',
-	'home',
-	'home-outline',
-	'weather-sunny',
-	'moon-waning-crescent',
-	'star-outline'
+	'add-rounded',
+	'lock',
+	'lock-outline',
+	'lock-open-outline-rounded',
+	'refresh-rounded',
+	'nightlight-rounded',
+	'sunny-rounded',
+	'visibility-outline-rounded',
+	'visibility-off-outline-rounded',
+	'rocket-launch-rounded',
+	'edit-outline-rounded',
+	'edit-rounded',
+	'gamepad-rounded',
+	'gamepad-outline-rounded',
+	'chevron-right-rounded',
+	'chevron-left-rounded',
+	'arrow-drop-down-rounded',
+	'arrow-drop-up-rounded',
+	'star-outline-rounded',
+	'person-outline-rounded',
+	'group-outline-rounded',
+	'info-outline-rounded'
 ];
 
+const mdiIcons = ['github', 'check-bold'];
+
 loadIcons('mdi', mdiIcons);
+loadIcons('material-symbols', materialSymbolsIcons);

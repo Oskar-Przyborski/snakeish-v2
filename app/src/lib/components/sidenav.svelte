@@ -7,26 +7,26 @@
 		{
 			title: 'Home',
 			href: '/',
-			iconFull: 'mdi:home',
-			iconEmpty: 'mdi:home-outline'
+			iconFull: 'material-symbols:home-rounded',
+			iconEmpty: 'material-symbols:home-outline-rounded'
 		},
 		{
 			title: 'Browse',
 			href: '/browse',
-			iconFull: 'mdi:magnify',
-			iconEmpty: 'mdi:magnify'
+			iconFull: 'material-symbols:search-rounded',
+			iconEmpty: 'material-symbols:search-rounded'
 		},
 		{
 			title: 'Create',
 			href: '/create-room',
-			iconFull: 'mdi:plus-bold',
-			iconEmpty: 'mdi:plus-outline'
+			iconFull: 'material-symbols:add-rounded',
+			iconEmpty: 'material-symbols:add-rounded'
 		},
 		{
 			title: 'Donate',
 			href: '#',
-			iconFull: 'mdi:coffee',
-			iconEmpty: 'mdi:coffee-outline'
+			iconFull: 'material-symbols:coffee',
+			iconEmpty: 'material-symbols:coffee-outline'
 		}
 	];
 
@@ -72,10 +72,10 @@
 		<ul>
 			<li on:click={toggleTheme} on:keypress={toggleTheme}>
 				{#if theme == 'light'}
-					<Icon icon="mdi:weather-sunny" inline />
+					<Icon icon="material-symbols:sunny-rounded" inline />
 					Light
 				{:else}
-					<Icon icon="mdi:moon-waning-crescent" inline />
+					<Icon icon="material-symbols:nightlight-rounded" inline />
 					Dark
 				{/if}
 			</li>
