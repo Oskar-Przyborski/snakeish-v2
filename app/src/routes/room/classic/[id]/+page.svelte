@@ -1,12 +1,15 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { connectRoomWebsocket, leaveRoom, store } from './classic_game';
+	import {
+		connectRoomWebsocket,
+		leaveRoom,
+		store
+	} from '$lib/components/room/classic/classic_game';
 	import { onMount, onDestroy } from 'svelte';
-	import JoinForm from './join_form.svelte';
-	import Leaderboard from './leaderboard.svelte';
-	import GameRenderer from './game_renderer.svelte';
+	import JoinForm from '$lib/components/room/classic/join_form.svelte';
+	import Leaderboard from '$lib/components/room/classic/leaderboard.svelte';
+	import GameRenderer from '$lib/components/room/classic/game_renderer.svelte';
 	import Panel from '$lib/components/panel.svelte';
-	import modes from '$lib/modes';
 
 	export let data: PageData;
 
@@ -44,7 +47,10 @@
 <svelte:head>
 	<title>Play Snakeish - {data.name}, {data.modeName} mode</title>
 	<meta name="title" content={`Play Snakeish - ${data.name}, ${data.modeName} mode`} />
-	<meta name="description" content="Play snake online mulitplayer with your friends on classic mode!" />
+	<meta
+		name="description"
+		content="Play snake online mulitplayer with your friends on classic mode!"
+	/>
 </svelte:head>
 
 {#if data.id != null && $store.gameState != null}

@@ -26,7 +26,7 @@
 		on:blur
 	/>
 	{#if altText}
-		<div class="alt-text"><Icon icon="mdi:information" inline /> {altText}</div>
+		<div class="alt-text"><Icon icon="material-symbols:info-outline-rounded" inline /> {altText}</div>
 	{/if}
 </div>
 

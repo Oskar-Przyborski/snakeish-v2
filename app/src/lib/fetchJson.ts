@@ -8,7 +8,7 @@ interface options<D> {
 	body?: object;
 	params?: QueryObject;
 	default?: D;
-	onError?: () => void;
+	onError?: (arg0: HttpError) => void;
 	fetcher?: (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>;
 }
 
@@ -22,13 +22,6 @@ export const fetchJson = async <T>(endpoint: string, options?: options<T>) => {
 		url = withQuery(url, options.params);
 	}
 
-	const handleError = (err: HttpError) => {
-		if (options && options.onError) options?.onError();
-		else throw err;
-
-		return options?.default as T;
-	};
-
 	if (options?.method && options?.body) {
 		if (['POST', 'PUT', 'PATCH'].includes(options.method.toUpperCase())) {
 			headers['Content-Type'] = 'application/json';
@@ -36,21 +29,30 @@ export const fetchJson = async <T>(endpoint: string, options?: options<T>) => {
 		}
 	}
 
-	try {
-		const controller = new AbortController();
-		setTimeout(() => controller.abort(), 5000);
-		const response = await fetcher(url, { method, body, headers, signal: controller.signal });
-		if (!response.headers.get('Content-Type')?.split(';').includes('application/json')) {
-			return handleError(error(500, { message: 'invalid response content-type' }));
-		}
+	const handleError = (err: HttpError) => {
+		if (options && options.onError) options?.onError(err);
+		else throw err;
 
-		const respObj = destr(await response.text());
-		if (respObj == undefined) {
-			return handleError(error(500, { message: 'can not parse json' }));
-		}
+		return options?.default as T;
+	};
 
-		return respObj as T;
-	} catch {
-		return handleError(error(500, 'server offline'));
+	const controller = new AbortController();
+	setTimeout(() => controller.abort(), 5000);
+
+	const response = await fetcher(url, { method, body, headers, signal: controller.signal });
+
+	if (!response.status.toString().startsWith('2')) {
+		return handleError(error(response.status, await response.json()));
 	}
+
+	if (!response.headers.get('Content-Type')?.split(';').includes('application/json')) {
+		return handleError(error(500, { code: "INVALID_CONTENT_TYPE", message: 'invalid response content-type' }));
+	}
+
+	const respObj = destr(await response.text());
+	if (respObj == undefined) {
+		return handleError(error(500, { code: "CAN_NOT_PARSE_JSON", message: 'can not parse json' }));
+	}
+
+	return respObj as T;
 };

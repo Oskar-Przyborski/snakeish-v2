@@ -18,7 +18,7 @@
 		<div class="remaining-rooms">
 			...and {remainingRooms} more
 			<Button href="/browse" outline>
-				<Icon icon="mdi:magnify" inline /> Browse All
+				<Icon icon="material-symbols:search-rounded" inline /> Browse All
 			</Button>
 		</div>
 	{/if}

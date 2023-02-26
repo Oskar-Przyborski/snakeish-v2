@@ -15,12 +15,12 @@
 	</div>
 	<div class="right">
 		<div class="icon">
-			<Icon icon="mdi:account-supervisor" inline />
+			<Icon icon="material-symbols:group-outline-rounded" inline />
 			{room.players}/{room.maxPlayers}
 		</div>
 		<div class="join">
 			{#if room.pinEnabled}
-				<span class="icon"><Icon icon="mdi:lock-outline" inline /></span>
+				<span class="icon"><Icon icon="material-symbols:lock-outline" inline /></span>
 			{/if}
 			<Button href={`/room/${room.modeTag}/${room.id}`}>
 				{#if room.players == room.maxPlayers}

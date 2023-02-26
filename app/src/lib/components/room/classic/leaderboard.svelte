@@ -17,11 +17,11 @@
 						<div class="name">
 							<div class="color" style={`background-color: ${player.color};`} />
 							{#if player.id == $store.playerId}
-								<Icon icon="mdi:account" />
+								<Icon icon="material-symbols:person-outline-rounded" />
 							{/if}
 							{player.name}
 						</div>
-						<div class="score"><Icon icon="mdi:star-outline" inline /> {player.score}</div>
+						<div class="score"><Icon icon="material-symbols:star-outline-rounded" inline /> {player.score}</div>
 					</div>
 				</Panel>
 			{/each}
