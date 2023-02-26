@@ -3,7 +3,7 @@
 </script>
 
 {#if $page.error}
-	{#if $page.error.message == 'server offline'}
+	{#if $page.error.message == 'Internal Error'}
 		<h1>Server offline</h1>
 		<p>Server is currently offline.</p>
 		<ol>
@@ -11,7 +11,8 @@
 			<li>If it doesn't work, the server is probably completely down</li>
 		</ol>
 	{:else}
-		<h1>Unhandled server error</h1>
+		<h1>{$page.status}</h1>
+		<pre>{$page.error.code}</pre>
 		<pre>{$page.error.message}</pre>
 	{/if}
 {/if}
