@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { store } from './room_creation_state';
-	import { createEventDispatcher, onDestroy } from 'svelte';
-	const dispatch = createEventDispatcher();
-	import GamemodeCard from './gamemode_card.svelte';
 	import modes from '$lib/modes';
 	import Button from '$lib/components/buttons/button.svelte';
 	import TextButton from '$lib/components/buttons/text_button.svelte';
+	import { createEventDispatcher, onDestroy } from 'svelte';
+	const dispatch = createEventDispatcher();
+	import { store } from './room_creation_state';
+	import GamemodeCard from './gamemode_card.svelte';
 
 	const onContinue = () => dispatch('continue');
 	const onBack = () => dispatch('back');

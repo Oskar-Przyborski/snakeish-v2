@@ -5,8 +5,8 @@
 	import Button from '$lib/components/buttons/button.svelte';
 	import Divider from '$lib/components/divider.svelte';
 	import RefreshButton from '$lib/components/refresh_button.svelte';
-	import SuggestedRooms from './suggested_rooms.svelte';
-	import GameDescription from './game_description.svelte';
+	import SuggestedRooms from '$lib/components/home/suggested_rooms.svelte';
+	import GameDescription from '$lib/components/home/game_description.svelte';
 
 	export let data: PageServerData;
 	let rooms = data.rooms;

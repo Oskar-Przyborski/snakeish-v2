@@ -2,11 +2,11 @@
 	import type { PageData } from './$types';
 	import Panel from '$lib/components/panel.svelte';
 	import Divider from '$lib/components/divider.svelte';
-	import ChooseName from './choose_name.svelte';
-	import ChooseMode from './choose_mode.svelte';
-	import StepItem from './step_item.svelte';
-	import ChoosePin from './choose_pin.svelte';
-	import { resetState, store } from './room_creation_state';
+	import ChooseName from '$lib/components/create-room/choose_name.svelte';
+	import ChooseMode from '$lib/components/create-room/choose_mode.svelte';
+	import StepItem from '$lib/components/create-room/step_item.svelte';
+	import ChoosePin from '$lib/components/create-room/choose_pin.svelte';
+	import { resetState, store } from '$lib/components/create-room/room_creation_state';
 	import { goto } from '$app/navigation';
 	import { fetchJson } from '$lib/fetchJson';
 	import modes from '$lib/modes';
