@@ -1,4 +1,4 @@
-package classic_room
+package classic
 
 import (
 	"errors"
@@ -10,16 +10,16 @@ import (
 	"github.com/google/uuid"
 )
 
-type ClassicRoom struct {
-	room.RoomBase
+type Room struct {
+	room.Base
 	Apples         []utils.Vector2
-	Players        []*ClassicPlayer
+	Players        []*Player
 	MaxPlayers     int
 	FrameTime      int
 	GridSize       int
 	ApplesQuantity int
 	ModeName       string
-	OnUpdate       notifier.Notifier[*ClassicRoom]
+	OnUpdate       notifier.Notifier[*Room]
 }
 
 var allowedPlayersColors = []string{
@@ -34,20 +34,18 @@ var allowedPlayersColors = []string{
 	"#e3566b",
 }
 
-func (room ClassicRoom) GetModeTag() string {
+func (room Room) GetModeTag() string {
 	return "classic"
 }
-func (room ClassicRoom) GetModeName() string {
-	return room.ModeName
-}
-func (room ClassicRoom) GetMaxPlayers() int {
+
+func (room Room) GetMaxPlayers() int {
 	return room.MaxPlayers
 }
-func (room ClassicRoom) GetPlayersCount() int {
+func (room Room) GetPlayersCount() int {
 	return len(room.Players)
 }
 
-func (croom *ClassicRoom) GetPreview() room.RoomPreview {
+func (croom *Room) GetPreview() room.RoomPreview {
 	return room.RoomPreview{
 		Id:         croom.Id,
 		Name:       croom.Name,
@@ -59,7 +57,7 @@ func (croom *ClassicRoom) GetPreview() room.RoomPreview {
 	}
 }
 
-func (room *ClassicRoom) StartRoom() {
+func (room *Room) StartRoom() {
 	room.SpawnMissingApples()
 	for {
 		time.Sleep(time.Duration(room.FrameTime) * time.Millisecond)
@@ -67,11 +65,11 @@ func (room *ClassicRoom) StartRoom() {
 	}
 }
 
-func ConfigureClassicRoom(base room.RoomBase, mode string) *ClassicRoom {
-	switch mode {
+func ConfigureClassicRoom(base room.Base) *Room {
+	switch base.ModeName {
 	default:
-		return &ClassicRoom{
-			RoomBase:       base,
+		return &Room{
+			Base:           base,
 			ApplesQuantity: 3,
 			GridSize:       8,
 			MaxPlayers:     4,
@@ -79,8 +77,8 @@ func ConfigureClassicRoom(base room.RoomBase, mode string) *ClassicRoom {
 			ModeName:       "Casual",
 		}
 	case "Huuge":
-		return &ClassicRoom{
-			RoomBase:       base,
+		return &Room{
+			Base:           base,
 			ApplesQuantity: 8,
 			GridSize:       16,
 			MaxPlayers:     8,
@@ -91,7 +89,7 @@ func ConfigureClassicRoom(base room.RoomBase, mode string) *ClassicRoom {
 	}
 }
 
-func (room *ClassicRoom) AddPlayer(name string, color string, pin [4]int) (*ClassicPlayer, error) {
+func (room *Room) AddPlayer(name string, color string, pin [4]int) (*Player, error) {
 	if !room.CheckPin(pin) {
 		return nil, errors.New("incorrect-pin")
 	}
@@ -107,7 +105,7 @@ func (room *ClassicRoom) AddPlayer(name string, color string, pin [4]int) (*Clas
 		return nil, errors.New("color-not-allowed")
 	}
 
-	player := ClassicPlayer{
+	player := Player{
 		Id:              uuid.NewString(),
 		Name:            name,
 		Color:           color,
@@ -120,7 +118,7 @@ func (room *ClassicRoom) AddPlayer(name string, color string, pin [4]int) (*Clas
 	return &player, nil
 }
 
-func (room *ClassicRoom) RemovePlayer(id string) {
+func (room *Room) RemovePlayer(id string) {
 	for idx, player := range room.Players {
 		if player.Id == id {
 			room.Players = append(room.Players[:idx], room.Players[idx+1:]...)
@@ -129,7 +127,7 @@ func (room *ClassicRoom) RemovePlayer(id string) {
 	}
 }
 
-func (room *ClassicRoom) GetPlayerById(id string) *ClassicPlayer {
+func (room *Room) GetPlayerById(id string) *Player {
 	for _, player := range room.Players {
 		if player.Id == id {
 			return player
@@ -138,7 +136,7 @@ func (room *ClassicRoom) GetPlayerById(id string) *ClassicPlayer {
 	return nil
 }
 
-func (room *ClassicRoom) IsPlayerNameAvailable(name string) bool {
+func (room *Room) IsPlayerNameAvailable(name string) bool {
 	for _, player := range room.Players {
 		if player.Name == name {
 			return false

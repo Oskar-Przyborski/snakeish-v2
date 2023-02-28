@@ -1,4 +1,4 @@
-package classic_room
+package classic
 
 import (
 	"errors"
@@ -6,8 +6,8 @@ import (
 	"snakeish/pkg/core/utils"
 )
 
-func (room *ClassicRoom) Update() {
-	playersToKill := []*ClassicPlayer{}
+func (room *Room) Update() {
+	playersToKill := []*Player{}
 
 	for _, player := range room.Players {
 		if !player.IsAlive {
@@ -42,7 +42,7 @@ func (room *ClassicRoom) Update() {
 	room.OnUpdate.Notify(room)
 }
 
-func (room *ClassicRoom) SpawnMissingApples() {
+func (room *Room) SpawnMissingApples() {
 	applesToSpawn := room.ApplesQuantity - len(room.Apples)
 
 	for i := 0; i < applesToSpawn; i++ {
@@ -50,7 +50,7 @@ func (room *ClassicRoom) SpawnMissingApples() {
 	}
 }
 
-func (room *ClassicRoom) SpawnApple() {
+func (room *Room) SpawnApple() {
 	position, err := room.GetRandomFreePosition(0)
 	if err != nil {
 		return
@@ -59,7 +59,7 @@ func (room *ClassicRoom) SpawnApple() {
 	room.Apples = append(room.Apples, position)
 }
 
-func (room *ClassicRoom) GetRandomFreePosition(distanceFromBounds int) (utils.Vector2, error) {
+func (room *Room) GetRandomFreePosition(distanceFromBounds int) (utils.Vector2, error) {
 	freePositions := []utils.Vector2{}
 	for y := distanceFromBounds; y < room.GridSize-distanceFromBounds; y++ {
 		for x := distanceFromBounds; x < room.GridSize-distanceFromBounds; x++ {
@@ -76,14 +76,14 @@ func (room *ClassicRoom) GetRandomFreePosition(distanceFromBounds int) (utils.Ve
 	return freePositions[rand.Intn(len(freePositions))], nil
 }
 
-func (room *ClassicRoom) IsPositionEmpty(at utils.Vector2) bool {
+func (room *Room) IsPositionEmpty(at utils.Vector2) bool {
 	if room.IsAnySnakeAtPosition(at) || room.IsAppleAtPosition(at) {
 		return false
 	}
 	return true
 }
 
-func (room *ClassicRoom) IsAnySnakeAtPosition(at utils.Vector2) bool {
+func (room *Room) IsAnySnakeAtPosition(at utils.Vector2) bool {
 	for _, player := range room.Players {
 		for _, snakeElement := range player.SnakeTail {
 			if snakeElement.IsEqual(at) {
@@ -94,7 +94,7 @@ func (room *ClassicRoom) IsAnySnakeAtPosition(at utils.Vector2) bool {
 	return false
 }
 
-func (room ClassicRoom) IsAppleAtPosition(at utils.Vector2) bool {
+func (room Room) IsAppleAtPosition(at utils.Vector2) bool {
 	for _, apple := range room.Apples {
 		if apple.IsEqual(at) {
 			return true
@@ -103,7 +103,7 @@ func (room ClassicRoom) IsAppleAtPosition(at utils.Vector2) bool {
 	return false
 }
 
-func (room *ClassicRoom) MovePlayer(player *ClassicPlayer) {
+func (room *Room) MovePlayer(player *Player) {
 	if len(player.SnakeTail) == 0 {
 		return
 	}
@@ -122,7 +122,7 @@ func (room *ClassicRoom) MovePlayer(player *ClassicPlayer) {
 	}
 }
 
-func (room *ClassicRoom) EatAppleAt(at utils.Vector2) bool {
+func (room *Room) EatAppleAt(at utils.Vector2) bool {
 	for idx, apple := range room.Apples {
 		if apple.IsEqual(at) {
 			room.Apples = append(room.Apples[:idx], room.Apples[idx+1:]...)
@@ -133,7 +133,7 @@ func (room *ClassicRoom) EatAppleAt(at utils.Vector2) bool {
 	return false
 }
 
-func (room *ClassicRoom) IsPlayerCollidingWithAnyOther(player ClassicPlayer) bool {
+func (room *Room) IsPlayerCollidingWithAnyOther(player Player) bool {
 	for _, searchUser := range room.Players {
 		if searchUser.Id == player.Id {
 			continue
@@ -146,7 +146,7 @@ func (room *ClassicRoom) IsPlayerCollidingWithAnyOther(player ClassicPlayer) boo
 	return false
 }
 
-func (room ClassicRoom) RespawnPlayer(player *ClassicPlayer) {
+func (room Room) RespawnPlayer(player *Player) {
 	position, err := room.GetRandomFreePosition(1)
 	if err != nil {
 		return

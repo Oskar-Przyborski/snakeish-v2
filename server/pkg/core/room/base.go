@@ -1,15 +1,21 @@
 package room
 
-type RoomBase struct {
-	Id   string
-	Name string
+type Base struct {
+	Id       string
+	Name     string
+	ModeName string
 	PinRequirer
 }
 
-func (room RoomBase) GetName() string {
+func (room Base) GetName() string {
 	return room.Name
 }
-func (room RoomBase) GetId() string {
+
+func (room Base) GetModeName() string {
+	return room.ModeName
+}
+
+func (room Base) GetId() string {
 	return room.Id
 }
 

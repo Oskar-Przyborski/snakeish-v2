@@ -1,8 +1,8 @@
-package classic_room
+package classic
 
 import "snakeish/pkg/core/utils"
 
-type ClassicPlayer struct {
+type Player struct {
 	Id              string
 	Name            string
 	Color           string
@@ -12,7 +12,7 @@ type ClassicPlayer struct {
 	TargetDirection utils.Vector2
 }
 
-func (player *ClassicPlayer) ChangeDirection(direcion utils.Vector2) {
+func (player *Player) ChangeDirection(direcion utils.Vector2) {
 	if player.Direction.X+direcion.X == 0 && player.Direction.Y+direcion.Y == 0 {
 		return
 	}
@@ -20,12 +20,12 @@ func (player *ClassicPlayer) ChangeDirection(direcion utils.Vector2) {
 	player.TargetDirection = direcion
 }
 
-func (player *ClassicPlayer) Kill() {
+func (player *Player) Kill() {
 	player.IsAlive = false
 	player.SnakeTail = make([]utils.Vector2, 0)
 }
 
-func (player ClassicPlayer) IsCollidingSelf() bool {
+func (player Player) IsCollidingSelf() bool {
 	if len(player.SnakeTail) <= 1 {
 		return false
 	}
@@ -43,7 +43,7 @@ func (player ClassicPlayer) IsCollidingSelf() bool {
 	return false
 }
 
-func (player ClassicPlayer) IsOutOfBounds(gridSize int) bool {
+func (player Player) IsOutOfBounds(gridSize int) bool {
 	if len(player.SnakeTail) == 0 {
 		return false
 	}
@@ -55,7 +55,7 @@ func (player ClassicPlayer) IsOutOfBounds(gridSize int) bool {
 	return false
 }
 
-func (player ClassicPlayer) IsCollidingWith(other ClassicPlayer) bool {
+func (player Player) IsCollidingWith(other Player) bool {
 	if len(player.SnakeTail) == 0 || len(other.SnakeTail) == 0 {
 		return false
 	}

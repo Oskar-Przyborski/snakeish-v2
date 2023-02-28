@@ -3,7 +3,8 @@ package core
 import (
 	"errors"
 	"snakeish/pkg/core/room"
-	classic_room "snakeish/pkg/core/room/classic"
+	"snakeish/pkg/core/room/battleroyale"
+	"snakeish/pkg/core/room/classic"
 	"time"
 
 	"github.com/google/uuid"
@@ -44,18 +45,39 @@ func GetRoomById(id string) (room.IRoom, bool) {
 	return nil, false
 }
 
-func CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic_room.ClassicRoom, error) {
+func CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic.Room, error) {
 	if _, foundDuplicate := GetRoomByName(roomName); foundDuplicate {
-		return &classic_room.ClassicRoom{}, errors.New("name already used by other room")
+		return nil, errors.New("name already used by other room")
 	}
 
-	base := room.RoomBase{
+	base := room.Base{
 		PinRequirer: room.CreatePinRequirer(pin),
 		Name:        roomName,
 		Id:          uuid.NewString(),
+		ModeName:    modeName,
 	}
 
-	room := classic_room.ConfigureClassicRoom(base, modeName)
+	room := classic.ConfigureClassicRoom(base)
+	StartAfkForRoom(room.GetId(), 30*time.Second)
+
+	instance.rooms = append(instance.rooms, room)
+	go room.StartRoom()
+
+	return room, nil
+}
+
+func CreateBattleRoyaleRoom(roomName string, modeName string, pin *[4]int) (*battleroyale.Room, error) {
+	if _, foundDuplicate := GetRoomByName(roomName); foundDuplicate {
+		return nil, errors.New("name already used by other room")
+	}
+	base := room.Base{
+		PinRequirer: room.CreatePinRequirer(pin),
+		Name:        roomName,
+		Id:          uuid.NewString(),
+		ModeName:    modeName,
+	}
+
+	room := battleroyale.Configure(base)
 	StartAfkForRoom(room.GetId(), 30*time.Second)
 
 	instance.rooms = append(instance.rooms, room)
