@@ -1,6 +1,6 @@
 package room
 
-type IRoom interface {
+type Room interface {
 	GetName() string
 	GetId() string
 	GetModeTag() string

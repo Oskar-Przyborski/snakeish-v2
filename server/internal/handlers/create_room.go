@@ -43,7 +43,7 @@ func CreateRoomEndpoint(c *gin.Context) {
 	println("Created room. Id:", room.GetId())
 }
 
-func CreateRoomByModeTag(name string, modeTag string, modeName string, pin *[4]int) (room.IRoom, error) {
+func CreateRoomByModeTag(name string, modeTag string, modeName string, pin *[4]int) (room.Room, error) {
 	switch modeTag {
 	default: //classic
 		return classicMode.CreateRoom(name, modeName, pin)

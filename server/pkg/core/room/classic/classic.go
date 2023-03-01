@@ -2,6 +2,7 @@ package classic
 
 import (
 	"errors"
+	"snakeish/pkg/core/player"
 	"snakeish/pkg/core/room"
 	"snakeish/pkg/core/utils"
 	"snakeish/pkg/notifier"
@@ -20,18 +21,6 @@ type Room struct {
 	ApplesQuantity int
 	ModeName       string
 	OnUpdate       notifier.Notifier[*Room]
-}
-
-var allowedPlayersColors = []string{
-	"#deb135",
-	"#80e356",
-	"#e37e56",
-	"#56e37e",
-	"#56dee3",
-	"#5672e3",
-	"#8a56e3",
-	"#e356bd",
-	"#e3566b",
 }
 
 func (room Room) GetModeTag() string {
@@ -65,30 +54,6 @@ func (room *Room) StartRoom() {
 	}
 }
 
-func ConfigureClassicRoom(base room.Base) *Room {
-	switch base.ModeName {
-	default:
-		return &Room{
-			Base:           base,
-			ApplesQuantity: 3,
-			GridSize:       8,
-			MaxPlayers:     4,
-			FrameTime:      250,
-			ModeName:       "Casual",
-		}
-	case "Huuge":
-		return &Room{
-			Base:           base,
-			ApplesQuantity: 8,
-			GridSize:       16,
-			MaxPlayers:     8,
-			FrameTime:      250,
-			ModeName:       "Huuge",
-		}
-
-	}
-}
-
 func (room *Room) AddPlayer(name string, color string, pin [4]int) (*Player, error) {
 	if !room.CheckPin(pin) {
 		return nil, errors.New("incorrect-pin")
@@ -101,17 +66,19 @@ func (room *Room) AddPlayer(name string, color string, pin [4]int) (*Player, err
 	if !room.IsPlayerNameAvailable(name) {
 		return nil, errors.New("player-name-already-taken")
 	}
-	if !utils.ArrayIncludes(allowedPlayersColors, color) {
+	if !utils.ArrayIncludes(PlayerColors, color) {
 		return nil, errors.New("color-not-allowed")
 	}
 
 	player := Player{
-		Id:              uuid.NewString(),
-		Name:            name,
-		Color:           color,
-		SnakeTail:       []utils.Vector2{},
-		IsAlive:         false,
-		TargetDirection: utils.Vector2{X: 1, Y: 0},
+		Base: player.Base{
+			Id:              uuid.NewString(),
+			SnakeTail:       []utils.Vector2{},
+			TargetDirection: utils.Vector2{X: 1, Y: 0},
+		},
+		Name:    name,
+		Color:   color,
+		IsAlive: false,
 	}
 
 	room.Players = append(room.Players, &player)

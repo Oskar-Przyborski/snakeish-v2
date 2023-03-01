@@ -8,7 +8,7 @@ import (
 
 type Client struct {
 	WebSocket    *sockets.SocketClient
-	Room         room.IRoom
+	Room         room.Room
 	IsPlayer     bool
 	PlayerId     string
 	OnDisconnect notifier.Notifier[*Client]

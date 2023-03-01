@@ -42,6 +42,34 @@ func (room *Room) Update() {
 	room.OnUpdate.Notify(room)
 }
 
+func (room *Room) MovePlayer(player *Player) {
+	if len(player.SnakeTail) == 0 {
+		return
+	}
+
+	player.Direction = player.TargetDirection
+
+	newHeadPos := utils.Vector2{
+		X: player.SnakeTail[0].X + player.Direction.X,
+		Y: player.SnakeTail[0].Y + player.Direction.Y,
+	}
+
+	if !room.EatAppleAt(newHeadPos) {
+		player.SnakeTail = append([]utils.Vector2{newHeadPos}, player.SnakeTail[:len(player.SnakeTail)-1]...)
+	} else {
+		player.SnakeTail = append([]utils.Vector2{newHeadPos}, player.SnakeTail...)
+	}
+}
+
+func (room Room) RespawnPlayer(player *Player) {
+	position, err := room.GetRandomFreePosition(1)
+	if err != nil {
+		return
+	}
+	player.SnakeTail = []utils.Vector2{position}
+	player.IsAlive = true
+}
+
 func (room *Room) SpawnMissingApples() {
 	applesToSpawn := room.ApplesQuantity - len(room.Apples)
 
@@ -103,25 +131,6 @@ func (room Room) IsAppleAtPosition(at utils.Vector2) bool {
 	return false
 }
 
-func (room *Room) MovePlayer(player *Player) {
-	if len(player.SnakeTail) == 0 {
-		return
-	}
-
-	player.Direction = player.TargetDirection
-
-	newHeadPos := utils.Vector2{
-		X: player.SnakeTail[0].X + player.Direction.X,
-		Y: player.SnakeTail[0].Y + player.Direction.Y,
-	}
-
-	if !room.EatAppleAt(newHeadPos) {
-		player.SnakeTail = append([]utils.Vector2{newHeadPos}, player.SnakeTail[:len(player.SnakeTail)-1]...)
-	} else {
-		player.SnakeTail = append([]utils.Vector2{newHeadPos}, player.SnakeTail...)
-	}
-}
-
 func (room *Room) EatAppleAt(at utils.Vector2) bool {
 	for idx, apple := range room.Apples {
 		if apple.IsEqual(at) {
@@ -138,19 +147,10 @@ func (room *Room) IsPlayerCollidingWithAnyOther(player Player) bool {
 		if searchUser.Id == player.Id {
 			continue
 		}
-		if player.IsCollidingWith(*searchUser) {
+		if player.IsCollidingWith(searchUser.Base) {
 			return true
 		}
 	}
 
 	return false
-}
-
-func (room Room) RespawnPlayer(player *Player) {
-	position, err := room.GetRandomFreePosition(1)
-	if err != nil {
-		return
-	}
-	player.SnakeTail = []utils.Vector2{position}
-	player.IsAlive = true
 }

@@ -13,22 +13,22 @@ import (
 var instance CoreInstance
 
 type CoreInstance struct {
-	rooms          []room.IRoom
+	rooms          []room.Room
 	roomsAfkTimers map[string]*time.Timer
 }
 
 func InitCore() {
 	instance = CoreInstance{
-		rooms:          []room.IRoom{},
+		rooms:          []room.Room{},
 		roomsAfkTimers: make(map[string]*time.Timer),
 	}
 }
 
-func GetRooms() []room.IRoom {
+func GetRooms() []room.Room {
 	return instance.rooms
 }
 
-func GetRoomByName(name string) (room.IRoom, bool) {
+func GetRoomByName(name string) (room.Room, bool) {
 	for _, room := range GetRooms() {
 		if room.GetName() == name {
 			return room, true
@@ -36,7 +36,7 @@ func GetRoomByName(name string) (room.IRoom, bool) {
 	}
 	return nil, false
 }
-func GetRoomById(id string) (room.IRoom, bool) {
+func GetRoomById(id string) (room.Room, bool) {
 	for _, room := range GetRooms() {
 		if room.GetId() == id {
 			return room, true

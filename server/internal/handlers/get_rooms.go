@@ -18,22 +18,22 @@ func GetRoomsEndpoint(c *gin.Context) {
 	filterSearch(&rooms, c.Query("s"))
 	filterModes(&rooms, c.Query("modes"))
 
-	response := funk.Map(rooms, func(room r.IRoom) r.RoomPreview {
+	response := funk.Map(rooms, func(room r.Room) r.RoomPreview {
 		return room.GetPreview()
 	})
 
 	c.JSON(200, response)
 }
 
-func filterOnlyPublic(rooms *[]r.IRoom, value bool) {
+func filterOnlyPublic(rooms *[]r.Room, value bool) {
 	if value {
-		(*rooms) = (funk.Filter(*rooms, func(room r.IRoom) bool {
+		(*rooms) = (funk.Filter(*rooms, func(room r.Room) bool {
 			return !room.IsPinEnabled()
-		}).([]r.IRoom))
+		}).([]r.Room))
 	}
 }
 
-func filterSearch(rooms *[]r.IRoom, query string) {
+func filterSearch(rooms *[]r.Room, query string) {
 	if query == "" {
 		return
 	}
@@ -43,12 +43,12 @@ func filterSearch(rooms *[]r.IRoom, query string) {
 		return
 	}
 
-	(*rooms) = funk.Filter((*rooms), func(room r.IRoom) bool {
+	(*rooms) = funk.Filter((*rooms), func(room r.Room) bool {
 		return rgx.MatchString(room.GetName())
-	}).([]r.IRoom)
+	}).([]r.Room)
 }
 
-func filterModes(rooms *[]r.IRoom, modesString string) {
+func filterModes(rooms *[]r.Room, modesString string) {
 	if modesString == "" {
 		return
 	}
@@ -59,12 +59,12 @@ func filterModes(rooms *[]r.IRoom, modesString string) {
 		return
 	}
 
-	(*rooms) = funk.Filter((*rooms), func(room r.IRoom) bool {
+	(*rooms) = funk.Filter((*rooms), func(room r.Room) bool {
 		for _, mode := range modes {
 			if room.GetModeName() == mode {
 				return true
 			}
 		}
 		return false
-	}).([]r.IRoom)
+	}).([]r.Room)
 }
