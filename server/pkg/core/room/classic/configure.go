@@ -2,7 +2,7 @@ package classic
 
 import "snakeish/pkg/core/room"
 
-func ConfigureClassicRoom(base room.Base) *Room {
+func Configure(base room.Base) *Room {
 	switch base.ModeName {
 	default:
 		return &Room{

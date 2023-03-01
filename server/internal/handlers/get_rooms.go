@@ -19,7 +19,7 @@ func GetRoomsEndpoint(c *gin.Context) {
 	filterModes(&rooms, c.Query("modes"))
 
 	response := funk.Map(rooms, func(room r.Room) r.RoomPreview {
-		return room.GetPreview()
+		return core.GetRoomPreview(room)
 	})
 
 	c.JSON(200, response)

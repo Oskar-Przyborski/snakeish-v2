@@ -39,7 +39,7 @@ func CreateRoomEndpoint(c *gin.Context) {
 		})
 	}
 
-	c.JSON(200, room.GetPreview())
+	c.JSON(200, core.GetRoomPreview(room))
 	println("Created room. Id:", room.GetId())
 }
 

@@ -35,18 +35,6 @@ func (room Room) GetPlayersCount() int {
 	return len(room.Players)
 }
 
-func (croom *Room) GetPreview() room.RoomPreview {
-	return room.RoomPreview{
-		Id:         croom.Id,
-		Name:       croom.Name,
-		ModeTag:    croom.GetModeTag(),
-		ModeName:   croom.GetModeName(),
-		Players:    len(croom.Players),
-		MaxPlayers: croom.MaxPlayers,
-		PinEnbled:  croom.PinEnabled,
-	}
-}
-
 func (room *Room) StartRoom() {
 	room.SpawnMissingApples()
 	for {

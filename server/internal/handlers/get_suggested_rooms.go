@@ -36,7 +36,7 @@ func GetSuggestedRoomsEndpoint(c *gin.Context) {
 		if i >= 4 {
 			break
 		}
-		response.Rooms = append(response.Rooms, evaluations[i].room.GetPreview())
+		response.Rooms = append(response.Rooms, core.GetRoomPreview(evaluations[i].room))
 	}
 	if rooms := len(evaluations); rooms > 4 {
 		response.RemainingRooms = rooms - 4

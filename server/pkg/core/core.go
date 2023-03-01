@@ -57,7 +57,7 @@ func CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic.
 		ModeName:    modeName,
 	}
 
-	room := classic.ConfigureClassicRoom(base)
+	room := classic.Configure(base)
 	StartAfkForRoom(room.GetId(), 30*time.Second)
 
 	instance.rooms = append(instance.rooms, room)
@@ -109,5 +109,17 @@ func StopAfkForRoom(roomId string) {
 	if timer := instance.roomsAfkTimers[roomId]; timer != nil {
 		timer.Stop()
 		delete(instance.roomsAfkTimers, roomId)
+	}
+}
+
+func GetRoomPreview(r room.Room) room.RoomPreview {
+	return room.RoomPreview{
+		Id:         r.GetId(),
+		Name:       r.GetName(),
+		ModeTag:    r.GetModeTag(),
+		ModeName:   r.GetModeName(),
+		Players:    r.GetPlayersCount(),
+		MaxPlayers: r.GetMaxPlayers(),
+		PinEnbled:  r.IsPinEnabled(),
 	}
 }

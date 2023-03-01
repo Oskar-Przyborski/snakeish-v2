@@ -7,7 +7,6 @@ type Room interface {
 	GetModeName() string
 	GetPlayersCount() int
 	GetMaxPlayers() int
-	GetPreview() RoomPreview
 	StartRoom()
 	CheckPin([4]int) bool
 	IsPinEnabled() bool
