@@ -1,18 +1,18 @@
-package classic
+package classicMode
 
 import (
 	"snakeish/internal/services/clients"
 	"snakeish/pkg/core"
-	classic_room "snakeish/pkg/core/room/classic"
+	"snakeish/pkg/core/room/classic"
 	"snakeish/pkg/core/utils"
 	"snakeish/pkg/sockets"
 	"time"
 )
 
-func CreateRoom(roomName string, modeName string, pin *[4]int) (*classic_room.ClassicRoom, error) {
+func CreateRoom(roomName string, modeName string, pin *[4]int) (*classic.Room, error) {
 	room, err := core.CreateClassicRoom(roomName, modeName, pin)
 	if err != nil {
-		return &classic_room.ClassicRoom{}, err
+		return nil, err
 	}
 
 	room.OnUpdate.AddListener(onUpdate)
@@ -20,7 +20,7 @@ func CreateRoom(roomName string, modeName string, pin *[4]int) (*classic_room.Cl
 	return room, nil
 }
 
-func onUpdate(room *classic_room.ClassicRoom) {
+func onUpdate(room *classic.Room) {
 	response := generateGameUpdateResponse(*room)
 	clients := clients.GetClientsFromRoom(room.Id)
 
@@ -29,7 +29,7 @@ func onUpdate(room *classic_room.ClassicRoom) {
 	}
 }
 
-func generateGameUpdateResponse(room classic_room.ClassicRoom) GameUpdateResponse {
+func generateGameUpdateResponse(room classic.Room) GameUpdateResponse {
 	response := GameUpdateResponse{
 		FrameTime: room.FrameTime,
 		GridSize:  room.GridSize,
@@ -51,7 +51,7 @@ func generateGameUpdateResponse(room classic_room.ClassicRoom) GameUpdateRespons
 	return response
 }
 
-func ConnectWebsocket(room *classic_room.ClassicRoom, socket *sockets.SocketClient) {
+func ConnectWebsocket(room *classic.Room, socket *sockets.SocketClient) {
 	core.StopAfkForRoom(room.Id)
 
 	client := clients.CreateClient(socket, room)
@@ -83,7 +83,7 @@ func onJoinRequest(client *clients.Client, c sockets.MessageContext) {
 		return
 	}
 
-	player, err := client.Room.(*classic_room.ClassicRoom).AddPlayer(data.Name, data.Color, data.Pin)
+	player, err := client.Room.(*classic.Room).AddPlayer(data.Name, data.Color, data.Pin)
 	if err != nil {
 		client.WebSocket.Send("join-error", map[string]any{
 			"error": err.Error(),
@@ -108,7 +108,7 @@ func onLeaveRequest(client *clients.Client, c sockets.MessageContext) {
 }
 
 func onChangeDirection(client *clients.Client, c sockets.MessageContext) {
-	player := client.Room.(*classic_room.ClassicRoom).GetPlayerById(client.PlayerId)
+	player := client.Room.(*classic.Room).GetPlayerById(client.PlayerId)
 
 	payload := ChangeDirectionRequest{}
 	if err := c.BindJSON(&payload); err != nil {

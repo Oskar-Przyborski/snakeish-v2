@@ -6,6 +6,7 @@ type Room struct {
 	room.Base
 	Players    []*Player
 	MaxPlayers int
+	MinPlayers int
 	GameStatus string
 	Winner     *Player
 }

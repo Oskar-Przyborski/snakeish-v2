@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"snakeish/internal/services/modes/classic"
+	classicMode "snakeish/internal/services/modes/classic"
 	"snakeish/pkg/core"
-	classic_room "snakeish/pkg/core/room/classic"
+	"snakeish/pkg/core/room/classic"
 	"snakeish/pkg/sockets"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +29,7 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	classicRoom := room.(*classic_room.ClassicRoom)
+	classicRoom := room.(*classic.Room)
 
 	websocket, err := sockets.CreateClient(c.Writer, c.Request)
 	if err != nil {
@@ -40,5 +40,5 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	classic.ConnectWebsocket(classicRoom, websocket)
+	classicMode.ConnectWebsocket(classicRoom, websocket)
 }

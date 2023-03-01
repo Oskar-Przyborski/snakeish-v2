@@ -1,4 +1,4 @@
-package classic
+package classicMode
 
 import "snakeish/pkg/core/utils"
 
