@@ -1,21 +1,18 @@
 package battleroyale
 
-func (room Room) GetMaxPlayers() int {
-	return room.MaxPlayers
+import "time"
+
+func (room Room) StartRoom() {
+	for {
+		time.Sleep(time.Duration(room.FrameTime) * time.Millisecond)
+		room.Update()
+	}
 }
 
-func (room Room) GetModeTag() string {
-	return "battle royale"
-}
-
-func (room Room) GetPlayersCount() int {
-	return len(room.Players)
+func (room *Room) Update() {
+	print("update")
 }
 
 func (room Room) RemovePlayer(id string) {
-
-}
-
-func (room Room) StartRoom() {
 
 }

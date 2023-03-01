@@ -17,4 +17,13 @@ export default new Map<string, { tag: string; title: string; name: string; descr
 			description: 'Quite big map with many players and apples'
 		}
 	],
+	[
+		'battleroyale-huuge',
+		{
+			tag: 'battle royale',
+			title: 'Eat&Win',
+			name: 'battleroyale-huuge',
+			description: 'Lorem Ipsum dolor sit amet'
+		}
+	],
 ]);

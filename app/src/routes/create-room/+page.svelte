@@ -20,7 +20,7 @@
 			body: {
 				roomName: $store.roomName,
 				modeName: modes.get($store.configName)?.title,
-				modeTag: modes.get($store.configName)?.title,
+				modeTag: modes.get($store.configName)?.tag,
 				pin: $store.pinEnabled ? $store.pin : null
 			}
 		});

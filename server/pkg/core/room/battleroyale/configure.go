@@ -9,6 +9,8 @@ func Configure(base room.Base) *Room {
 			Base:       base,
 			MaxPlayers: 8,
 			MinPlayers: 4,
+			GameStatus: "starting",
+			FrameTime:  250,
 		}
 	}
 }

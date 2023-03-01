@@ -47,5 +47,7 @@ func CreateRoomByModeTag(name string, modeTag string, modeName string, pin *[4]i
 	switch modeTag {
 	default: //classic
 		return classicMode.CreateRoom(name, modeName, pin)
+	case "battle royale":
+		return core.CreateBattleRoyaleRoom(name, modeName, pin)
 	}
 }
