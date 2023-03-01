@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/thoas/go-funk"
 )
 
 type Room struct {
@@ -66,7 +67,8 @@ func (room *Room) AddPlayer(name string, color string, pin [4]int) (*Player, err
 	if !room.IsPlayerNameAvailable(name) {
 		return nil, errors.New("player-name-already-taken")
 	}
-	if !utils.ArrayIncludes(PlayerColors, color) {
+
+	if !funk.ContainsString(PlayerColors, color) {
 		return nil, errors.New("color-not-allowed")
 	}
 
