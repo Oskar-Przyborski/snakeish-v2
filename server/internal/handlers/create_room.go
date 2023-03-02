@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	battleroyaleMode "snakeish/internal/services/modes/battleroyale"
 	classicMode "snakeish/internal/services/modes/classic"
 	"snakeish/pkg/core"
 	"snakeish/pkg/core/room"
@@ -47,7 +48,7 @@ func CreateRoomByModeTag(name string, modeTag string, modeName string, pin *[4]i
 	switch modeTag {
 	default: //classic
 		return classicMode.CreateRoom(name, modeName, pin)
-	case "battle royale":
-		return core.CreateBattleRoyaleRoom(name, modeName, pin)
+	case "battle-royale":
+		return battleroyaleMode.CreateRoom(name, modeName, pin)
 	}
 }

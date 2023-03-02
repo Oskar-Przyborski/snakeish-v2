@@ -20,7 +20,7 @@ export default new Map<string, { tag: string; title: string; name: string; descr
 	[
 		'battleroyale-huuge',
 		{
-			tag: 'battle royale',
+			tag: 'battle-royale',
 			title: 'Eat&Win',
 			name: 'battleroyale-huuge',
 			description: 'Lorem Ipsum dolor sit amet'

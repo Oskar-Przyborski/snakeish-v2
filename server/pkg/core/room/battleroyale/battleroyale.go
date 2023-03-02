@@ -21,7 +21,7 @@ func (room Room) GetMaxPlayers() int {
 }
 
 func (room Room) GetModeTag() string {
-	return "battle royale"
+	return "battle-royale"
 }
 
 func (room Room) GetPlayersCount() int {
