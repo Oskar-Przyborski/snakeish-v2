@@ -27,7 +27,6 @@
 			pageState.gameState!.frameTime,
 			pageState.gameState!,
 			(state: ClassicGameState, moveValue: number) => {
-				// console.log("frame update", moveValue)
 				drawPlayers(state.players, stage.width() / state.gridSize, moveValue);
 			}
 		);

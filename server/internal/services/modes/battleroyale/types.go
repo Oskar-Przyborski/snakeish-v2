@@ -12,8 +12,25 @@ type Player struct {
 }
 
 type GameUpdateResponse struct {
-	FrameTime int             `json:"frameTime"`
-	GridSize  int             `json:"gridSize"`
-	Apples    []utils.Vector2 `json:"apples"`
-	Players   []Player        `json:"players"`
+	FrameTime  int             `json:"frameTime"`
+	GridSize   int             `json:"gridSize"`
+	ShrinkSize int             `json:"shrinkSize"`
+	Apples     []utils.Vector2 `json:"apples"`
+	Players    []Player        `json:"players"`
+}
+
+type JoinRequestType struct {
+	Color string `json:"color"`
+	Name  string `json:"name"`
+	Pin   [4]int `json:"pin"`
+}
+
+type JoinSuccesType struct {
+	PlayerId string `json:"playerId"`
+	Name     string `json:"name"`
+	Color    string `json:"color"`
+}
+
+type ChangeDirectionRequest struct {
+	Direction string `json:"direction"`
 }

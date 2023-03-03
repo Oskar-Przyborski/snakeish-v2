@@ -4,10 +4,10 @@
 		connectRoomWebsocket,
 		leaveRoom,
 		store
-	} from '$lib/components/room/battleroyale/classic_game';
+	} from '$lib/components/room/battleroyale/battleroyale';
 	import { onMount, onDestroy } from 'svelte';
-	import JoinForm from '$lib/components/room/classic/join_form.svelte';
-	import Leaderboard from '$lib/components/room/classic/leaderboard.svelte';
+	import JoinForm from '$lib/components/room/battleroyale/join_form.svelte';
+	import Leaderboard from '$lib/components/room/battleroyale/leaderboard.svelte';
 	import GameRenderer from '$lib/components/room/battleroyale/game_renderer.svelte';
 	import Panel from '$lib/components/panel.svelte';
 
@@ -40,6 +40,7 @@
 		if (direction == null) return;
 
 		event.preventDefault();
+		console.log("dsad")
 		$store.websocket?.sendMessage('change-direction', { direction });
 	}
 </script>

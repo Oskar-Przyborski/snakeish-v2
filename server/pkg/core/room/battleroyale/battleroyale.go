@@ -10,10 +10,12 @@ type Room struct {
 	Players    []*Player
 	MaxPlayers int
 	MinPlayers int
+	FrameTime  int
+	GridSize   int
+	ShrinkSize int
+	OnUpdate   notifier.Notifier[*Room]
 	GameStatus string
 	Winner     *Player
-	OnUpdate   notifier.Notifier[*Room]
-	FrameTime  int
 }
 
 func (room Room) GetMaxPlayers() int {

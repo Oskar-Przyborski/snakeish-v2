@@ -11,6 +11,8 @@ func Configure(base room.Base) *Room {
 			MinPlayers: 4,
 			GameStatus: "starting",
 			FrameTime:  250,
+			GridSize:   8,
+			ShrinkSize: 0,
 		}
 	}
 }
