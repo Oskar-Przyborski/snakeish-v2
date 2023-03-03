@@ -6,13 +6,14 @@ func Configure(base room.Base) *Room {
 	switch base.ModeName {
 	default:
 		return &Room{
-			Base:       base,
-			MaxPlayers: 8,
-			MinPlayers: 4,
-			GameStatus: "starting",
-			FrameTime:  250,
-			GridSize:   8,
-			ShrinkSize: 0,
+			Base:           base,
+			MaxPlayers:     8,
+			MinPlayers:     4,
+			GameStatus:     "starting",
+			FrameTime:      250,
+			ApplesQuantity: 6,
+			GridSize:       8,
+			ShrinkSize:     0,
 		}
 	}
 }

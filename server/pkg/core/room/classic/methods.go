@@ -57,6 +57,7 @@ func (room *Room) MovePlayer(player *Player) {
 	if !room.EatAppleAt(newHeadPos) {
 		player.SnakeTail = append([]utils.Vector2{newHeadPos}, player.SnakeTail[:len(player.SnakeTail)-1]...)
 	} else {
+		println("move")
 		player.SnakeTail = append([]utils.Vector2{newHeadPos}, player.SnakeTail...)
 	}
 }

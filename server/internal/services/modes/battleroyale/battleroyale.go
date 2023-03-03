@@ -36,7 +36,7 @@ func generateGameUpdateResponse(room battleroyale.Room) GameUpdateResponse {
 		FrameTime:  room.FrameTime,
 		GridSize:   room.GridSize,
 		ShrinkSize: room.ShrinkSize,
-		Apples:     []utils.Vector2{},
+		Apples:     room.Apples,
 		Players:    []Player{},
 	}
 
