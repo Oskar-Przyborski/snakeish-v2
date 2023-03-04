@@ -17,8 +17,9 @@ type Room struct {
 	GridSize       int
 	ShrinkSize     int
 	OnUpdate       notifier.Notifier[*Room]
-	GameStatus     string
-	Winner         *Player
+	GameStatus     string  // "waiting-for-players", "starting", "playing", "finished"
+	Winner         *Player // the winner of the game. Nil if game not ended.
+	StartUnix      int64   // Unix timestamp of game start moment. -1 if null
 }
 
 func (room Room) GetMaxPlayers() int {

@@ -38,8 +38,16 @@ func (room Room) GetPlayersCount() int {
 func (room *Room) StartRoom() {
 	room.SpawnMissingApples()
 	for {
+		if !room.IsRunning {
+			break
+		}
+
 		time.Sleep(time.Duration(room.FrameTime) * time.Millisecond)
-		room.Update()
+
+		go func() {
+			room.Update()
+			room.OnUpdate.Notify(room)
+		}()
 	}
 }
 

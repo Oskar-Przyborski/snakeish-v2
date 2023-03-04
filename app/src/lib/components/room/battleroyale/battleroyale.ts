@@ -1,6 +1,6 @@
 import { WebSocketClient } from '$lib/websocket';
 import { get, writable } from 'svelte/store';
-import type { ClassicGameState, JoinError, JoinSuccessType, PageState } from './types';
+import type { GameState, JoinError, JoinSuccessType, PageState } from './types';
 
 export const store = writable<PageState>({
 	roomId: null,
@@ -15,7 +15,7 @@ export const store = writable<PageState>({
 });
 
 export const connectRoomWebsocket = (roomId: string) => {
-	const updateGameState = (newState: ClassicGameState) => {
+	const updateGameState = (newState: GameState) => {
 		store.update((state) => {
 			state.gameState = newState;
 			return state;
@@ -28,7 +28,7 @@ export const connectRoomWebsocket = (roomId: string) => {
 		const wsConnection = new WebSocketClient(`/connect/battle-royale/${state.roomId}`);
 		state.websocket = wsConnection;
 
-		wsConnection.addListener<ClassicGameState>('game-update', updateGameState);
+		wsConnection.addListener<GameState>('game-update', updateGameState);
 		wsConnection.addListener<JoinSuccessType>('join-success', joinSuccess);
 		wsConnection.addListener<JoinError>('join-error', joinError);
 
@@ -50,6 +50,7 @@ const joinSuccess = (data: JoinSuccessType) => {
 		return state;
 	});
 };
+
 const joinError = (data: JoinError) => {
 	switch (data.error) {
 		case 'incorrect-pin':

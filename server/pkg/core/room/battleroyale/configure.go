@@ -8,11 +8,11 @@ func Configure(base room.Base) *Room {
 		return &Room{
 			Base:           base,
 			MaxPlayers:     8,
-			MinPlayers:     4,
-			GameStatus:     "starting",
+			MinPlayers:     2, //TODO change it to 4
+			GameStatus:     "waiting-for-players",
 			FrameTime:      250,
 			ApplesQuantity: 6,
-			GridSize:       8,
+			GridSize:       30,
 			ShrinkSize:     0,
 		}
 	}

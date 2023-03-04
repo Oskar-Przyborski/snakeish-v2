@@ -35,23 +35,37 @@ func generateGameUpdateResponse(room battleroyale.Room) GameUpdateResponse {
 	response := GameUpdateResponse{
 		FrameTime:  room.FrameTime,
 		GridSize:   room.GridSize,
+		GameStatus: room.GameStatus,
 		ShrinkSize: room.ShrinkSize,
 		Apples:     room.Apples,
 		Players:    []Player{},
+		Winner:     parsePlayer(room.Winner),
+		StartUnix:  room.StartUnix,
+		MaxPlayers: room.MaxPlayers,
+		MinPlayers: room.MinPlayers,
 	}
 
 	for _, player := range room.Players {
-		response.Players = append(response.Players, Player{
-			Id:        player.Id,
-			Name:      player.Name,
-			Color:     player.Color,
-			SnakeTail: player.SnakeTail,
-			Score:     len(player.SnakeTail),
-			Direction: player.Direction,
-		})
+		response.Players = append(response.Players, *parsePlayer(player))
 	}
 
 	return response
+}
+
+func parsePlayer(player *battleroyale.Player) *Player {
+	if player == nil {
+		return nil
+	}
+
+	return &Player{
+		Id:        player.Id,
+		Name:      player.Name,
+		Color:     player.Color,
+		SnakeTail: player.SnakeTail,
+		Score:     len(player.SnakeTail),
+		Direction: player.Direction,
+		Alive:     player.IsAlive,
+	}
 }
 
 func ConnectWebsocket(room *battleroyale.Room, socket *sockets.SocketClient) {

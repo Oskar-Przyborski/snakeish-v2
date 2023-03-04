@@ -8,6 +8,7 @@ type Room interface {
 	GetPlayersCount() int
 	GetMaxPlayers() int
 	StartRoom()
+	Stop()
 	CheckPin([4]int) bool
 	IsPinEnabled() bool
 	RemovePlayer(string)

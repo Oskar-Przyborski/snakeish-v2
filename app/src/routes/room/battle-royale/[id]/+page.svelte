@@ -40,7 +40,6 @@
 		if (direction == null) return;
 
 		event.preventDefault();
-		console.log("dsad")
 		$store.websocket?.sendMessage('change-direction', { direction });
 	}
 </script>

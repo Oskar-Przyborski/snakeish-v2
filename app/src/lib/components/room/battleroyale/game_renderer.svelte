@@ -3,7 +3,7 @@
 	import { get, type Writable } from 'svelte/store';
 	import Konva from 'konva';
 	import type { Vector2 } from '$lib/vector';
-	import type { ClassicGameState, PageState, Player } from './types';
+	import type { GameState, PageState, Player } from './types';
 	import { GameFramesRenderer } from '$lib/renderers/game_frames';
 	import { renderSnake } from '$lib/renderers/snake';
 	import { renderApple } from '$lib/renderers/apple';
@@ -17,29 +17,59 @@
 	let gridLayer: Konva.Layer;
 	let applesLayer: Konva.Layer;
 	let snakesLayer: Konva.Layer;
-	let gameFrameRenderer: GameFramesRenderer<ClassicGameState> | null;
+	let waitingLayer: Konva.Layer;
+	let startingLayer: Konva.Layer;
+	let gameFrameRenderer: GameFramesRenderer<GameState> | null;
 
 	onMount(() => {
 		initKonva();
-		const pageState = get(store);
-		gameFrameRenderer = new GameFramesRenderer<ClassicGameState>(
+
+		gameFrameRenderer = new GameFramesRenderer<GameState>(
 			50,
-			pageState.gameState!.frameTime,
-			pageState.gameState!,
-			(state: ClassicGameState, moveValue: number) => {
-				drawPlayers(state.players, stage.width() / state.gridSize, moveValue);
-			}
+			get(store).gameState!.frameTime,
+			get(store).gameState!,
+			render
 		);
-		unsubscribe = store.subscribe(updateState);
+
+		unsubscribe = store.subscribe((state) => {
+			if (state.gameState == null) return;
+
+			gameFrameRenderer?.setGameData(state.gameState);
+		});
 	});
 
-	async function updateState(state: PageState) {
-		if (state.gameState == null) return;
-		const cellSize = stage.width() / state.gameState.gridSize;
+	function render(state: GameState, frameCompletion: number) {
+		gridLayer.hide();
+		applesLayer.hide();
+		snakesLayer.hide();
+		waitingLayer.hide();
+		startingLayer.hide();
 
-		drawGrid(state.gameState.gridSize, cellSize);
-		drawApples(state.gameState.apples, cellSize);
-		gameFrameRenderer?.setGameData(state.gameState);
+		const cellSize = stage.width() / state.gridSize;
+		switch (state.gameStatus) {
+			case 'playing':
+				gridLayer.show();
+				applesLayer.show();
+				snakesLayer.show();
+				drawGrid(state.gridSize, cellSize);
+				drawApples(state.apples, cellSize);
+				drawPlayers(state.players, stage.width() / state.gridSize, frameCompletion);
+				break;
+			case 'waiting-for-players':
+				waitingLayer.show();
+				drawWaitingForPlayers(state.players.length, state.minPlayers);
+				break;
+			case 'starting':
+				startingLayer.show();
+				drawStarting(state.startUnix);
+				break;
+			case 'finished':
+				// console.log("finished")
+				break;
+			default:
+				console.log('unhandled game status');
+				break;
+		}
 	}
 
 	function initKonva() {
@@ -52,8 +82,13 @@
 		gridLayer = new Konva.Layer();
 		applesLayer = new Konva.Layer();
 		snakesLayer = new Konva.Layer();
-		stage.add(gridLayer, applesLayer, snakesLayer);
+		waitingLayer = new Konva.Layer();
+		startingLayer = new Konva.Layer();
+		stage.add(gridLayer, applesLayer, snakesLayer, waitingLayer, startingLayer);
 	}
+
+	const getCssVar = (varName: string) =>
+		getComputedStyle(document.documentElement).getPropertyValue(varName);
 
 	function drawGrid(gridSize: number, cellSize: number) {
 		if (gridLayer.hasChildren()) return;
@@ -61,7 +96,7 @@
 		for (let y = 0; y < gridSize; y++) {
 			for (let x = 0; x < gridSize; x++) {
 				const darked = y % 2 == 0 ? x % 2 == 0 : x % 2 == 1;
-				const color = darked ? getComputedStyle(document.documentElement).getPropertyValue("--grid-1") : getComputedStyle(document.documentElement).getPropertyValue("--grid-2");
+				const color = darked ? getCssVar('--grid-1') : getCssVar('--grid-2');
 				gridLayer.add(
 					new Konva.Rect({
 						width: cellSize,
@@ -97,6 +132,57 @@
 			snakesLayer.add(snake);
 		}
 		snakesLayer.draw();
+	}
+
+	function drawWaitingForPlayers(players: number, min: number) {
+		waitingLayer.removeChildren();
+
+		const group = new Konva.Group({
+			width: stage.width(),
+			height: 62,
+			y: stage.height() / 2 - 31
+		});
+
+		const title = new Konva.Text({
+			text: 'Waiting for players ...',
+			fill: getCssVar('--text'),
+			width: group.width(),
+			fontSize: 28,
+			fontFamily: 'DM Sans',
+			align: 'center'
+		});
+		const subtitle = new Konva.Text({
+			text: `${players} / ${min}`,
+			fill: getCssVar('--text'),
+			width: group.width(),
+			fontSize: 26,
+			fontFamily: 'DM Sans',
+			align: 'center',
+			y: 36
+		});
+
+		group.add(title, subtitle);
+		waitingLayer.add(group);
+	}
+
+	function drawStarting(startUnix: number) {
+		startingLayer.removeChildren();
+		const startingIn = Math.max(Math.round((startUnix - Date.now()) / 1000), 0);
+
+		const group = new Konva.Group({
+			width: stage.width(),
+			y: stage.height() / 2 - 13
+		});
+		const title = new Konva.Text({
+			text: `Starting in ${startingIn}s`,
+			fill: getCssVar('--text'),
+			width: group.width(),
+			align: 'center',
+			fontSize: 26
+		});
+
+		group.add(title);
+		startingLayer.add(group);
 	}
 </script>
 

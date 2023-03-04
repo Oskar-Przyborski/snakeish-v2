@@ -1,9 +1,10 @@
 package room
 
 type Base struct {
-	Id       string
-	Name     string
-	ModeName string
+	Id        string
+	Name      string
+	ModeName  string
+	IsRunning bool
 	PinRequirer
 }
 
@@ -17,6 +18,10 @@ func (room Base) GetModeName() string {
 
 func (room Base) GetId() string {
 	return room.Id
+}
+
+func (room *Base) Stop() {
+	room.IsRunning = false
 }
 
 type RoomPreview struct {

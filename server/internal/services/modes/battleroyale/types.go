@@ -9,6 +9,7 @@ type Player struct {
 	SnakeTail []utils.Vector2 `json:"snakeTail"`
 	Score     int             `json:"score"`
 	Direction utils.Vector2   `json:"direction"`
+	Alive     bool            `json:"alive"`
 }
 
 type GameUpdateResponse struct {
@@ -17,6 +18,11 @@ type GameUpdateResponse struct {
 	ShrinkSize int             `json:"shrinkSize"`
 	Apples     []utils.Vector2 `json:"apples"`
 	Players    []Player        `json:"players"`
+	GameStatus string          `json:"gameStatus"`
+	Winner     *Player         `json:"winner"`
+	StartUnix  int64           `json:"startUnix"`
+	MinPlayers int             `json:"minPlayers"`
+	MaxPlayers int             `json:"maxPlayers"`
 }
 
 type JoinRequestType struct {

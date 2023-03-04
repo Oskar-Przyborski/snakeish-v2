@@ -55,6 +55,7 @@ func CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic.
 		Name:        roomName,
 		Id:          uuid.NewString(),
 		ModeName:    modeName,
+		IsRunning:   true,
 	}
 
 	room := classic.Configure(base)
@@ -75,6 +76,7 @@ func CreateBattleRoyaleRoom(roomName string, modeName string, pin *[4]int) (*bat
 		Name:        roomName,
 		Id:          uuid.NewString(),
 		ModeName:    modeName,
+		IsRunning:   true,
 	}
 
 	room := battleroyale.Configure(base)
@@ -89,6 +91,7 @@ func CreateBattleRoyaleRoom(roomName string, modeName string, pin *[4]int) (*bat
 func RemoveRoom(id string) {
 	for idx, room := range GetRooms() {
 		if room.GetId() == id {
+			room.Stop()
 			instance.rooms = append(instance.rooms[:idx], instance.rooms[idx+1:]...)
 			return
 		}

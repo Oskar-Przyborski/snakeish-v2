@@ -3,7 +3,7 @@ import type { Vector2 } from '$lib/vector';
 export interface PageState {
 	isPlaying: boolean;
 	websocket: import('$lib/websocket').WebSocketClient | null;
-	gameState: ClassicGameState | null;
+	gameState: GameState | null;
 	playerId: string | null;
 	roomId: string | null;
 	errors: {
@@ -11,12 +11,17 @@ export interface PageState {
 		pin: string | undefined;
 	};
 }
-export interface ClassicGameState {
+export interface GameState {
 	players: Player[];
 	apples: Vector2[];
 	gridSize: number;
 	shrinkSize: number;
 	frameTime: number;
+	gameStatus: string;
+	winner: Player;
+	startUnix: number;
+	minPlayers: number;
+	maxPlayers: number;
 }
 export interface Player {
 	id: string;
