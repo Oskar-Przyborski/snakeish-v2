@@ -33,16 +33,17 @@ func onUpdate(room *battleroyale.Room) {
 
 func generateGameUpdateResponse(room battleroyale.Room) GameUpdateResponse {
 	response := GameUpdateResponse{
-		FrameTime:  room.FrameTime,
-		GridSize:   room.GridSize,
-		GameStatus: room.GameStatus,
-		ShrinkSize: room.ShrinkSize,
-		Apples:     room.Apples,
-		Players:    []Player{},
-		Winner:     parsePlayer(room.Winner),
-		StartUnix:  room.StartUnix,
-		MaxPlayers: room.MaxPlayers,
-		MinPlayers: room.MinPlayers,
+		FrameTime:    room.FrameTime,
+		GridSize:     room.GridSize,
+		GameStatus:   room.GameStatus,
+		ShrinkSize:   room.ShrinkSize,
+		Apples:       room.Apples,
+		Players:      []Player{},
+		Winner:       parsePlayer(room.Winner),
+		StartUnix:    room.StartUnix,
+		UnfreezeUnix: room.UnfreezeUnix,
+		MaxPlayers:   room.MaxPlayers,
+		MinPlayers:   room.MinPlayers,
 	}
 
 	for _, player := range room.Players {

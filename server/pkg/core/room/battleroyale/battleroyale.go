@@ -4,6 +4,7 @@ import (
 	"snakeish/pkg/core/room"
 	"snakeish/pkg/core/utils"
 	"snakeish/pkg/notifier"
+	"time"
 )
 
 type Room struct {
@@ -17,9 +18,12 @@ type Room struct {
 	GridSize       int
 	ShrinkSize     int
 	OnUpdate       notifier.Notifier[*Room]
-	GameStatus     string  // "waiting-for-players", "starting", "playing", "finished"
-	Winner         *Player // the winner of the game. Nil if game not ended.
-	StartUnix      int64   // Unix timestamp of game start moment. -1 if null
+	GameStatus     string  // "waiting-for-players", "playing", "finished"
+	Winner         *Player // The winner of the game. Nil if game not ended.
+	StartUnix      int64   // Unix timestamp of game start moment. -1 if null.
+	StartTimer     *time.Timer
+	Freezed        bool  // After start of the game, game will be freezed for a couple seconds.
+	UnfreezeUnix   int64 // Unix timestamp of the moment of unfreeze.
 }
 
 func (room Room) GetMaxPlayers() int {

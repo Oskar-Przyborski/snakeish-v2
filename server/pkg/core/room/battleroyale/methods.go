@@ -1,6 +1,7 @@
 package battleroyale
 
 import (
+	"snakeish/pkg/core/utils"
 	"time"
 )
 
@@ -29,21 +30,40 @@ func (room *Room) TryStart() {
 	}
 
 	if len(room.Players) < room.MinPlayers {
+		if room.StartTimer != nil {
+			room.StartTimer.Stop()
+			room.StartTimer = nil
+			room.StartUnix = -1
+		}
 		return
 	}
 
-	time.AfterFunc(5*time.Second, room.StartGame)
-	room.StartUnix = time.Now().Add(5 * time.Second).UnixMilli()
-	room.GameStatus = "starting"
+	if room.StartTimer == nil {
+		room.StartTimer = time.AfterFunc(5*time.Second, room.StartGame)
+		room.StartUnix = time.Now().Add(5 * time.Second).UnixMilli()
+	}
 }
 
 func (room *Room) StartGame() {
 	room.StartUnix = -1
+	room.StartTimer = nil
 	room.GameStatus = "playing"
+	room.SpawnMissingApples()
 	room.SpawnAllPlayers()
+
+	room.Freezed = true
+	room.UnfreezeUnix = time.Now().Add(3 * time.Second).UnixMilli()
+	time.AfterFunc(3*time.Second, func() {
+		room.UnfreezeUnix = -1
+		room.Freezed = false
+	})
 }
 
 func (room *Room) Update() {
+	if room.Freezed {
+		return
+	}
+
 	playersToKill := []*Player{}
 
 	alivePlayers := room.GetAlivePlayers()
@@ -85,8 +105,19 @@ func (room *Room) Finish(winner *Player) {
 	room.GameStatus = "finished"
 	room.Winner = winner
 
-	time.AfterFunc(time.Second*5, func() {
-		room.Winner = nil
-		room.GameStatus = "waiting-for-players"
-	})
+	time.AfterFunc(time.Second*5, room.Reset)
+}
+
+func (room *Room) Reset() {
+	room.Winner = nil
+	room.GameStatus = "waiting-for-players"
+	room.Apples = []utils.Vector2{}
+	room.Freezed = false
+	room.UnfreezeUnix = -1
+
+	for _, p := range room.Players {
+		p.Direction = utils.Vector2{}
+		p.SnakeTail = []utils.Vector2{}
+		p.Kill()
+	}
 }

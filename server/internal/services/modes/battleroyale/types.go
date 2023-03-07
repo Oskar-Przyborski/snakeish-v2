@@ -13,16 +13,17 @@ type Player struct {
 }
 
 type GameUpdateResponse struct {
-	FrameTime  int             `json:"frameTime"`
-	GridSize   int             `json:"gridSize"`
-	ShrinkSize int             `json:"shrinkSize"`
-	Apples     []utils.Vector2 `json:"apples"`
-	Players    []Player        `json:"players"`
-	GameStatus string          `json:"gameStatus"`
-	Winner     *Player         `json:"winner"`
-	StartUnix  int64           `json:"startUnix"`
-	MinPlayers int             `json:"minPlayers"`
-	MaxPlayers int             `json:"maxPlayers"`
+	FrameTime    int             `json:"frameTime"`
+	GridSize     int             `json:"gridSize"`
+	ShrinkSize   int             `json:"shrinkSize"`
+	Apples       []utils.Vector2 `json:"apples"`
+	Players      []Player        `json:"players"`
+	GameStatus   string          `json:"gameStatus"`
+	Winner       *Player         `json:"winner"`
+	StartUnix    int64           `json:"startUnix"`
+	UnfreezeUnix int64           `json:"unfreezeUnix"`
+	MinPlayers   int             `json:"minPlayers"`
+	MaxPlayers   int             `json:"maxPlayers"`
 }
 
 type JoinRequestType struct {

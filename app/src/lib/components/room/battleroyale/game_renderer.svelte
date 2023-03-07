@@ -17,8 +17,10 @@
 	let gridLayer: Konva.Layer;
 	let applesLayer: Konva.Layer;
 	let snakesLayer: Konva.Layer;
+	let overlayLayer: Konva.Layer;
 	let waitingLayer: Konva.Layer;
 	let finishLayer: Konva.Layer;
+
 	let gameFrameRenderer: GameFramesRenderer<GameState> | null;
 
 	onMount(() => {
@@ -42,6 +44,7 @@
 		gridLayer.hide();
 		applesLayer.hide();
 		snakesLayer.hide();
+		overlayLayer.hide();
 		waitingLayer.hide();
 		finishLayer.hide();
 
@@ -51,9 +54,11 @@
 				gridLayer.show();
 				applesLayer.show();
 				snakesLayer.show();
+				overlayLayer.show();
 				drawGrid(state.gridSize, cellSize);
 				drawApples(state.apples, cellSize);
 				drawPlayers(state.players, stage.width() / state.gridSize, frameCompletion);
+				drawFreezeCountdown(state.unfreezeUnix);
 				break;
 			case 'waiting-for-players':
 			case 'starting':
@@ -80,9 +85,10 @@
 		gridLayer = new Konva.Layer();
 		applesLayer = new Konva.Layer();
 		snakesLayer = new Konva.Layer();
+		overlayLayer = new Konva.Layer();
 		waitingLayer = new Konva.Layer();
 		finishLayer = new Konva.Layer();
-		stage.add(gridLayer, applesLayer, snakesLayer, waitingLayer, finishLayer);
+		stage.add(gridLayer, applesLayer, snakesLayer, waitingLayer, finishLayer, overlayLayer);
 	}
 
 	const getCssVar = (varName: string) =>
@@ -130,6 +136,26 @@
 			snakesLayer.add(snake);
 		}
 		snakesLayer.draw();
+	}
+
+	function drawFreezeCountdown(unfreezeUnix: number) {
+		overlayLayer.removeChildren();
+		if (unfreezeUnix <= 0) return;
+
+		const timeLeft = Math.max(Math.round((unfreezeUnix - Date.now()) / 1000), 0);
+		const text = new Konva.Text({
+			text: timeLeft.toString(),
+			align: 'center',
+			y: stage.height() / 2,
+			width: stage.width(),
+			fontSize: 30,
+			fontFamily: 'DM Sans',
+			fill: getCssVar('--text'),
+			opacity: 0.5
+		});
+		text.offsetY(text.height() / 2);
+
+		overlayLayer.add(text);
 	}
 
 	function drawWaitingForPlayers(players: number, min: number, startUnix: number) {
@@ -203,7 +229,7 @@
 				align: 'center',
 				y: 36
 			});
-			group.setPosition({ x: group.getPosition().x, y: stage.height() / 2 - 30 });
+			group.y(stage.height() / 2 - 30);
 			group.add(title, sub);
 		} else {
 			const title = new Konva.Text({
@@ -214,7 +240,7 @@
 				fontFamily: 'DM Sans',
 				align: 'center'
 			});
-			group.setPosition({ x: group.getPosition().x, y: stage.height() / 2 });
+			group.y(stage.height() / 2);
 			group.add(title);
 		}
 

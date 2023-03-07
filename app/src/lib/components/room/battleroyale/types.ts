@@ -20,6 +20,7 @@ export interface GameState {
 	gameStatus: string;
 	winner: Player;
 	startUnix: number;
+	unfreezeUnix: number;
 	minPlayers: number;
 	maxPlayers: number;
 }

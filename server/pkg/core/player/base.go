@@ -10,8 +10,10 @@ type Base struct {
 }
 
 func (player *Base) ChangeDirection(direcion utils.Vector2) {
-	if player.Direction.X+direcion.X == 0 && player.Direction.Y+direcion.Y == 0 {
-		return
+	if len(player.SnakeTail) > 1 {
+		if player.Direction.X+direcion.X == 0 && player.Direction.Y+direcion.Y == 0 {
+			return
+		}
 	}
 
 	player.TargetDirection = direcion
