@@ -30,6 +30,7 @@ export interface Player {
 	snakeTail: Vector2[];
 	score: number;
 	direction: Vector2;
+	alive: boolean;
 }
 
 export interface JoinSuccessType {

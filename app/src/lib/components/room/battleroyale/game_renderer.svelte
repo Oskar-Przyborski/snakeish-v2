@@ -18,7 +18,7 @@
 	let applesLayer: Konva.Layer;
 	let snakesLayer: Konva.Layer;
 	let waitingLayer: Konva.Layer;
-	let startingLayer: Konva.Layer;
+	let finishLayer: Konva.Layer;
 	let gameFrameRenderer: GameFramesRenderer<GameState> | null;
 
 	onMount(() => {
@@ -43,7 +43,7 @@
 		applesLayer.hide();
 		snakesLayer.hide();
 		waitingLayer.hide();
-		startingLayer.hide();
+		finishLayer.hide();
 
 		const cellSize = stage.width() / state.gridSize;
 		switch (state.gameStatus) {
@@ -56,15 +56,13 @@
 				drawPlayers(state.players, stage.width() / state.gridSize, frameCompletion);
 				break;
 			case 'waiting-for-players':
-				waitingLayer.show();
-				drawWaitingForPlayers(state.players.length, state.minPlayers);
-				break;
 			case 'starting':
-				startingLayer.show();
-				drawStarting(state.startUnix);
+				waitingLayer.show();
+				drawWaitingForPlayers(state.players.length, state.minPlayers, state.startUnix);
 				break;
 			case 'finished':
-				// console.log("finished")
+				finishLayer.show();
+				drawFinish(state.winner);
 				break;
 			default:
 				console.log('unhandled game status');
@@ -83,8 +81,8 @@
 		applesLayer = new Konva.Layer();
 		snakesLayer = new Konva.Layer();
 		waitingLayer = new Konva.Layer();
-		startingLayer = new Konva.Layer();
-		stage.add(gridLayer, applesLayer, snakesLayer, waitingLayer, startingLayer);
+		finishLayer = new Konva.Layer();
+		stage.add(gridLayer, applesLayer, snakesLayer, waitingLayer, finishLayer);
 	}
 
 	const getCssVar = (varName: string) =>
@@ -134,13 +132,13 @@
 		snakesLayer.draw();
 	}
 
-	function drawWaitingForPlayers(players: number, min: number) {
+	function drawWaitingForPlayers(players: number, min: number, startUnix: number) {
 		waitingLayer.removeChildren();
 
 		const group = new Konva.Group({
 			width: stage.width(),
 			height: 62,
-			y: stage.height() / 2 - 31
+			y: stage.height() / 2 - 50
 		});
 
 		const title = new Konva.Text({
@@ -160,29 +158,67 @@
 			align: 'center',
 			y: 36
 		});
-
 		group.add(title, subtitle);
+
+		if (startUnix > 0) {
+			const startingIn = Math.max(Math.round((startUnix - Date.now()) / 1000), 0);
+			const starting = new Konva.Text({
+				text: `Starting in ${startingIn}s`,
+				fill: getCssVar('--text'),
+				width: group.width(),
+				align: 'center',
+				fontSize: 25,
+				y: 75
+			});
+
+			group.add(starting);
+		}
+
 		waitingLayer.add(group);
 	}
 
-	function drawStarting(startUnix: number) {
-		startingLayer.removeChildren();
-		const startingIn = Math.max(Math.round((startUnix - Date.now()) / 1000), 0);
+	function drawFinish(winner: Player) {
+		finishLayer.removeChildren();
 
 		const group = new Konva.Group({
 			width: stage.width(),
-			y: stage.height() / 2 - 13
-		});
-		const title = new Konva.Text({
-			text: `Starting in ${startingIn}s`,
-			fill: getCssVar('--text'),
-			width: group.width(),
-			align: 'center',
-			fontSize: 26
+			height: 62
 		});
 
-		group.add(title);
-		startingLayer.add(group);
+		if (winner != null) {
+			const title = new Konva.Text({
+				text: `${winner.name}`,
+				fill: getCssVar('--text'),
+				width: group.width(),
+				fontSize: 28,
+				fontFamily: 'DM Sans',
+				align: 'center'
+			});
+			const sub = new Konva.Text({
+				text: `Won, with ${winner.score} points!`,
+				fill: getCssVar('--text'),
+				width: group.width(),
+				fontSize: 24,
+				fontFamily: 'DM Sans',
+				align: 'center',
+				y: 36
+			});
+			group.setPosition({ x: group.getPosition().x, y: stage.height() / 2 - 30 });
+			group.add(title, sub);
+		} else {
+			const title = new Konva.Text({
+				text: 'Draw!',
+				fill: getCssVar('--text'),
+				width: group.width(),
+				fontSize: 28,
+				fontFamily: 'DM Sans',
+				align: 'center'
+			});
+			group.setPosition({ x: group.getPosition().x, y: stage.height() / 2 });
+			group.add(title);
+		}
+
+		finishLayer.add(group);
 	}
 </script>
 

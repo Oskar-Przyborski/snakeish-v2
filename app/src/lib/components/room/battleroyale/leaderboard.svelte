@@ -21,7 +21,14 @@
 							{/if}
 							{player.name}
 						</div>
-						<div class="score"><Icon icon="material-symbols:star-outline-rounded" inline /> {player.score}</div>
+						<div class="score">
+							{#if player.alive}
+								<Icon icon="material-symbols:star-outline-rounded" inline />
+								{player.score}
+							{:else}
+								<Icon icon="material-symbols:skull-outline" inline />
+							{/if}
+						</div>
 					</div>
 				</Panel>
 			{/each}
