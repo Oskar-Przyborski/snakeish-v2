@@ -18,11 +18,11 @@ export default new Map<string, { tag: string; title: string; name: string; descr
 		}
 	],
 	[
-		'battleroyale-huuge',
+		'battleroyale-eat&win',
 		{
 			tag: 'battle-royale',
 			title: 'Eat&Win',
-			name: 'battleroyale-huuge',
+			name: 'battleroyale-eat&win',
 			description: 'Lorem Ipsum dolor sit amet'
 		}
 	],
