@@ -14,66 +14,26 @@
 
 	let canvasWrapper: HTMLDivElement;
 	let stage: Konva.Stage;
+
 	let gridLayer: Konva.Layer;
-	let applesLayer: Konva.Layer;
-	let snakesLayer: Konva.Layer;
+	let gameLayer: Konva.Layer;
 	let overlayLayer: Konva.Layer;
-	let waitingLayer: Konva.Layer;
-	let finishLayer: Konva.Layer;
 
 	let gameFrameRenderer: GameFramesRenderer<GameState> | null;
 
 	onMount(() => {
 		initKonva();
 
+		const gameState = get(store).gameState!;
 		gameFrameRenderer = new GameFramesRenderer<GameState>(
 			50,
-			get(store).gameState!.frameTime,
-			get(store).gameState!,
+			gameState.frameTime,
+			gameState,
 			render
 		);
 
-		unsubscribe = store.subscribe((state) => {
-			if (state.gameState == null) return;
-
-			gameFrameRenderer?.setGameData(state.gameState);
-		});
+		unsubscribe = store.subscribe(storeUpdate);
 	});
-
-	function render(state: GameState, frameCompletion: number) {
-		gridLayer.hide();
-		applesLayer.hide();
-		snakesLayer.hide();
-		overlayLayer.hide();
-		waitingLayer.hide();
-		finishLayer.hide();
-
-		const cellSize = stage.width() / state.gridSize;
-		switch (state.gameStatus) {
-			case 'playing':
-				gridLayer.show();
-				applesLayer.show();
-				snakesLayer.show();
-				overlayLayer.show();
-				drawGrid(state.gridSize, cellSize);
-				drawApples(state.apples, cellSize);
-				drawPlayers(state.players, stage.width() / state.gridSize, frameCompletion);
-				drawFreezeCountdown(state.unfreezeUnix);
-				break;
-			case 'waiting-for-players':
-			case 'starting':
-				waitingLayer.show();
-				drawWaitingForPlayers(state.players.length, state.minPlayers, state.startUnix);
-				break;
-			case 'finished':
-				finishLayer.show();
-				drawFinish(state.winner);
-				break;
-			default:
-				console.log('unhandled game status');
-				break;
-		}
-	}
 
 	function initKonva() {
 		stage = new Konva.Stage({
@@ -83,12 +43,50 @@
 		});
 
 		gridLayer = new Konva.Layer();
-		applesLayer = new Konva.Layer();
-		snakesLayer = new Konva.Layer();
+		gameLayer = new Konva.Layer();
 		overlayLayer = new Konva.Layer();
-		waitingLayer = new Konva.Layer();
-		finishLayer = new Konva.Layer();
-		stage.add(gridLayer, applesLayer, snakesLayer, waitingLayer, finishLayer, overlayLayer);
+		stage.add(gridLayer, gameLayer, overlayLayer);
+	}
+
+	function storeUpdate(state: PageState) {
+		if (state.gameState == null) return;
+
+		gameFrameRenderer?.setGameData(state.gameState);
+	}
+
+	function render(state: GameState, frameCompletion: number) {
+		gridLayer.hide();
+		gameLayer.hide();
+		gameLayer.destroyChildren();
+		overlayLayer.destroyChildren();
+
+		const cellSize = stage.width() / state.gridSize;
+		switch (state.gameStatus) {
+			case 'playing':
+				gridLayer.show();
+				gameLayer.show();
+				overlayLayer.show();
+
+				drawGrid(state.gridSize, cellSize);
+				addApples(gameLayer, state.apples, cellSize);
+				addPlayers(gameLayer, state.players, stage.width() / state.gridSize, frameCompletion);
+				addFreezeCountdown(overlayLayer, state.unfreezeUnix);
+
+				break;
+			case 'waiting-for-players':
+				overlayLayer.show();
+				addWaitingForPlayers(overlayLayer, state.players.length, state.minPlayers, state.startUnix);
+				break;
+			case 'finished':
+				overlayLayer.show();
+				addFinish(overlayLayer, state.winner);
+				break;
+			default:
+				console.log('unhandled game status');
+				break;
+		}
+		gameLayer.draw();
+		overlayLayer.draw();
 	}
 
 	const getCssVar = (varName: string) =>
@@ -116,30 +114,30 @@
 		gridLayer.draw();
 	}
 
-	function drawApples(apples: Vector2[], cellSize: number) {
-		applesLayer.removeChildren();
+	function addApples(layer: Konva.Layer, apples: Vector2[], cellSize: number) {
+		const group = new Konva.Group();
+		layer.add(group);
+
 		for (let i = 0; i < apples.length; i++) {
-			const apple = apples[i];
-			applesLayer.add(renderApple(apple, cellSize));
+			group.add(renderApple(apples[i], cellSize));
 		}
-		applesLayer.draw();
 	}
 
-	function drawPlayers(players: Player[], cellSize: number, moveValue: number) {
-		snakesLayer.removeChildren();
+	function addPlayers(layer: Konva.Layer, players: Player[], cellSize: number, moveValue: number) {
+		const group = new Konva.Group();
+		layer.add(group);
+
 		for (let i = 0; i < players.length; i++) {
 			const player = players[i];
 			const snake = renderSnake(player.snakeTail, player.direction, cellSize, moveValue, {
 				color: player.color,
 				name: player.name
 			});
-			snakesLayer.add(snake);
+			group.add(snake);
 		}
-		snakesLayer.draw();
 	}
 
-	function drawFreezeCountdown(unfreezeUnix: number) {
-		overlayLayer.removeChildren();
+	function addFreezeCountdown(layer: Konva.Layer, unfreezeUnix: number) {
 		if (unfreezeUnix <= 0) return;
 
 		const timeLeft = Math.max(Math.round((unfreezeUnix - Date.now()) / 1000), 0);
@@ -155,12 +153,15 @@
 		});
 		text.offsetY(text.height() / 2);
 
-		overlayLayer.add(text);
+		layer.add(text);
 	}
 
-	function drawWaitingForPlayers(players: number, min: number, startUnix: number) {
-		waitingLayer.removeChildren();
-
+	function addWaitingForPlayers(
+		layer: Konva.Layer,
+		players: number,
+		min: number,
+		startUnix: number
+	) {
 		const group = new Konva.Group({
 			width: stage.width(),
 			height: 62,
@@ -200,12 +201,10 @@
 			group.add(starting);
 		}
 
-		waitingLayer.add(group);
+		layer.add(group);
 	}
 
-	function drawFinish(winner: Player) {
-		finishLayer.removeChildren();
-
+	function addFinish(layer: Konva.Layer, winner: Player) {
 		const group = new Konva.Group({
 			width: stage.width(),
 			height: 62
@@ -244,7 +243,7 @@
 			group.add(title);
 		}
 
-		finishLayer.add(group);
+		layer.add(group);
 	}
 </script>
 

@@ -12,7 +12,7 @@ func Configure(base room.Base) *Room {
 			GameStatus:     "waiting-for-players",
 			FrameTime:      250,
 			ApplesQuantity: 6,
-			GridSize:       30,
+			GridSize:       20,
 			ShrinkSize:     0,
 		}
 	}
