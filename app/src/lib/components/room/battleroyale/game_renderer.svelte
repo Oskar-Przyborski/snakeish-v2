@@ -70,6 +70,7 @@
 				drawGrid(state.gridSize, cellSize);
 				addApples(gameLayer, state.apples, cellSize);
 				addPlayers(gameLayer, state.players, stage.width() / state.gridSize, frameCompletion);
+				addZone(gameLayer, state.shrinkSize, cellSize, state.gridSize);
 				addFreezeCountdown(overlayLayer, state.unfreezeUnix);
 
 				break;
@@ -135,6 +136,53 @@
 			});
 			group.add(snake);
 		}
+	}
+
+	function addZone(layer: Konva.Layer, shrink: number, cellSize: number, gridSize: number) {
+		const group = new Konva.Group();
+		layer.add(group);
+
+		const opacity = 0.3;
+		const fill = 'red';
+
+		group.add(
+			// left
+			new Konva.Rect({
+				y: 0,
+				x: 0,
+				width: shrink * cellSize,
+				height: gridSize * cellSize,
+				fill,
+				opacity
+			}),
+			// right
+			new Konva.Rect({
+				x: (gridSize - shrink) * cellSize,
+				y: 0,
+				width: shrink * cellSize,
+				height: gridSize * cellSize,
+				fill,
+				opacity
+			}),
+			// top
+			new Konva.Rect({
+				x: shrink * cellSize,
+				y: 0,
+				width: (gridSize - shrink * 2) * cellSize,
+				height: shrink * cellSize,
+				fill,
+				opacity
+			}),
+			// bottom
+			new Konva.Rect({
+				x: shrink * cellSize,
+				y: (gridSize - shrink) * cellSize,
+				width: (gridSize - shrink * 2) * cellSize,
+				height: shrink * cellSize,
+				fill,
+				opacity
+			})
+		);
 	}
 
 	function addFreezeCountdown(layer: Konva.Layer, unfreezeUnix: number) {
