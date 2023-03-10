@@ -32,6 +32,18 @@ func (room *Room) IsPositionEmpty(at utils.Vector2) bool {
 	return true
 }
 
+func (room Room) IsInsideZone(at utils.Vector2) bool {
+	if at.X < room.ShrinkSize || at.X > room.GridSize-room.ShrinkSize {
+		return true
+	}
+
+	if at.Y < room.ShrinkSize || at.Y > room.GridSize-room.ShrinkSize {
+		return true
+	}
+
+	return false
+}
+
 func (room *Room) GetRandomFreePosition(distanceFromBounds int) (utils.Vector2, error) {
 	freePositions := []utils.Vector2{}
 	for y := distanceFromBounds; y < room.GridSize-distanceFromBounds; y++ {

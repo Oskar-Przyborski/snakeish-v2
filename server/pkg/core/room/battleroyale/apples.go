@@ -2,16 +2,17 @@ package battleroyale
 
 import "snakeish/pkg/core/utils"
 
-func (room *Room) SpawnMissingApples() {
-	applesToSpawn := room.ApplesQuantity - len(room.Apples)
+func (room *Room) HandleAppleSpawn() {
+	room.AppleSpawnCounter++
 
-	for i := 0; i < applesToSpawn; i++ {
+	if room.AppleSpawnCounter > 5 {
 		room.SpawnApple()
+		room.AppleSpawnCounter = 0
 	}
 }
 
 func (room *Room) SpawnApple() {
-	position, err := room.GetRandomFreePosition(0)
+	position, err := room.GetRandomFreePosition(room.ShrinkSize)
 	if err != nil {
 		return
 	}

@@ -45,10 +45,11 @@ func (room *Room) TryStart() {
 }
 
 func (room *Room) StartGame() {
+	room.Reset()
 	room.StartUnix = -1
 	room.StartTimer = nil
 	room.GameStatus = "playing"
-	room.SpawnMissingApples()
+	room.HandleAppleSpawn()
 	room.SpawnAllPlayers()
 
 	room.Freezed = true
@@ -64,6 +65,8 @@ func (room *Room) Update() {
 		return
 	}
 
+	room.HandleZoneShrink()
+
 	playersToKill := []*Player{}
 
 	alivePlayers := room.GetAlivePlayers()
@@ -78,11 +81,29 @@ func (room *Room) Update() {
 		}
 	}
 
+	for _, player := range alivePlayers {
+		for _, snakeElement := range player.SnakeTail {
+			if room.IsInsideZone(snakeElement) {
+				player.ZoneKillCounter++
+
+				if player.ZoneKillCounter >= room.ZoneKillTime {
+					player.SnakeTail = player.SnakeTail[:len(player.SnakeTail)-1]
+					player.ZoneKillCounter = 0
+
+					if len(player.SnakeTail) == 0 {
+						playersToKill = append(playersToKill, player)
+					}
+				}
+				break
+			}
+		}
+	}
+
 	for _, player := range playersToKill {
 		player.Kill()
 	}
 
-	room.SpawnMissingApples()
+	room.HandleAppleSpawn()
 	room.CheckFinished()
 }
 
@@ -114,10 +135,25 @@ func (room *Room) Reset() {
 	room.Apples = []utils.Vector2{}
 	room.Freezed = false
 	room.UnfreezeUnix = -1
+	room.ShrinkFrameCounter = 0
+	room.ShrinkSize = 0
 
 	for _, p := range room.Players {
 		p.Direction = utils.Vector2{}
 		p.SnakeTail = []utils.Vector2{}
 		p.Kill()
+	}
+}
+
+func (room *Room) HandleZoneShrink() {
+	if room.ShrinkSize >= room.GridSize/2 {
+		return
+	}
+
+	room.ShrinkFrameCounter++
+
+	if room.ShrinkFrameCounter > room.ZoneShrinkTime {
+		room.ShrinkSize++
+		room.ShrinkFrameCounter = 0
 	}
 }

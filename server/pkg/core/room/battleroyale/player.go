@@ -7,9 +7,10 @@ import (
 
 type Player struct {
 	player.Base
-	Name    string
-	Color   string
-	IsAlive bool
+	Name            string
+	Color           string
+	IsAlive         bool
+	ZoneKillCounter int
 }
 
 func (player *Player) Kill() {
