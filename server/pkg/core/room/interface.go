@@ -1,14 +1,14 @@
 package room
 
-type IRoom interface {
+type Room interface {
 	GetName() string
 	GetId() string
 	GetModeTag() string
 	GetModeName() string
 	GetPlayersCount() int
 	GetMaxPlayers() int
-	GetPreview() RoomPreview
 	StartRoom()
+	Stop()
 	CheckPin([4]int) bool
 	IsPinEnabled() bool
 	RemovePlayer(string)

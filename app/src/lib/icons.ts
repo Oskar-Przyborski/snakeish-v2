@@ -39,7 +39,8 @@ const materialSymbolsIcons = [
 	'star-outline-rounded',
 	'person-outline-rounded',
 	'group-outline-rounded',
-	'info-outline-rounded'
+	'info-outline-rounded',
+	'skull-outline'
 ];
 
 const mdiIcons = ['github', 'check-bold'];

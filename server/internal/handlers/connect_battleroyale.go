@@ -1,15 +1,15 @@
 package handlers
 
 import (
-	"snakeish/internal/services/modes/classic"
+	battleroyaleMode "snakeish/internal/services/modes/battleroyale"
 	"snakeish/pkg/core"
-	classic_room "snakeish/pkg/core/room/classic"
+	"snakeish/pkg/core/room/battleroyale"
 	"snakeish/pkg/sockets"
 
 	"github.com/gin-gonic/gin"
 )
 
-func ConnectClassicRoomEndpoint(c *gin.Context) {
+func ConnectBattleroyaleEndpoint(c *gin.Context) {
 	roomId := c.Params.ByName("id")
 
 	room, found := core.GetRoomById(roomId)
@@ -21,7 +21,7 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	if room.GetModeTag() != "classic" {
+	if room.GetModeTag() != "battle-royale" {
 		c.JSON(403, gin.H{
 			"code":    "ROOM_WRONG_MODE_TAG",
 			"message": "found room, but it's mode tag is wrong",
@@ -29,7 +29,7 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	classicRoom := room.(*classic_room.ClassicRoom)
+	battleroyaleRoom := room.(*battleroyale.Room)
 
 	websocket, err := sockets.CreateClient(c.Writer, c.Request)
 	if err != nil {
@@ -40,5 +40,5 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	classic.ConnectWebsocket(classicRoom, websocket)
+	battleroyaleMode.ConnectWebsocket(battleroyaleRoom, websocket)
 }

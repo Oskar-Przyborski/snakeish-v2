@@ -17,4 +17,13 @@ export default new Map<string, { tag: string; title: string; name: string; descr
 			description: 'Quite big map with many players and apples'
 		}
 	],
+	[
+		'battleroyale-eat&win',
+		{
+			tag: 'battle-royale',
+			title: 'Eat&Win',
+			name: 'battleroyale-eat&win',
+			description: 'Popular Battle Royale! Compete with friends, escape from zone, eat apples and win!'
+		}
+	],
 ]);

@@ -15,7 +15,8 @@
 	let search = '';
 	let modes = [
 		{ name: 'Casual', checked: false },
-		{ name: 'Huuge', checked: false }
+		{ name: 'Huuge', checked: false },
+		{ name: 'Eat&Win', checked: false },
 	];
 
 	const refresh = async (

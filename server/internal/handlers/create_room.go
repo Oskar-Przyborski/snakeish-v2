@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"snakeish/internal/services/modes/classic"
+	battleroyaleMode "snakeish/internal/services/modes/battleroyale"
+	classicMode "snakeish/internal/services/modes/classic"
 	"snakeish/pkg/core"
 	"snakeish/pkg/core/room"
 
@@ -39,13 +40,15 @@ func CreateRoomEndpoint(c *gin.Context) {
 		})
 	}
 
-	c.JSON(200, room.GetPreview())
+	c.JSON(200, core.GetRoomPreview(room))
 	println("Created room. Id:", room.GetId())
 }
 
-func CreateRoomByModeTag(name string, modeTag string, modeName string, pin *[4]int) (room.IRoom, error) {
+func CreateRoomByModeTag(name string, modeTag string, modeName string, pin *[4]int) (room.Room, error) {
 	switch modeTag {
 	default: //classic
-		return classic.CreateRoom(name, modeName, pin)
+		return classicMode.CreateRoom(name, modeName, pin)
+	case "battle-royale":
+		return battleroyaleMode.CreateRoom(name, modeName, pin)
 	}
 }

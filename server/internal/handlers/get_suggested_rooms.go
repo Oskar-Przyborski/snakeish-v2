@@ -11,7 +11,7 @@ import (
 
 type roomEvaluation struct {
 	value float64
-	room  room.IRoom
+	room  room.Room
 }
 
 type resposnseStruct struct {
@@ -36,7 +36,7 @@ func GetSuggestedRoomsEndpoint(c *gin.Context) {
 		if i >= 4 {
 			break
 		}
-		response.Rooms = append(response.Rooms, evaluations[i].room.GetPreview())
+		response.Rooms = append(response.Rooms, core.GetRoomPreview(evaluations[i].room))
 	}
 	if rooms := len(evaluations); rooms > 4 {
 		response.RemainingRooms = rooms - 4
@@ -45,7 +45,7 @@ func GetSuggestedRoomsEndpoint(c *gin.Context) {
 	c.JSON(200, response)
 }
 
-func evaluate(room room.IRoom) roomEvaluation {
+func evaluate(room room.Room) roomEvaluation {
 	players := float64(room.GetPlayersCount())
 	max := float64(room.GetMaxPlayers())
 	var score float64 = 0
