@@ -23,7 +23,7 @@ export default new Map<string, { tag: string; title: string; name: string; descr
 			tag: 'battle-royale',
 			title: 'Eat&Win',
 			name: 'battleroyale-eat&win',
-			description: 'Lorem Ipsum dolor sit amet'
+			description: 'Popular Battle Royale! Compete with friends, escape from zone, eat apples and win!'
 		}
 	],
 ]);
