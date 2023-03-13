@@ -9,10 +9,10 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-func (room *Room) AddPlayer(name string, color string, pin [4]int) (*Player, error) {
-	if !room.CheckPin(pin) {
-		return nil, errors.New("incorrect-pin")
-	}
+func (room *Mode) AddPlayer(name string, color string, pin [4]int) (*Player, error) {
+	// if !room.CheckPin(pin) {
+	// 	return nil, errors.New("incorrect-pin")
+	// }
 
 	if len(name) < 3 || len(name) > 10 {
 		return nil, errors.New("player-name-incorrect-length")
@@ -42,7 +42,7 @@ func (room *Room) AddPlayer(name string, color string, pin [4]int) (*Player, err
 	return &player, nil
 }
 
-func (room *Room) MovePlayer(player *Player) {
+func (room *Mode) MovePlayer(player *Player) {
 	if len(player.SnakeTail) == 0 {
 		return
 	}
@@ -61,7 +61,7 @@ func (room *Room) MovePlayer(player *Player) {
 	}
 }
 
-func (room *Room) RemovePlayer(id string) {
+func (room *Mode) RemovePlayer(id string) {
 	for idx, player := range room.Players {
 		if player.Id == id {
 			room.Players = append(room.Players[:idx], room.Players[idx+1:]...)
@@ -70,7 +70,7 @@ func (room *Room) RemovePlayer(id string) {
 	}
 }
 
-func (room *Room) IsAnySnakeAtPosition(at utils.Vector2) bool {
+func (room *Mode) IsAnySnakeAtPosition(at utils.Vector2) bool {
 	for _, player := range room.Players {
 		for _, snakeElement := range player.SnakeTail {
 			if snakeElement.IsEqual(at) {
@@ -81,7 +81,7 @@ func (room *Room) IsAnySnakeAtPosition(at utils.Vector2) bool {
 	return false
 }
 
-func (room *Room) IsPlayerCollidingWithAnyOther(player Player) bool {
+func (room *Mode) IsPlayerCollidingWithAnyOther(player Player) bool {
 	for _, searchUser := range room.Players {
 		if searchUser.Id == player.Id {
 			continue
@@ -94,13 +94,13 @@ func (room *Room) IsPlayerCollidingWithAnyOther(player Player) bool {
 	return false
 }
 
-func (room Room) SpawnAllPlayers() {
+func (room Mode) SpawnAllPlayers() {
 	for _, player := range room.Players {
 		room.SpawnPlayer(player)
 	}
 }
 
-func (room Room) SpawnPlayer(player *Player) {
+func (room Mode) SpawnPlayer(player *Player) {
 	position, err := room.GetRandomFreePosition(1)
 	if err != nil {
 		return
@@ -109,7 +109,7 @@ func (room Room) SpawnPlayer(player *Player) {
 	player.IsAlive = true
 }
 
-func (room *Room) GetAlivePlayers() []*Player {
+func (room *Mode) GetAlivePlayers() []*Player {
 	return funk.Filter(room.Players, func(player *Player) bool {
 		return player.IsAlive
 	}).([]*Player)

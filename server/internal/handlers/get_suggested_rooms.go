@@ -3,7 +3,7 @@ package handlers
 import (
 	"math"
 	"snakeish/pkg/core"
-	"snakeish/pkg/core/room"
+	"snakeish/pkg/core/rooms"
 	"sort"
 
 	"github.com/gin-gonic/gin"
@@ -11,12 +11,12 @@ import (
 
 type roomEvaluation struct {
 	value float64
-	room  room.Room
+	room  rooms.Room
 }
 
 type resposnseStruct struct {
-	Rooms          []room.RoomPreview `json:"rooms"`
-	RemainingRooms int                `json:"remainingRooms"`
+	Rooms          []rooms.RoomPreview `json:"rooms"`
+	RemainingRooms int                 `json:"remainingRooms"`
 }
 
 func GetSuggestedRoomsEndpoint(c *gin.Context) {
@@ -24,7 +24,7 @@ func GetSuggestedRoomsEndpoint(c *gin.Context) {
 	evaluations := []roomEvaluation{}
 
 	for _, room := range core.GetRooms() {
-		evaluations = append(evaluations, evaluate(room))
+		evaluations = append(evaluations, evaluate(*room))
 	}
 
 	sort.SliceStable(evaluations, func(i, j int) bool {
@@ -45,7 +45,7 @@ func GetSuggestedRoomsEndpoint(c *gin.Context) {
 	c.JSON(200, response)
 }
 
-func evaluate(room room.Room) roomEvaluation {
+func evaluate(room rooms.Room) roomEvaluation {
 	players := float64(room.GetPlayersCount())
 	max := float64(room.GetMaxPlayers())
 	var score float64 = 0

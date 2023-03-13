@@ -18,5 +18,5 @@ func GetRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, core.GetRoomPreview(room))
+	c.JSON(200, core.GetRoomPreview(*room))
 }

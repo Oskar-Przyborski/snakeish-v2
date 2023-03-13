@@ -1,14 +1,14 @@
 package clients
 
 import (
-	"snakeish/pkg/core/room"
+	"snakeish/pkg/core/rooms"
 	"snakeish/pkg/notifier"
 	"snakeish/pkg/sockets"
 )
 
 type Client struct {
 	WebSocket    *sockets.SocketClient
-	Room         room.Room
+	Room         rooms.Room
 	IsPlayer     bool
 	PlayerId     string
 	OnDisconnect notifier.Notifier[*Client]

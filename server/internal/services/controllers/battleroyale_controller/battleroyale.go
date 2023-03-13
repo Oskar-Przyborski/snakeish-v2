@@ -1,28 +1,20 @@
-package battleroyaleMode
+package battleroyale_controller
 
 import (
 	"snakeish/internal/services/clients"
 	"snakeish/pkg/core"
-	"snakeish/pkg/core/room/battleroyale"
+	"snakeish/pkg/core/rooms"
+	"snakeish/pkg/core/rooms/battleroyale"
 	"snakeish/pkg/core/utils"
 	"snakeish/pkg/sockets"
 	"time"
 )
 
-func CreateRoom(roomName string, modeName string, pin *[4]int) (*battleroyale.Room, error) {
-	print("creating room")
-	room, err := core.CreateBattleRoyaleRoom(roomName, modeName, pin)
-	if err != nil {
-		return nil, err
-	}
-
-	print("adding listener")
+func SubscribeUpdates(room *rooms.Room) {
 	room.OnUpdate.AddListener(onUpdate)
-
-	return room, nil
 }
 
-func onUpdate(room *battleroyale.Room) {
+func onUpdate(room *rooms.Room) {
 	response := generateGameUpdateResponse(*room)
 	clients := clients.GetClientsFromRoom(room.Id)
 
@@ -31,22 +23,23 @@ func onUpdate(room *battleroyale.Room) {
 	}
 }
 
-func generateGameUpdateResponse(room battleroyale.Room) GameUpdateResponse {
+func generateGameUpdateResponse(room rooms.Room) GameUpdateResponse {
+	mode := room.Mode.(*battleroyale.Mode)
 	response := GameUpdateResponse{
-		FrameTime:    room.FrameTime,
-		GridSize:     room.GridSize,
-		GameStatus:   room.GameStatus,
-		ShrinkSize:   room.ShrinkSize,
-		Apples:       room.Apples,
+		FrameTime:    mode.GetFrameTime(),
+		GridSize:     mode.GridSize,
+		GameStatus:   mode.GameStatus,
+		ShrinkSize:   mode.ShrinkSize,
+		Apples:       mode.Apples,
 		Players:      []Player{},
-		Winner:       parsePlayer(room.Winner),
-		StartUnix:    room.StartUnix,
-		UnfreezeUnix: room.UnfreezeUnix,
-		MaxPlayers:   room.MaxPlayers,
-		MinPlayers:   room.MinPlayers,
+		Winner:       parsePlayer(mode.Winner),
+		StartUnix:    mode.StartUnix,
+		UnfreezeUnix: mode.UnfreezeUnix,
+		MaxPlayers:   mode.MaxPlayers,
+		MinPlayers:   mode.MinPlayers,
 	}
 
-	for _, player := range room.Players {
+	for _, player := range mode.Players {
 		response.Players = append(response.Players, *parsePlayer(player))
 	}
 
@@ -69,10 +62,10 @@ func parsePlayer(player *battleroyale.Player) *Player {
 	}
 }
 
-func ConnectWebsocket(room *battleroyale.Room, socket *sockets.SocketClient) {
+func ConnectWebsocket(room *rooms.Room, socket *sockets.SocketClient) {
 	core.StopAfkForRoom(room.Id)
 
-	client := clients.CreateClient(socket, room)
+	client := clients.CreateClient(socket, *room)
 	client.OnDisconnect.AddListener(onClientDisconnect)
 
 	client.OnEvent("request-join", onJoinRequest)
@@ -90,7 +83,8 @@ func onJoinRequest(client *clients.Client, c sockets.MessageContext) {
 		return
 	}
 
-	player, err := client.Room.(*battleroyale.Room).AddPlayer(data.Name, data.Color, data.Pin)
+	mode := client.Room.Mode.(*battleroyale.Mode)
+	player, err := mode.AddPlayer(data.Name, data.Color, data.Pin)
 	if err != nil {
 		client.WebSocket.Send("join-error", map[string]any{
 			"error": err.Error(),
@@ -118,7 +112,7 @@ func onClientDisconnect(client *clients.Client) {
 	client.Room.RemovePlayer(client.PlayerId)
 
 	if client.Room.GetPlayersCount() == 0 {
-		core.StartAfkForRoom(client.Room.GetId(), 30*time.Second)
+		core.StartAfkForRoom(client.Room.Id, 30*time.Second)
 	}
 	clients.RemoveClient(client.WebSocket.Id)
 
@@ -126,7 +120,8 @@ func onClientDisconnect(client *clients.Client) {
 }
 
 func onChangeDirection(client *clients.Client, c sockets.MessageContext) {
-	player := client.Room.(*battleroyale.Room).GetPlayerById(client.PlayerId)
+	mode := client.Room.Mode.(*battleroyale.Mode)
+	player := mode.GetPlayerById(client.PlayerId)
 
 	payload := ChangeDirectionRequest{}
 	if err := c.BindJSON(&payload); err != nil {

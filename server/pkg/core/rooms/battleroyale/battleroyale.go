@@ -1,14 +1,13 @@
 package battleroyale
 
 import (
-	"snakeish/pkg/core/room"
 	"snakeish/pkg/core/utils"
 	"snakeish/pkg/notifier"
 	"time"
 )
 
-type Room struct {
-	room.Base
+type Mode struct {
+	ModeName           string
 	Players            []*Player
 	MaxPlayers         int
 	MinPlayers         int
@@ -19,7 +18,7 @@ type Room struct {
 	GridSize           int
 	ShrinkSize         int
 	ShrinkFrameCounter int
-	OnUpdate           notifier.Notifier[*Room]
+	OnUpdate           notifier.Notifier[*Mode]
 	GameStatus         string  // "waiting-for-players", "playing", "finished"
 	Winner             *Player // The winner of the game. Nil if game not ended.
 	StartUnix          int64   // Unix timestamp of game start moment. -1 if null.
@@ -30,14 +29,21 @@ type Room struct {
 	ZoneShrinkTime     int
 }
 
-func (room Room) GetMaxPlayers() int {
-	return room.MaxPlayers
+func (mode Mode) GetMaxPlayers() int {
+	return mode.MaxPlayers
 }
 
-func (room Room) GetModeTag() string {
+func (mode Mode) GetTagName() string {
 	return "battle-royale"
 }
+func (mode Mode) GetModeName() string {
+	return mode.ModeName
+}
 
-func (room Room) GetPlayersCount() int {
-	return len(room.Players)
+func (mode Mode) GetPlayersCount() int {
+	return len(mode.Players)
+}
+
+func (mode Mode) GetFrameTime() int {
+	return mode.FrameTime
 }

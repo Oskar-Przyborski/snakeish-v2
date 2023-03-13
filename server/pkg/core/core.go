@@ -2,95 +2,64 @@ package core
 
 import (
 	"errors"
-	"snakeish/pkg/core/room"
-	"snakeish/pkg/core/room/battleroyale"
-	"snakeish/pkg/core/room/classic"
+	"snakeish/pkg/core/rooms"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 var instance CoreInstance
 
 type CoreInstance struct {
-	rooms          []room.Room
+	rooms          []*rooms.Room
 	roomsAfkTimers map[string]*time.Timer
 }
 
 func InitCore() {
 	instance = CoreInstance{
-		rooms:          []room.Room{},
+		rooms:          []*rooms.Room{},
 		roomsAfkTimers: make(map[string]*time.Timer),
 	}
 }
 
-func GetRooms() []room.Room {
+func GetRooms() []*rooms.Room {
 	return instance.rooms
 }
 
-func GetRoomByName(name string) (room.Room, bool) {
+func GetRoomByName(name string) (*rooms.Room, bool) {
 	for _, room := range GetRooms() {
-		if room.GetName() == name {
-			return room, true
-		}
-	}
-	return nil, false
-}
-func GetRoomById(id string) (room.Room, bool) {
-	for _, room := range GetRooms() {
-		if room.GetId() == id {
+		if room.Name == name {
 			return room, true
 		}
 	}
 	return nil, false
 }
 
-func CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic.Room, error) {
-	if _, foundDuplicate := GetRoomByName(roomName); foundDuplicate {
-		return nil, errors.New("name already used by other room")
+func GetRoomById(id string) (*rooms.Room, bool) {
+	for _, room := range GetRooms() {
+		if room.Id == id {
+			return room, true
+		}
 	}
-
-	base := room.Base{
-		PinRequirer: room.CreatePinRequirer(pin),
-		Name:        roomName,
-		Id:          uuid.NewString(),
-		ModeName:    modeName,
-		IsRunning:   true,
-	}
-
-	room := classic.Configure(base)
-	StartAfkForRoom(room.GetId(), 30*time.Second)
-
-	instance.rooms = append(instance.rooms, room)
-	go room.StartRoom()
-
-	return room, nil
+	return nil, false
 }
 
-func CreateBattleRoyaleRoom(roomName string, modeName string, pin *[4]int) (*battleroyale.Room, error) {
-	if _, foundDuplicate := GetRoomByName(roomName); foundDuplicate {
+func CreateRoom(name string, tagName string, modeName string, pin *[4]int) (*rooms.Room, error) {
+	if _, foundDuplicate := GetRoomByName(name); foundDuplicate {
 		return nil, errors.New("name already used by other room")
 	}
-	base := room.Base{
-		PinRequirer: room.CreatePinRequirer(pin),
-		Name:        roomName,
-		Id:          uuid.NewString(),
-		ModeName:    modeName,
-		IsRunning:   true,
-	}
 
-	room := battleroyale.Configure(base)
-	StartAfkForRoom(room.GetId(), 30*time.Second)
+	mode := rooms.CreateMode(tagName, modeName)
+	room := rooms.Create(name, pin, mode)
 
+	StartAfkForRoom(room.Id, 30*time.Second)
 	instance.rooms = append(instance.rooms, room)
-	go room.StartRoom()
+	go room.Start()
 
 	return room, nil
 }
 
 func RemoveRoom(id string) {
 	for idx, room := range GetRooms() {
-		if room.GetId() == id {
+		if room.Id == id {
 			room.Stop()
 			instance.rooms = append(instance.rooms[:idx], instance.rooms[idx+1:]...)
 			return
@@ -115,11 +84,11 @@ func StopAfkForRoom(roomId string) {
 	}
 }
 
-func GetRoomPreview(r room.Room) room.RoomPreview {
-	return room.RoomPreview{
-		Id:         r.GetId(),
-		Name:       r.GetName(),
-		ModeTag:    r.GetModeTag(),
+func GetRoomPreview(r rooms.Room) rooms.RoomPreview {
+	return rooms.RoomPreview{
+		Id:         r.Id,
+		Name:       r.GetModeName(),
+		ModeTag:    r.GetTagName(),
 		ModeName:   r.GetModeName(),
 		Players:    r.GetPlayersCount(),
 		MaxPlayers: r.GetMaxPlayers(),

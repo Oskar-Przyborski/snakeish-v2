@@ -6,7 +6,7 @@ import (
 	"snakeish/pkg/core/utils"
 )
 
-func (room *Room) GetPlayerById(id string) *Player {
+func (room *Mode) GetPlayerById(id string) *Player {
 	for _, player := range room.Players {
 		if player.Id == id {
 			return player
@@ -15,7 +15,7 @@ func (room *Room) GetPlayerById(id string) *Player {
 	return nil
 }
 
-func (room *Room) IsPlayerNameAvailable(name string) bool {
+func (room *Mode) IsPlayerNameAvailable(name string) bool {
 	for _, player := range room.Players {
 		if player.Name == name {
 			return false
@@ -25,14 +25,14 @@ func (room *Room) IsPlayerNameAvailable(name string) bool {
 	return true
 }
 
-func (room *Room) IsPositionEmpty(at utils.Vector2) bool {
+func (room *Mode) IsPositionEmpty(at utils.Vector2) bool {
 	if room.IsAnySnakeAtPosition(at) || room.IsAppleAtPosition(at) {
 		return false
 	}
 	return true
 }
 
-func (room Room) IsInsideZone(at utils.Vector2) bool {
+func (room Mode) IsInsideZone(at utils.Vector2) bool {
 	if at.X < room.ShrinkSize || at.X > room.GridSize-room.ShrinkSize {
 		return true
 	}
@@ -44,7 +44,7 @@ func (room Room) IsInsideZone(at utils.Vector2) bool {
 	return false
 }
 
-func (room *Room) GetRandomFreePosition(distanceFromBounds int) (utils.Vector2, error) {
+func (room *Mode) GetRandomFreePosition(distanceFromBounds int) (utils.Vector2, error) {
 	freePositions := []utils.Vector2{}
 	for y := distanceFromBounds; y < room.GridSize-distanceFromBounds; y++ {
 		for x := distanceFromBounds; x < room.GridSize-distanceFromBounds; x++ {

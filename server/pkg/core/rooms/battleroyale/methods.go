@@ -5,26 +5,20 @@ import (
 	"time"
 )
 
-func (room *Room) StartRoom() {
-	for {
-		if !room.IsRunning {
-			break
-		}
+func (room *Mode) Init() {
+	room.Reset()
+}
 
-		time.Sleep(time.Duration(room.FrameTime) * time.Millisecond)
-
-		switch room.GameStatus {
-		case "waiting-for-players":
-			room.TryStart()
-		case "playing":
-			room.Update()
-		}
-
-		room.OnUpdate.Notify(room)
+func (room *Mode) Update() {
+	switch room.GameStatus {
+	case "waiting-for-players":
+		room.TryStart()
+	case "playing":
+		room.GameUpdate()
 	}
 }
 
-func (room *Room) TryStart() {
+func (room *Mode) TryStart() {
 	if room.GameStatus != "waiting-for-players" {
 		return
 	}
@@ -44,7 +38,7 @@ func (room *Room) TryStart() {
 	}
 }
 
-func (room *Room) StartGame() {
+func (room *Mode) StartGame() {
 	room.Reset()
 	room.StartUnix = -1
 	room.StartTimer = nil
@@ -60,7 +54,7 @@ func (room *Room) StartGame() {
 	})
 }
 
-func (room *Room) Update() {
+func (room *Mode) GameUpdate() {
 	if room.Freezed {
 		return
 	}
@@ -107,7 +101,7 @@ func (room *Room) Update() {
 	room.CheckFinished()
 }
 
-func (room *Room) CheckFinished() {
+func (room *Mode) CheckFinished() {
 	playersLeft := room.GetAlivePlayers()
 	playersLeftCount := len(playersLeft)
 
@@ -122,18 +116,18 @@ func (room *Room) CheckFinished() {
 	}
 }
 
-func (room *Room) Finish(winner *Player) {
+func (room *Mode) Finish(winner *Player) {
 	room.GameStatus = "finished"
 	room.Winner = winner
 
 	time.AfterFunc(time.Second*5, room.Reset)
 }
 
-func (room *Room) Reset() {
+func (room *Mode) Reset() {
 	room.Winner = nil
 	room.GameStatus = "waiting-for-players"
 	room.Apples = []utils.Vector2{}
-	room.Freezed = false
+	room.Freezed = true
 	room.UnfreezeUnix = -1
 	room.ShrinkFrameCounter = 0
 	room.ShrinkSize = 0
@@ -145,7 +139,7 @@ func (room *Room) Reset() {
 	}
 }
 
-func (room *Room) HandleZoneShrink() {
+func (room *Mode) HandleZoneShrink() {
 	if room.ShrinkSize >= room.GridSize/2 {
 		return
 	}

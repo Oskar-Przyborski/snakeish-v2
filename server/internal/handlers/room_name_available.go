@@ -11,7 +11,7 @@ func RoomNameAvailableEndpoint(c *gin.Context) {
 
 	roomNameAvailable := true
 	for _, room := range core.GetRooms() {
-		if room.GetName() == name {
+		if room.Name == name {
 			roomNameAvailable = false
 			break
 		}

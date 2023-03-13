@@ -2,7 +2,7 @@ package battleroyale
 
 import "snakeish/pkg/core/utils"
 
-func (room *Room) HandleAppleSpawn() {
+func (room *Mode) HandleAppleSpawn() {
 	room.AppleSpawnCounter++
 
 	if room.AppleSpawnCounter > 5 {
@@ -11,7 +11,7 @@ func (room *Room) HandleAppleSpawn() {
 	}
 }
 
-func (room *Room) SpawnApple() {
+func (room *Mode) SpawnApple() {
 	position, err := room.GetRandomFreePosition(room.ShrinkSize)
 	if err != nil {
 		return
@@ -20,7 +20,7 @@ func (room *Room) SpawnApple() {
 	room.Apples = append(room.Apples, position)
 }
 
-func (room Room) IsAppleAtPosition(at utils.Vector2) bool {
+func (room Mode) IsAppleAtPosition(at utils.Vector2) bool {
 	for _, apple := range room.Apples {
 		if apple.IsEqual(at) {
 			return true
@@ -29,7 +29,7 @@ func (room Room) IsAppleAtPosition(at utils.Vector2) bool {
 	return false
 }
 
-func (room *Room) EatAppleAt(at utils.Vector2) bool {
+func (room *Mode) EatAppleAt(at utils.Vector2) bool {
 	for idx, apple := range room.Apples {
 		if apple.IsEqual(at) {
 			room.Apples = append(room.Apples[:idx], room.Apples[idx+1:]...)

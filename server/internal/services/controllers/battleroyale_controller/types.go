@@ -1,4 +1,4 @@
-package battleroyaleMode
+package battleroyale_controller
 
 import "snakeish/pkg/core/utils"
 

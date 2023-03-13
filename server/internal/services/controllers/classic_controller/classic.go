@@ -1,26 +1,20 @@
-package classicMode
+package classic_controller
 
 import (
 	"snakeish/internal/services/clients"
 	"snakeish/pkg/core"
-	"snakeish/pkg/core/room/classic"
+	"snakeish/pkg/core/rooms"
+	"snakeish/pkg/core/rooms/classic"
 	"snakeish/pkg/core/utils"
 	"snakeish/pkg/sockets"
 	"time"
 )
 
-func CreateRoom(roomName string, modeName string, pin *[4]int) (*classic.Room, error) {
-	room, err := core.CreateClassicRoom(roomName, modeName, pin)
-	if err != nil {
-		return nil, err
-	}
-
+func SubscribeUpdates(room *rooms.Room) {
 	room.OnUpdate.AddListener(onUpdate)
-
-	return room, nil
 }
 
-func onUpdate(room *classic.Room) {
+func onUpdate(room *rooms.Room) {
 	response := generateGameUpdateResponse(*room)
 	clients := clients.GetClientsFromRoom(room.Id)
 
@@ -29,15 +23,16 @@ func onUpdate(room *classic.Room) {
 	}
 }
 
-func generateGameUpdateResponse(room classic.Room) GameUpdateResponse {
+func generateGameUpdateResponse(room rooms.Room) GameUpdateResponse {
+	mode := room.Mode.(*classic.Mode)
 	response := GameUpdateResponse{
-		FrameTime: room.FrameTime,
-		GridSize:  room.GridSize,
-		Apples:    room.Apples,
+		FrameTime: mode.GetFrameTime(),
+		GridSize:  mode.GridSize,
+		Apples:    mode.Apples,
 		Players:   []Player{},
 	}
 
-	for _, player := range room.Players {
+	for _, player := range mode.Players {
 		response.Players = append(response.Players, Player{
 			Id:        player.Id,
 			Name:      player.Name,
@@ -51,10 +46,10 @@ func generateGameUpdateResponse(room classic.Room) GameUpdateResponse {
 	return response
 }
 
-func ConnectWebsocket(room *classic.Room, socket *sockets.SocketClient) {
+func ConnectWebsocket(room *rooms.Room, socket *sockets.SocketClient) {
 	core.StopAfkForRoom(room.Id)
 
-	client := clients.CreateClient(socket, room)
+	client := clients.CreateClient(socket, *room)
 	client.OnDisconnect.AddListener(onClientDisconnect)
 
 	client.OnEvent("request-join", onJoinRequest)
@@ -70,7 +65,7 @@ func onClientDisconnect(client *clients.Client) {
 	client.Room.RemovePlayer(client.PlayerId)
 
 	if client.Room.GetPlayersCount() == 0 {
-		core.StartAfkForRoom(client.Room.GetId(), 30*time.Second)
+		core.StartAfkForRoom(client.Room.Id, 30*time.Second)
 	}
 	clients.RemoveClient(client.WebSocket.Id)
 
@@ -83,7 +78,8 @@ func onJoinRequest(client *clients.Client, c sockets.MessageContext) {
 		return
 	}
 
-	player, err := client.Room.(*classic.Room).AddPlayer(data.Name, data.Color, data.Pin)
+	mode := client.Room.Mode.(*classic.Mode)
+	player, err := mode.AddPlayer(data.Name, data.Color, data.Pin)
 	if err != nil {
 		client.WebSocket.Send("join-error", map[string]any{
 			"error": err.Error(),
@@ -108,7 +104,8 @@ func onLeaveRequest(client *clients.Client, c sockets.MessageContext) {
 }
 
 func onChangeDirection(client *clients.Client, c sockets.MessageContext) {
-	player := client.Room.(*classic.Room).GetPlayerById(client.PlayerId)
+	mode := client.Room.Mode.(*classic.Mode)
+	player := mode.GetPlayerById(client.PlayerId)
 
 	payload := ChangeDirectionRequest{}
 	if err := c.BindJSON(&payload); err != nil {

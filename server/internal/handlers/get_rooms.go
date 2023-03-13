@@ -3,7 +3,7 @@ package handlers
 import (
 	"regexp"
 	"snakeish/pkg/core"
-	r "snakeish/pkg/core/room"
+	r "snakeish/pkg/core/rooms"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -25,15 +25,15 @@ func GetRoomsEndpoint(c *gin.Context) {
 	c.JSON(200, response)
 }
 
-func filterOnlyPublic(rooms *[]r.Room, value bool) {
+func filterOnlyPublic(rooms *[]*r.Room, value bool) {
 	if value {
 		(*rooms) = (funk.Filter(*rooms, func(room r.Room) bool {
 			return !room.IsPinEnabled()
-		}).([]r.Room))
+		}).([]*r.Room))
 	}
 }
 
-func filterSearch(rooms *[]r.Room, query string) {
+func filterSearch(rooms *[]*r.Room, query string) {
 	if query == "" {
 		return
 	}
@@ -44,11 +44,11 @@ func filterSearch(rooms *[]r.Room, query string) {
 	}
 
 	(*rooms) = funk.Filter((*rooms), func(room r.Room) bool {
-		return rgx.MatchString(room.GetName())
-	}).([]r.Room)
+		return rgx.MatchString(room.Name)
+	}).([]*r.Room)
 }
 
-func filterModes(rooms *[]r.Room, modesString string) {
+func filterModes(rooms *[]*r.Room, modesString string) {
 	if modesString == "" {
 		return
 	}
@@ -66,5 +66,5 @@ func filterModes(rooms *[]r.Room, modesString string) {
 			}
 		}
 		return false
-	}).([]r.Room)
+	}).([]*r.Room)
 }

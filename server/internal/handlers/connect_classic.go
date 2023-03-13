@@ -1,9 +1,8 @@
 package handlers
 
 import (
-	classicMode "snakeish/internal/services/modes/classic"
+	"snakeish/internal/services/controllers/classic_controller"
 	"snakeish/pkg/core"
-	"snakeish/pkg/core/room/classic"
 	"snakeish/pkg/sockets"
 
 	"github.com/gin-gonic/gin"
@@ -21,15 +20,13 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	if room.GetModeTag() != "classic" {
+	if room.GetTagName() != "classic" {
 		c.JSON(403, gin.H{
 			"code":    "ROOM_WRONG_MODE_TAG",
 			"message": "found room, but it's mode tag is wrong",
 		})
 		return
 	}
-
-	classicRoom := room.(*classic.Room)
 
 	websocket, err := sockets.CreateClient(c.Writer, c.Request)
 	if err != nil {
@@ -40,5 +37,5 @@ func ConnectClassicRoomEndpoint(c *gin.Context) {
 		return
 	}
 
-	classicMode.ConnectWebsocket(classicRoom, websocket)
+	classic_controller.ConnectWebsocket(room, websocket)
 }

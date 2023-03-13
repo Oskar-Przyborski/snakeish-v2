@@ -1,7 +1,7 @@
 package clients
 
 import (
-	"snakeish/pkg/core/room"
+	"snakeish/pkg/core/rooms"
 	"snakeish/pkg/notifier"
 	"snakeish/pkg/sockets"
 )
@@ -22,7 +22,7 @@ func GetInstance() *ClientsManager {
 	return &instance
 }
 
-func CreateClient(gosocket *sockets.SocketClient, room room.Room) *Client {
+func CreateClient(gosocket *sockets.SocketClient, room rooms.Room) *Client {
 	client := &Client{
 		WebSocket:    gosocket,
 		Room:         room,
@@ -51,7 +51,7 @@ func RemoveClient(websocketID string) {
 func GetClientsFromRoom(roomId string) []*Client {
 	foundClients := []*Client{}
 	for _, client := range instance.clients {
-		if client.Room.GetId() == roomId {
+		if client.Room.Id == roomId {
 			foundClients = append(foundClients, client)
 		}
 	}
