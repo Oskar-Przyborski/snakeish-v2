@@ -10,11 +10,13 @@
 	import { goto } from '$app/navigation';
 	import { fetchJson } from '$lib/fetchJson';
 	import modes from '$lib/modes';
+	//@ts-ignore
+	import { ga } from '@beyonk/svelte-google-analytics';
 
 	export let data: PageData;
 	const createRoom = async () => {
 		if ($store.configName == null) return;
-		const { id, modeTag } = await fetchJson<App.RoomPreview>('/rooms/create', {
+		const { id, modeTag, modeName, name } = await fetchJson<App.RoomPreview>('/rooms/create', {
 			fetcher: fetch,
 			method: 'POST',
 			body: {
@@ -23,6 +25,12 @@
 				modeTag: modes.get($store.configName)?.tag,
 				pin: $store.pinEnabled ? $store.pin : null
 			}
+		});
+
+		ga.addEvent('create_room', {
+			modeName,
+			modeTag,
+			roomName: name
 		});
 
 		await goto(`/room/${modeTag}/${id}`, { replaceState: true });

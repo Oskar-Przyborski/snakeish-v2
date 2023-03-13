@@ -1,6 +1,8 @@
 import { WebSocketClient } from '$lib/websocket';
 import { get, writable } from 'svelte/store';
 import type { GameState, JoinError, JoinSuccessType, PageState } from './types';
+//@ts-ignore
+import { ga } from '@beyonk/svelte-google-analytics';
 
 export const store = writable<PageState>({
 	roomId: null,
@@ -43,6 +45,11 @@ export const requestJoin = (name: string, color: string, pin: (number | null)[])
 };
 
 const joinSuccess = (data: JoinSuccessType) => {
+	ga.addEvent('join_game', {
+		playerName: data.name,
+		modeTag: "battle-royale",
+	});
+	
 	store.update((state) => {
 		state.isPlaying = true;
 		state.playerId = data.playerId;

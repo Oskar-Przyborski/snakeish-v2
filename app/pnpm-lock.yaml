@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@beyonk/svelte-google-analytics': ^2.6.4
   '@iconify/svelte': ^3.1.0
   '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.5.6
@@ -17,6 +18,7 @@ specifiers:
   sass: ^1.58.0
   svelte: ^3.55.1
   svelte-check: ^3.0.3
+  svelte-google-analytics: link:@types/@beyonk/svelte-google-analytics
   svelte-preprocess: ^5.0.1
   tslib: ^2.5.0
   typescript: ^4.9.5
@@ -24,8 +26,10 @@ specifiers:
   vite: ^4.1.1
 
 dependencies:
+  '@beyonk/svelte-google-analytics': 2.6.4
   canvas: 2.11.0
   konva: 8.4.2
+  svelte-google-analytics: link:@types/@beyonk/svelte-google-analytics
   ufo: 1.0.1
 
 devDependencies:
@@ -49,6 +53,16 @@ devDependencies:
   vite: 4.1.1_sass@1.58.0
 
 packages:
+
+  /@beyonk/async-script-loader/2.3.0:
+    resolution: {integrity: sha512-/vbDM5j8OHmtnWLx87sef0T/jGWVvZV6ILm3QFLpfRwSg0KmhQoAZnOT4XSaUL/EjOC9eMzgX5qtS2jztKzY2A==}
+    dev: false
+
+  /@beyonk/svelte-google-analytics/2.6.4:
+    resolution: {integrity: sha512-m2P1fs36qObCLtIZ9edLC62RHLrGVknaKuE4uEBQk5+Jfy1apa7DOIT0Jq1PvScyrndV62FvyjUUrWwrXjYbmw==}
+    dependencies:
+      '@beyonk/async-script-loader': 2.3.0
+    dev: false
 
   /@esbuild/android-arm/0.16.17:
     resolution: {integrity: sha512-N9x1CMXVhtWEAMS7pNNONyA14f71VPQN9Cnavj1XQh6T7bskqiLLrSca4O0Vr8Wdcga943eThxnVp3JLnBMYtw==}

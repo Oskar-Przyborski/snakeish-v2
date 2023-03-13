@@ -1,15 +1,8 @@
-<svelte:head>
-	{#if import.meta.env.PROD}
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-FDJP074REL"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag() {
-				dataLayer.push(arguments);
-			}
-			gtag('js', new Date());
+<script>
+	// @ts-ignore
+	import { GoogleAnalytics } from '@beyonk/svelte-google-analytics';
+</script>
 
-			gtag('config', 'G-FDJP074REL');
-		</script>
-	{/if}
-</svelte:head>
+{#if import.meta.env.PROD}
+	<GoogleAnalytics properties={['G-FDJP074REL']} />
+{/if}

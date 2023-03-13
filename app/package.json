@@ -34,6 +34,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@beyonk/svelte-google-analytics": "^2.6.4",
 		"canvas": "^2.11.0",
 		"konva": "^8.4.2",
 		"ufo": "^1.0.1"
