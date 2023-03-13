@@ -43,7 +43,7 @@ func CreateRoomEndpoint(c *gin.Context) {
 	}
 
 	c.JSON(200, core.GetRoomPreview(*room))
-	println("Created room. Id:", room.Id)
+	println("ROOM_CREATE:", room.Name, "with mode:", room.GetModeName())
 }
 
 func SubscribeToRoom(room *rooms.Room) {

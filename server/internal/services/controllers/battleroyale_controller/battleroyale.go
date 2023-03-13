@@ -73,8 +73,6 @@ func ConnectWebsocket(room *rooms.Room, socket *sockets.SocketClient) {
 	client.OnEvent("change-direction", onChangeDirection)
 
 	go socket.ListenForMessages()
-
-	println("Connected websocket. Client id:", socket.Id)
 }
 
 func onJoinRequest(client *clients.Client, c sockets.MessageContext) {
@@ -100,6 +98,8 @@ func onJoinRequest(client *clients.Client, c sockets.MessageContext) {
 		Name:     player.Name,
 		Color:    player.Color,
 	})
+	println("JOIN_BATTLEROYALE_ROOM:", client.Room.Name, "with name:", player.Name)
+
 }
 
 func onLeaveRequest(client *clients.Client, c sockets.MessageContext) {
@@ -115,8 +115,6 @@ func onClientDisconnect(client *clients.Client) {
 		core.StartAfkForRoom(client.Room.Id, 30*time.Second)
 	}
 	clients.RemoveClient(client.WebSocket.Id)
-
-	println("Disconnected client with id: " + client.WebSocket.Id)
 }
 
 func onChangeDirection(client *clients.Client, c sockets.MessageContext) {
