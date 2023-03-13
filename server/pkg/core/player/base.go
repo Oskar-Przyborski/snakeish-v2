@@ -1,31 +1,25 @@
-package classic_room
+package player
 
 import "snakeish/pkg/core/utils"
 
-type ClassicPlayer struct {
+type Base struct {
 	Id              string
-	Name            string
-	Color           string
-	SnakeTail       []utils.Vector2
-	IsAlive         bool
 	Direction       utils.Vector2
 	TargetDirection utils.Vector2
+	SnakeTail       []utils.Vector2
 }
 
-func (player *ClassicPlayer) ChangeDirection(direcion utils.Vector2) {
-	if player.Direction.X+direcion.X == 0 && player.Direction.Y+direcion.Y == 0 {
-		return
+func (player *Base) ChangeDirection(direcion utils.Vector2) {
+	if len(player.SnakeTail) > 1 {
+		if player.Direction.X+direcion.X == 0 && player.Direction.Y+direcion.Y == 0 {
+			return
+		}
 	}
 
 	player.TargetDirection = direcion
 }
 
-func (player *ClassicPlayer) Kill() {
-	player.IsAlive = false
-	player.SnakeTail = make([]utils.Vector2, 0)
-}
-
-func (player ClassicPlayer) IsCollidingSelf() bool {
+func (player Base) IsCollidingSelf() bool {
 	if len(player.SnakeTail) <= 1 {
 		return false
 	}
@@ -43,10 +37,11 @@ func (player ClassicPlayer) IsCollidingSelf() bool {
 	return false
 }
 
-func (player ClassicPlayer) IsOutOfBounds(gridSize int) bool {
+func (player Base) IsOutOfBounds(gridSize int) bool {
 	if len(player.SnakeTail) == 0 {
 		return false
 	}
+
 	head := player.SnakeTail[0]
 
 	if head.X < 0 || head.Y < 0 || head.X >= gridSize || head.Y >= gridSize {
@@ -55,7 +50,11 @@ func (player ClassicPlayer) IsOutOfBounds(gridSize int) bool {
 	return false
 }
 
-func (player ClassicPlayer) IsCollidingWith(other ClassicPlayer) bool {
+func (player Base) IsCollidingWith(other Base) bool {
+	if player.Id == other.Id {
+		return false
+	}
+
 	if len(player.SnakeTail) == 0 || len(other.SnakeTail) == 0 {
 		return false
 	}

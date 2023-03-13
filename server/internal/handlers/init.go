@@ -15,4 +15,5 @@ func Init(router *gin.Engine) {
 	api.GET("room/:id", GetRoomEndpoint)
 
 	api.GET("connect/classic/:id", ConnectClassicRoomEndpoint)
+	api.GET("connect/battle-royale/:id", ConnectBattleroyaleEndpoint)
 }

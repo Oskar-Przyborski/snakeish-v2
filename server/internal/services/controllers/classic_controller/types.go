@@ -1,4 +1,4 @@
-package classic
+package classic_controller
 
 import "snakeish/pkg/core/utils"
 

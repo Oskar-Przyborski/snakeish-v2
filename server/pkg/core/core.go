@@ -2,71 +2,65 @@ package core
 
 import (
 	"errors"
-	"snakeish/pkg/core/room"
-	classic_room "snakeish/pkg/core/room/classic"
+	"snakeish/pkg/core/rooms"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 var instance CoreInstance
 
 type CoreInstance struct {
-	rooms          []room.IRoom
+	rooms          []*rooms.Room
 	roomsAfkTimers map[string]*time.Timer
 }
 
 func InitCore() {
 	instance = CoreInstance{
-		rooms:          []room.IRoom{},
+		rooms:          []*rooms.Room{},
 		roomsAfkTimers: make(map[string]*time.Timer),
 	}
 }
 
-func GetRooms() []room.IRoom {
+func GetRooms() []*rooms.Room {
 	return instance.rooms
 }
 
-func GetRoomByName(name string) (room.IRoom, bool) {
+func GetRoomByName(name string) (*rooms.Room, bool) {
 	for _, room := range GetRooms() {
-		if room.GetName() == name {
-			return room, true
-		}
-	}
-	return nil, false
-}
-func GetRoomById(id string) (room.IRoom, bool) {
-	for _, room := range GetRooms() {
-		if room.GetId() == id {
+		if room.Name == name {
 			return room, true
 		}
 	}
 	return nil, false
 }
 
-func CreateClassicRoom(roomName string, modeName string, pin *[4]int) (*classic_room.ClassicRoom, error) {
-	if _, foundDuplicate := GetRoomByName(roomName); foundDuplicate {
-		return &classic_room.ClassicRoom{}, errors.New("name already used by other room")
+func GetRoomById(id string) (*rooms.Room, bool) {
+	for _, room := range GetRooms() {
+		if room.Id == id {
+			return room, true
+		}
+	}
+	return nil, false
+}
+
+func CreateRoom(name string, tagName string, modeName string, pin *[4]int) (*rooms.Room, error) {
+	if _, foundDuplicate := GetRoomByName(name); foundDuplicate {
+		return nil, errors.New("name already used by other room")
 	}
 
-	base := room.RoomBase{
-		PinRequirer: room.CreatePinRequirer(pin),
-		Name:        roomName,
-		Id:          uuid.NewString(),
-	}
+	mode := rooms.CreateMode(tagName, modeName)
+	room := rooms.Create(name, pin, mode)
 
-	room := classic_room.ConfigureClassicRoom(base, modeName)
-	StartAfkForRoom(room.GetId(), 30*time.Second)
-
+	StartAfkForRoom(room.Id, 30*time.Second)
 	instance.rooms = append(instance.rooms, room)
-	go room.StartRoom()
+	go room.Start()
 
 	return room, nil
 }
 
 func RemoveRoom(id string) {
 	for idx, room := range GetRooms() {
-		if room.GetId() == id {
+		if room.Id == id {
+			room.Stop()
 			instance.rooms = append(instance.rooms[:idx], instance.rooms[idx+1:]...)
 			return
 		}
@@ -87,5 +81,17 @@ func StopAfkForRoom(roomId string) {
 	if timer := instance.roomsAfkTimers[roomId]; timer != nil {
 		timer.Stop()
 		delete(instance.roomsAfkTimers, roomId)
+	}
+}
+
+func GetRoomPreview(r rooms.Room) rooms.RoomPreview {
+	return rooms.RoomPreview{
+		Id:         r.Id,
+		Name:       r.GetModeName(),
+		ModeTag:    r.GetTagName(),
+		ModeName:   r.GetModeName(),
+		Players:    r.GetPlayersCount(),
+		MaxPlayers: r.GetMaxPlayers(),
+		PinEnbled:  r.IsPinEnabled(),
 	}
 }

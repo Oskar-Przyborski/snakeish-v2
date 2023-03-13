@@ -1,9 +1,10 @@
 package handlers
 
 import (
-	"snakeish/internal/services/modes/classic"
+	"snakeish/internal/services/controllers/battleroyale_controller"
+	"snakeish/internal/services/controllers/classic_controller"
 	"snakeish/pkg/core"
-	"snakeish/pkg/core/room"
+	"snakeish/pkg/core/rooms"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,7 +23,7 @@ func CreateRoomEndpoint(c *gin.Context) {
 	}
 
 	for _, room := range core.GetRooms() {
-		if room.GetName() == data.RoomName {
+		if room.Name == data.RoomName {
 			c.JSON(400, gin.H{
 				"code":    "NAME_EXISTS",
 				"message": "room with given name already exists",
@@ -31,7 +32,9 @@ func CreateRoomEndpoint(c *gin.Context) {
 		}
 	}
 
-	room, err := CreateRoomByModeTag(data.RoomName, data.ModeTag, data.ModeName, data.Pin)
+	room, err := core.CreateRoom(data.RoomName, data.ModeTag, data.ModeName, data.Pin)
+	SubscribeToRoom(room)
+
 	if err != nil {
 		c.JSON(500, gin.H{
 			"code":    "CREATION_ERROR",
@@ -39,13 +42,15 @@ func CreateRoomEndpoint(c *gin.Context) {
 		})
 	}
 
-	c.JSON(200, room.GetPreview())
-	println("Created room. Id:", room.GetId())
+	c.JSON(200, core.GetRoomPreview(*room))
+	println("ROOM_CREATE:", room.Name, "with mode:", room.GetModeName())
 }
 
-func CreateRoomByModeTag(name string, modeTag string, modeName string, pin *[4]int) (room.IRoom, error) {
-	switch modeTag {
-	default: //classic
-		return classic.CreateRoom(name, modeName, pin)
+func SubscribeToRoom(room *rooms.Room) {
+	switch room.GetTagName() {
+	default:
+		classic_controller.SubscribeUpdates(room)
+	case "battle-royale":
+		battleroyale_controller.SubscribeUpdates(room)
 	}
 }
