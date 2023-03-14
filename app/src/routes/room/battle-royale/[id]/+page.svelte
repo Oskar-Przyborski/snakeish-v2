@@ -97,6 +97,12 @@
 		grid-template-columns: 3fr 2fr;
 		gap: 1rem;
 	}
+
+	@media (max-width: 1024px) {
+		.wrapper {
+			grid-template-columns: 1fr;
+		}
+	}
 	.game-renderer {
 		display: grid;
 		place-items: center;
