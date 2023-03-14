@@ -12,6 +12,7 @@ export interface PageState {
 	};
 }
 export interface GameState {
+	watching: number;
 	players: Player[];
 	apples: Vector2[];
 	gridSize: number;

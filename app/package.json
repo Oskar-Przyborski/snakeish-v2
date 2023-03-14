@@ -15,28 +15,28 @@
 	"devDependencies": {
 		"@iconify/svelte": "^3.1.0",
 		"@sveltejs/adapter-auto": "^2.0.0",
-		"@sveltejs/kit": "^1.5.6",
-		"@typescript-eslint/eslint-plugin": "^5.51.0",
-		"@typescript-eslint/parser": "^5.51.0",
+		"@sveltejs/kit": "^1.11.0",
+		"@typescript-eslint/eslint-plugin": "^5.55.0",
+		"@typescript-eslint/parser": "^5.55.0",
 		"destr": "^1.2.2",
-		"eslint": "^8.34.0",
-		"eslint-config-prettier": "^8.6.0",
+		"eslint": "^8.36.0",
+		"eslint-config-prettier": "^8.7.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"prettier": "^2.8.4",
 		"prettier-plugin-svelte": "^2.9.0",
-		"sass": "^1.58.0",
-		"svelte": "^3.55.1",
-		"svelte-check": "^3.0.3",
+		"sass": "^1.59.2",
+		"svelte": "^3.56.0",
+		"svelte-check": "^3.1.4",
 		"svelte-preprocess": "^5.0.1",
 		"tslib": "^2.5.0",
 		"typescript": "^4.9.5",
-		"vite": "^4.1.1"
+		"vite": "^4.1.4"
 	},
 	"type": "module",
 	"dependencies": {
 		"@beyonk/svelte-google-analytics": "^2.6.4",
 		"canvas": "^2.11.0",
 		"konva": "^8.4.2",
-		"ufo": "^1.0.1"
+		"ufo": "^1.1.1"
 	}
 }

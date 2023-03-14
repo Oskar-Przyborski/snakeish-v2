@@ -10,6 +10,8 @@
 	import Leaderboard from '$lib/components/room/classic/leaderboard.svelte';
 	import GameRenderer from '$lib/components/room/classic/game_renderer.svelte';
 	import Panel from '$lib/components/panel.svelte';
+	import Icon from '@iconify/svelte';
+	import Watching from '$lib/components/watching.svelte';
 
 	export let data: PageData;
 
@@ -75,6 +77,9 @@
 					<Leaderboard />
 				{/if}
 			</Panel>
+			{#if $store.gameState?.watching}
+				<Watching count={$store.gameState?.watching} />
+			{/if}
 		</div>
 	</div>
 {:else}
@@ -93,6 +98,11 @@
 		grid-template-columns: 3fr 2fr;
 		gap: 1rem;
 	}
+	@media (max-width: 996px) {
+		.wrapper{
+			grid-template-columns: 1fr;
+		}
+	}
 	.game-renderer {
 		display: grid;
 		place-items: center;
@@ -108,6 +118,7 @@
 			flex-flow: row nowrap;
 			align-items: center;
 			justify-content: space-between;
+			gap: 1rem;
 
 			h1 {
 				margin: 0;

@@ -16,6 +16,7 @@ export interface ClassicGameState {
 	apples: Vector2[];
 	gridSize: number;
 	frameTime: number;
+	watching: number;
 }
 export interface Player {
 	id: string;

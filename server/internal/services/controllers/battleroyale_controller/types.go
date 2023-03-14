@@ -13,6 +13,7 @@ type Player struct {
 }
 
 type GameUpdateResponse struct {
+	Watching     int             `json:"watching"`
 	FrameTime    int             `json:"frameTime"`
 	GridSize     int             `json:"gridSize"`
 	ShrinkSize   int             `json:"shrinkSize"`
