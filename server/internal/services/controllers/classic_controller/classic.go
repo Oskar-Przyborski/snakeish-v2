@@ -8,6 +8,8 @@ import (
 	"snakeish/pkg/core/utils"
 	"snakeish/pkg/sockets"
 	"time"
+
+	"github.com/thoas/go-funk"
 )
 
 func SubscribeUpdates(room *rooms.Room) {
@@ -25,11 +27,16 @@ func onUpdate(room *rooms.Room) {
 
 func generateGameUpdateResponse(room rooms.Room) GameUpdateResponse {
 	mode := room.Mode.(*classic.Mode)
+	watching := len(funk.Filter(clients.GetClientsFromRoom(room.Id), func(client *clients.Client) bool {
+		return !client.IsPlayer
+	}).([]*clients.Client))
+
 	response := GameUpdateResponse{
 		FrameTime: mode.GetFrameTime(),
 		GridSize:  mode.GridSize,
 		Apples:    mode.Apples,
 		Players:   []Player{},
+		Watching:  watching,
 	}
 
 	for _, player := range mode.Players {

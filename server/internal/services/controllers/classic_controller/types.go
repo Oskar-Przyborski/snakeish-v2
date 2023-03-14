@@ -16,6 +16,7 @@ type GameUpdateResponse struct {
 	GridSize  int             `json:"gridSize"`
 	Apples    []utils.Vector2 `json:"apples"`
 	Players   []Player        `json:"players"`
+	Watching  int             `json:"watching"`
 }
 
 type JoinRequestType struct {

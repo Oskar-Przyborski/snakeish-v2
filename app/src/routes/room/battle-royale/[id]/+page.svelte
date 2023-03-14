@@ -10,6 +10,7 @@
 	import Leaderboard from '$lib/components/room/battleroyale/leaderboard.svelte';
 	import GameRenderer from '$lib/components/room/battleroyale/game_renderer.svelte';
 	import Panel from '$lib/components/panel.svelte';
+	import Watching from '$lib/components/watching.svelte';
 
 	export let data: PageData;
 
@@ -75,6 +76,9 @@
 					<Leaderboard />
 				{/if}
 			</Panel>
+			{#if $store.gameState?.watching}
+				<Watching count={$store.gameState?.watching} />
+			{/if}
 		</div>
 	</div>
 {:else}
