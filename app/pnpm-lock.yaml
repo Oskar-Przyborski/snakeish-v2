@@ -18,7 +18,6 @@ specifiers:
   sass: ^1.58.0
   svelte: ^3.55.1
   svelte-check: ^3.0.3
-  svelte-google-analytics: link:@types/@beyonk/svelte-google-analytics
   svelte-preprocess: ^5.0.1
   tslib: ^2.5.0
   typescript: ^4.9.5
@@ -29,7 +28,6 @@ dependencies:
   '@beyonk/svelte-google-analytics': 2.6.4
   canvas: 2.11.0
   konva: 8.4.2
-  svelte-google-analytics: link:@types/@beyonk/svelte-google-analytics
   ufo: 1.0.1
 
 devDependencies:
