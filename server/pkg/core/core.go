@@ -87,7 +87,7 @@ func StopAfkForRoom(roomId string) {
 func GetRoomPreview(r rooms.Room) rooms.RoomPreview {
 	return rooms.RoomPreview{
 		Id:         r.Id,
-		Name:       r.GetModeName(),
+		Name:       r.Name,
 		ModeTag:    r.GetTagName(),
 		ModeName:   r.GetModeName(),
 		Players:    r.GetPlayersCount(),
