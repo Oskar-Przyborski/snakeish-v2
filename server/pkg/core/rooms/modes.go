@@ -31,16 +31,27 @@ func CreateMode(tag string, name string) Mode {
 		switch name {
 		default: //Eat&Win
 			return &battleroyale.Mode{
-				MaxPlayers:        8,
-				MinPlayers:        3,
-				GameStatus:        "waiting-for-players",
-				FrameTime:         250,
-				MaxApplesQuantity: 6,
-				GridSize:          20,
-				ShrinkSize:        0,
-				ZoneShrinkTime:    15,
-				ZoneKillTime:      3,
-				ModeName:          "Eat&Win",
+				MaxPlayers:     8,
+				MinPlayers:     3,
+				FrameTime:      250,
+				GridSize:       20,
+				ShrinkSize:     0,
+				ZoneShrinkTime: 15,
+				ZoneKillTime:   3,
+				AppleSpawnTime: 5,
+				ModeName:       "Eat&Win",
+			}
+		case "Zone Shark":
+			return &battleroyale.Mode{
+				MaxPlayers:     8,
+				MinPlayers:     3,
+				FrameTime:      200,
+				GridSize:       25,
+				ShrinkSize:     0,
+				ZoneShrinkTime: 10,
+				ZoneKillTime:   0,
+				AppleSpawnTime: 4,
+				ModeName:       "Zone Shark",
 			}
 		}
 	}

@@ -5,7 +5,7 @@ import "snakeish/pkg/core/utils"
 func (room *Mode) HandleAppleSpawn() {
 	room.AppleSpawnCounter++
 
-	if room.AppleSpawnCounter > 5 {
+	if room.AppleSpawnCounter > room.AppleSpawnTime {
 		room.SpawnApple()
 		room.AppleSpawnCounter = 0
 	}

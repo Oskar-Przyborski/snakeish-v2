@@ -27,6 +27,7 @@ type Mode struct {
 	UnfreezeUnix       int64 // Unix timestamp of the moment of unfreeze.
 	ZoneKillTime       int
 	ZoneShrinkTime     int
+	AppleSpawnTime     int
 }
 
 func (mode Mode) GetMaxPlayers() int {

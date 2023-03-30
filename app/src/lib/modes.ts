@@ -26,4 +26,13 @@ export default new Map<string, { tag: string; title: string; name: string; descr
 			description: 'Popular Battle Royale! Compete with friends, escape from zone, eat apples and win!'
 		}
 	],
+	[
+		'battleroyale-zoneshark',
+		{
+			tag: 'battle-royale',
+			title: 'Zone Shark',
+			name: 'battleroyale-zoneshark',
+			description: "Don't touch the zone! It eats you instantly."
+		}
+	],
 ]);
