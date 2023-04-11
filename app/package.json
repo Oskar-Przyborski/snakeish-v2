@@ -13,30 +13,30 @@
 		"vercel-build": "yum install gcc-c++ cairo-devel pango-devel libjpeg-turbo-devel giflib-devel && vite build"
 	},
 	"devDependencies": {
-		"@iconify/svelte": "^3.1.0",
+		"@iconify/svelte": "^3.1.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
-		"@sveltejs/kit": "^1.11.0",
-		"@typescript-eslint/eslint-plugin": "^5.55.0",
-		"@typescript-eslint/parser": "^5.55.0",
+		"@sveltejs/kit": "^1.15.2",
+		"@typescript-eslint/eslint-plugin": "^5.58.0",
+		"@typescript-eslint/parser": "^5.58.0",
 		"destr": "^1.2.2",
-		"eslint": "^8.36.0",
-		"eslint-config-prettier": "^8.7.0",
+		"eslint": "^8.38.0",
+		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-svelte3": "^4.0.0",
-		"prettier": "^2.8.4",
-		"prettier-plugin-svelte": "^2.9.0",
-		"sass": "^1.59.2",
-		"svelte": "^3.56.0",
-		"svelte-check": "^3.1.4",
-		"svelte-preprocess": "^5.0.1",
+		"prettier": "^2.8.7",
+		"prettier-plugin-svelte": "^2.10.0",
+		"sass": "^1.61.0",
+		"svelte": "^3.58.0",
+		"svelte-check": "^3.2.0",
+		"svelte-preprocess": "^5.0.3",
 		"tslib": "^2.5.0",
 		"typescript": "^4.9.5",
-		"vite": "^4.1.4"
+		"vite": "^4.2.1"
 	},
 	"type": "module",
 	"dependencies": {
 		"@beyonk/svelte-google-analytics": "^2.6.4",
-		"canvas": "^2.11.0",
-		"konva": "^8.4.2",
+		"canvas": "^2.11.2",
+		"konva": "^8.4.3",
 		"ufo": "^1.1.1"
 	}
 }
