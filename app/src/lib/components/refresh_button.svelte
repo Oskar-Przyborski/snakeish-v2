@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 
 	export let callback: () => void;
-	let icon: HTMLDivElement;
+	let icon: HTMLButtonElement;
 
 	function rotate() {
 		callback();
@@ -26,12 +26,13 @@
 	}
 </script>
 
-<div class="refresh-button" bind:this={icon} on:click={rotate} on:keypress={rotate}>
+<button class="refresh-button" bind:this={icon} on:click={rotate} on:keypress={rotate}>
 	<Icon icon="material-symbols:refresh-rounded" />
-</div>
+</button>
 
 <style lang="scss">
 	.refresh-button {
+		all: unset;
 		width: max-content;
 		display: grid;
 		place-items: center;

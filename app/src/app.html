@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="light">
 	<head>
 		<meta charset="utf-8" />
@@ -64,5 +64,12 @@
 
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
+		<script>
+			const systemDark =
+				window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			let theme = localStorage.getItem('data-theme');
+			if (theme == null) theme = systemDark ? 'dark' : 'light';
+			document.documentElement?.setAttribute('data-theme', theme);
+		</script>
 	</body>
 </html>

@@ -33,18 +33,13 @@
 	let theme = 'dark';
 
 	onMount(() => {
-		const systemDark =
-			window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-		theme = localStorage.getItem('theme') ?? systemDark ? 'dark' : 'light';
-		document.documentElement?.setAttribute('data-theme', theme);
+		theme = document.documentElement?.getAttribute('data-theme') ?? 'light';
 	});
 
 	const toggleTheme = () => {
-		const newTheme = theme == 'dark' ? 'light' : 'dark';
-
-		theme = newTheme;
-		document.documentElement?.setAttribute('data-theme', newTheme);
-		localStorage.setItem('theme', newTheme);
+		theme = theme == 'dark' ? 'light' : 'dark';
+		document.documentElement?.setAttribute('data-theme', theme);
+		localStorage.setItem('data-theme', theme);
 	};
 </script>
 
